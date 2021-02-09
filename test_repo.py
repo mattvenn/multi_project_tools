@@ -95,7 +95,7 @@ def test_gds():
     """
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="multi project collect")
+    parser = argparse.ArgumentParser(description="test a project repo")
     parser.add_argument('--directory', help="directory that defines the project", action='store', required=True)
     parser.add_argument('--test-module', help="run the module's test", action='store_const', const=True)
     parser.add_argument('--prove-wrapper', help="check the wrapper proof", action='store_const', const=True)
