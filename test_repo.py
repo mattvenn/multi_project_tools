@@ -40,6 +40,7 @@ def test_module():
     logging.info("test pass")
 
 def prove_wrapper():
+    # TODO need to also check properties.sby - could have a few things to cksum and make wrapper_cksum able to check a few files
     conf = config["wrapper_proof"]
     cwd = os.path.join(args.directory, conf["directory"])
     cmd = ["sby", "-f", conf["sby"]]
@@ -86,7 +87,7 @@ def test_caravel():
 
 def test_gds():
     """
-    need the LEF for this?
+    need the LEF for this? will need the lef for final hardening
     check size
     nothing on metal 5,
     do a DRC,
