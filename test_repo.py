@@ -5,9 +5,12 @@ import os, sys
 import subprocess
 import logging
 import hashlib
+import shutil
 
 REQUIRED_KEYS = [ "project", "caravel_test", "module_test", "wrapper_proof", "wrapper_cksum", "openlane", "gds" ]
 WRAPPER_MD5SUM = "0ec8fdff7ae891b1b156030a841d1800"
+CARAVEL_TEST_DIR = "/home/matt/work/asic-workshop/caravel-mph/verilog/dv/caravel/user_proj_example/"
+CARAVEL_RTL_DIR = "/home/matt/work/asic-workshop/caravel-mph/verilog/rtl/"
 
 def parse_config():
     yaml_file = os.path.join(args.directory, 'info.yaml')
@@ -77,13 +80,61 @@ def wrapper_cksum():
 
     logging.info("cksum pass")
 
+def instantiate_project(template, output, module_name, instance_name, project_id):
+    # read the data
+    with open(template, 'r') as file :
+        filedata = file.read()
+
+    # replace the target strings
+    filedata = filedata.replace('MODULE_NAME', module_name)
+    filedata = filedata.replace('INSTANCE_NAME', instance_name)
+    filedata = filedata.replace('PROJECT_ID', str(project_id))
+
+    # write the file
+    with open(output, 'w') as file:
+        file.write(filedata)
+
 def test_caravel():
-    """
-    copy source into caravel
-    instantiate inside user project wrapper
-    copy test inside caravel
-    run makefile
-    """
+    conf = config["caravel_test"]
+    logging.info(conf)
+
+    # copy src into caravel verilog dir
+    src = args.directory
+    dst = os.path.join(CARAVEL_RTL_DIR, os.path.basename(args.directory))
+    logging.info("copying %s to %s" % (src, dst))
+    shutil.copytree(src, dst)
+
+    # instantiate inside user project wrapper
+    user_project_wrapper_template = os.path.join(CARAVEL_RTL_DIR, "user_project_wrapper.sub.v")
+    user_project_wrapper_file = os.path.join(CARAVEL_RTL_DIR, "user_project_wrapper.v")
+    instantiate_project(user_project_wrapper_template, user_project_wrapper_file, conf["module_name"], conf["instance_name"], conf["id"])
+
+    # copy test inside caravel
+    src = os.path.join(args.directory, conf["directory"])
+    dst = os.path.join(CARAVEL_TEST_DIR, conf["directory"])
+    logging.info("copying %s to %s" % (src, dst))
+    shutil.copytree(src, dst)
+
+    # set up env
+    test_env = os.environ
+    test_env["GCC_PATH"] = "/opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/"
+    test_env["GCC_PREFIX"] = "riscv64-unknown-elf"
+    test_env["PDK_PATH"] = os.environ["PDKPATH"]
+
+    cwd = os.path.join(CARAVEL_TEST_DIR, conf["directory"])
+    cmd = ["make", conf["recipe"]]
+    logging.info("attempting to run %s in %s" % (cmd, cwd))
+
+    # run makefile
+    try:
+        subprocess.run(cmd, cwd=cwd, env=test_env, check=True)
+    except subprocess.CalledProcessError as e:
+        logging.error(e)
+        exit(1)
+        # TODO rm directories
+
+    # TODO rm directories
+    logging.info("caravel test pass")
 
 def test_gds():
     """
@@ -104,6 +155,9 @@ if __name__ == '__main__':
     parser.add_argument('--test-caravel', help="check the caravel test", action='store_const', const=True)
     parser.add_argument('--test-gds', help="check the gds", action='store_const', const=True)
     args = parser.parse_args()
+
+    # get rid of any trailing /
+    args.directory = os.path.normpath(args.directory)
 
     # setup log
     log_format = logging.Formatter('%(asctime)s - %(module)-20s - %(levelname)-8s - %(message)s')
