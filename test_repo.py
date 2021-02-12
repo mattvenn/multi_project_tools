@@ -90,19 +90,34 @@ def instantiate_project(template, output, module_name, instance_name, project_id
     filedata = filedata.replace('INSTANCE_NAME', instance_name)
     filedata = filedata.replace('PROJECT_ID', str(project_id))
 
-    # write the file
+    # overwrite the file
     with open(output, 'w') as file:
         file.write(filedata)
+
+def cleanup(files):
+    for file in files:
+        logging.info("removing %s" % file)
+        shutil.rmtree(file)
+
+def try_copy(src, dst, delete_later):
+    logging.info("copying %s to %s" % (src, dst))
+    try:
+        shutil.copytree(src, dst)
+        delete_later.append(dst)
+    except FileExistsError as e:
+        logging.error(e)
+        cleanup(delete_later)
+        exit(1)
 
 def test_caravel():
     conf = config["caravel_test"]
     logging.info(conf)
+    delete_later = []
 
     # copy src into caravel verilog dir
     src = args.directory
     dst = os.path.join(CARAVEL_RTL_DIR, os.path.basename(args.directory))
-    logging.info("copying %s to %s" % (src, dst))
-    shutil.copytree(src, dst)
+    try_copy(src, dst, delete_later)
 
     # instantiate inside user project wrapper
     user_project_wrapper_template = os.path.join(CARAVEL_RTL_DIR, "user_project_wrapper.sub.v")
@@ -112,8 +127,7 @@ def test_caravel():
     # copy test inside caravel
     src = os.path.join(args.directory, conf["directory"])
     dst = os.path.join(CARAVEL_TEST_DIR, conf["directory"])
-    logging.info("copying %s to %s" % (src, dst))
-    shutil.copytree(src, dst)
+    try_copy(src, dst, delete_later)
 
     # set up env
     test_env = os.environ
@@ -130,11 +144,26 @@ def test_caravel():
         subprocess.run(cmd, cwd=cwd, env=test_env, check=True)
     except subprocess.CalledProcessError as e:
         logging.error(e)
+        cleanup(delete_later)
         exit(1)
-        # TODO rm directories
 
-    # TODO rm directories
+    cleanup(delete_later)
     logging.info("caravel test pass")
+
+def test_interface():
+    conf = config["gds"]
+    powered_v_filename = os.path.join(args.directory, conf["directory"], conf["lvs_filename"])
+
+    with open(powered_v_filename) as fh:
+        powered_v = fh.readlines()
+      
+    with open("interface.txt") as fh:
+        for io in fh.readlines():
+            if io not in powered_v:
+                logging.error("io port not found in %s: %s" % (powered_v_filename, io.strip()))
+                exit(1)
+        
+    logging.info("module interface pass")
 
 def test_gds():
     """
@@ -154,6 +183,7 @@ if __name__ == '__main__':
     parser.add_argument('--wrapper-cksum', help="check the wrapper md5sum is what it should be", action='store_const', const=True)
     parser.add_argument('--test-caravel', help="check the caravel test", action='store_const', const=True)
     parser.add_argument('--test-gds', help="check the gds", action='store_const', const=True)
+    parser.add_argument('--test-interface', help="check the module's interface using powered Verilog", action='store_const', const=True)
     args = parser.parse_args()
 
     # get rid of any trailing /
@@ -188,3 +218,6 @@ if __name__ == '__main__':
 
     if args.test_gds:
         test_gds()
+
+    if args.test_interface:
+        test_interface()

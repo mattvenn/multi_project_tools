@@ -12,6 +12,12 @@ Tools to help automate verification of sub projects and collect and harden them 
 * runs formal proof on wrapper
 * checks wrapper md5sum is correct
 * TODO checks final gds is correct size, has correct io, has correct number of tristate buffers
+    * run lvs against powered verilog and gds - check pass
+    * search powered verilog for module interface and 
+
+### wrapper md5sum
+
+* if doing an LVS with gds and powered verilog, then is there any point in doing md5sum on wrapper?
 
 ## Collect projects
 
@@ -25,3 +31,4 @@ Using a list of repositories:
 ## Done by hand
 
 * run OpenLANE to harden user_project_wrapper
+* TODO still haven't hardened upw. use mpw-one-c?
