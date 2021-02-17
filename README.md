@@ -8,7 +8,7 @@ Tools to help automate verification of sub projects and collect and harden them 
 
 * check config has correct keys
 * runs a module test given Makefile and recipe
-* TODO runs the caravel simulation given Makefile and recipe
+* runs the caravel simulation given Makefile and recipe
 * runs formal proof on wrapper
 * checks wrapper md5sum is correct
 * TODO checks final gds is correct size, has correct io, has correct number of tristate buffers
