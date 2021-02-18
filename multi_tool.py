@@ -16,7 +16,7 @@ def parse_config(config_file, required_keys):
             logging.error("key %s not found" % key)
             exit(1)
 
-    logging.info("config pass")
+    logging.info("config %s pass" % config_file)
     return config
 
 if __name__ == '__main__':
@@ -33,9 +33,12 @@ if __name__ == '__main__':
     parser_single.add_argument('--test-caravel', help="check the caravel test", action='store_const', const=True)
     parser_single.add_argument('--test-gds', help="check the gds", action='store_const', const=True)
     parser_single.add_argument('--test-interface', help="check the module's interface using powered Verilog", action='store_const', const=True)
+    parser_single.add_argument('--test-all', help="run all the checks", action='store_const', const=True)
 
     parser_group.add_argument('--config', help="the config file listing all project directories", required=True)
     parser_group.add_argument('--create-config', help="create the OpenLANE configs for user project wrapper", action='store_const', const=True)
+    parser_group.add_argument('--copy-gds', help="copy the projects GDS and LEF files", action='store_const', const=True)
+    parser_group.add_argument('--test-all', help="run all the tests on each project", action='store_const', const=True)
 
     args = parser.parse_args()
 
@@ -54,30 +57,55 @@ if __name__ == '__main__':
 
     if args.command == 'single':
         # get rid of any trailing /
-        args.directory = os.path.normpath(args.directory)
-        yaml_file = os.path.join(args.directory, 'info.yaml')
+        directory = os.path.normpath(args.directory)
+        yaml_file = os.path.join(directory, 'info.yaml')
         config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE )
 
         if args.test_module:
-            test_module(config, args)
+            test_module     (config, directory)
 
         if args.prove_wrapper:
-            prove_wrapper(config, args)
+            prove_wrapper   (config, directory)
 
         if args.wrapper_cksum:
-            wrapper_cksum(config, args)
+            wrapper_cksum   (config, directory)
 
         if args.test_caravel:
-            test_caravel(config, args)
+            test_caravel    (config, directory)
 
         if args.test_gds:
-            test_gds(config, args)
+            test_gds        (config, directory)
 
         if args.test_interface:
-            test_interface(config, args)
+            test_interface  (config, directory)
+
+        if args.test_all:
+            test_all        (config, directory)
 
     elif args.command == 'group':
         config = parse_config(args.config, REQUIRED_KEYS_GROUP)
-        if args.create_config:
-            create_config(config, args)
+        config['project_configs'] = []
+        # parse and store all the separate project's configs
+        for project_dir in config['projects']:
+            yaml_file = os.path.join(project_dir, 'info.yaml')
+            config['project_configs'].append(parse_config(yaml_file, REQUIRED_KEYS_SINGLE))
 
+        if not (len(config['projects']) > 0 and len(config['projects']) <= 16):
+            logging.error("bad number of projects - must be > 0 and <= 16")
+            exit(1)
+
+        # create all the OpenLane config for the user project wrapper
+        if args.create_config:
+            create_config(config)
+
+        # copy gds to correct place
+        if args.copy_gds:
+            copy_gds(config)
+
+        # runs each project's tests
+        if args.test_all:
+            for project_config in config['project_configs']:
+                test_all(project_config, project_dir)
+
+    else:
+        logging.info("provide either single or group subcommand")

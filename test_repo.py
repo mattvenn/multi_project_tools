@@ -10,9 +10,17 @@ WRAPPER_MD5SUM = "0ec8fdff7ae891b1b156030a841d1800"
 CARAVEL_TEST_DIR = "/home/matt/work/asic-workshop/caravel-mph/verilog/dv/caravel/user_proj_example/"
 CARAVEL_RTL_DIR = "/home/matt/work/asic-workshop/caravel-mph/verilog/rtl/"
 
-def test_module(config, args):
+def test_all(config, directory):
+    test_module     (config, directory)
+    prove_wrapper   (config, directory)
+    wrapper_cksum   (config, directory)
+#    test_caravel    (config, directory)
+    test_gds        (config, directory)
+    test_interface  (config, directory)
+
+def test_module(config, directory):
     conf = config["module_test"]
-    cwd = os.path.join(args.directory, conf["directory"])
+    cwd = os.path.join(directory, conf["directory"])
     cmd = ["make", "-f", conf["makefile"], conf["recipe"]]
     logging.info("attempting to run %s in %s" % (cmd, cwd))
     try:
@@ -23,10 +31,10 @@ def test_module(config, args):
 
     logging.info("test pass")
 
-def prove_wrapper(config, args):
+def prove_wrapper(config, directory):
     # TODO need to also check properties.sby - could have a few things to cksum and make wrapper_cksum able to check a few files
     conf = config["wrapper_proof"]
-    cwd = os.path.join(args.directory, conf["directory"])
+    cwd = os.path.join(directory, conf["directory"])
     cmd = ["sby", "-f", conf["sby"]]
     logging.info("attempting to run %s in %s" % (cmd, cwd))
     try:
@@ -37,9 +45,9 @@ def prove_wrapper(config, args):
 
     logging.info("proof pass")
 
-def wrapper_cksum(config, args):
+def wrapper_cksum(config, directory):
     conf = config["wrapper_cksum"]
-    wrapper = os.path.join(args.directory, conf["directory"], conf["filename"])
+    wrapper = os.path.join(directory, conf["directory"], conf["filename"])
     instance_lines = list(range(int(conf["instance_start"]), int(conf["instance_end"]+1)))
     logging.info("skipping instance lines %s" % instance_lines)
 
@@ -90,14 +98,14 @@ def try_copy(src, dst, delete_later):
         cleanup(delete_later)
         exit(1)
 
-def test_caravel(config, args):
+def test_caravel(config, directory):
     conf = config["caravel_test"]
     logging.info(conf)
     delete_later = []
 
     # copy src into caravel verilog dir
-    src = args.directory
-    dst = os.path.join(CARAVEL_RTL_DIR, os.path.basename(args.directory))
+    src = directory
+    dst = os.path.join(CARAVEL_RTL_DIR, os.path.basename(directory))
     try_copy(src, dst, delete_later)
 
     # instantiate inside user project wrapper
@@ -106,7 +114,7 @@ def test_caravel(config, args):
     instantiate_project(user_project_wrapper_template, user_project_wrapper_file, conf["module_name"], conf["instance_name"], conf["id"])
 
     # copy test inside caravel
-    src = os.path.join(args.directory, conf["directory"])
+    src = os.path.join(directory, conf["directory"])
     dst = os.path.join(CARAVEL_TEST_DIR, conf["directory"])
     try_copy(src, dst, delete_later)
 
@@ -131,9 +139,9 @@ def test_caravel(config, args):
     cleanup(delete_later)
     logging.info("caravel test pass")
 
-def test_interface(config, args):
+def test_interface(config, directory):
     conf = config["gds"]
-    powered_v_filename = os.path.join(args.directory, conf["directory"], conf["lvs_filename"])
+    powered_v_filename = os.path.join(directory, conf["directory"], conf["lvs_filename"])
 
     with open(powered_v_filename) as fh:
         powered_v = fh.readlines()
@@ -146,7 +154,9 @@ def test_interface(config, args):
         
     logging.info("module interface pass")
 
-def test_gds(config, args):
+def test_gds(config, directory):
+   # gds_filename: "wrapper.gds"
+   # lvs_filename: "wrapper.lvs.powered.v"
     """
     need the LEF for this? will need the lef for final hardening
     check size

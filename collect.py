@@ -1,10 +1,23 @@
 import yaml
 import logging
+import os
+
 REQUIRED_KEYS_GROUP = [ "projects" ]
+CARAVEL_MACRO_DIR = "/home/matt/work/asic-workshop/caravel-mph/openlane/user_project_wrapper/macros/"
 
+def copy_gds(config):
+    for project_dir, project_config in zip(config['projects'], config['project_configs']):
+        logging.info(project_dir)
+        src = os.path.join(project_dir, project_config['gds']['directory'], project_config['gds']['gds_filename'])
+        dst = os.path.join(CARAVEL_MACRO_DIR, 'gds')
+        logging.info("copying %s to %s" % (src, dst))
+        src = os.path.join(project_dir, project_config['gds']['directory'], project_config['gds']['lef_filename'])
+        dst = os.path.join(CARAVEL_MACRO_DIR, 'lef')
+        logging.info("copying %s to %s" % (src, dst))
+        
+def create_config(config):
+    num_macros = len(config['project_configs'])
 
-def create_config(config, args):
-    num_macros = 8
     width = 2920
     height =  3520
 
@@ -23,15 +36,24 @@ def create_config(config, args):
     macro_obs.write('set ::env(GLB_RT_OBS)  "')
     for column in range(4):
         for row in range(4):
+            proj_id = row + column*4
+
+            if proj_id >= num_macros:
+                continue
+            
+            # TODO id is calculated above but also exists in the caravel_test config
+            module_name = config['project_configs'][proj_id]['caravel_test']['module_name']
+            instance_name = config['project_configs'][proj_id]['caravel_test']['instance_name']
+
             y = (v_space - macro_h) / 2 + v_space * row
             x = (h_space - macro_w) / 2 + h_space * column
-            proj_id = row + column*4
-            macro_inst.write("add_macro_placement proj_%d %d %d N\n" % (proj_id, x, y))
+            macro_inst.write("add_macro_placement %s %d %d N\n" % (instance_name, x, y))
             macro_obs.write ("met5 %d %d %d %d,\n" % (x - obs_border, x - obs_border, macro_w + obs_border, macro_h + obs_border))
             macro_obs.write ("met4 %d %d %d %d,\n" % (x - obs_border, x - obs_border, macro_w + obs_border, macro_h + obs_border))
 
+            # TODO this stub also exists in the user_project_wrapper.sub.v
             macro_verilog.write("""
-                wrapper proj_%d(
+                %s %s(
                     // interface as user_proj_example.v
                     .wb_clk_i   (wb_clk_i),
                     .wb_rst_i   (wb_rst_i),
@@ -57,7 +79,8 @@ def create_config(config, args):
                     // active input, only connect tristated outputs if this is high
                     .active     (la_data_in[32+%d])
                     );
-            """ % (proj_id, proj_id))
+            """ % (module_name, instance_name, proj_id))
+
 
     macro_obs.write('li1  0     0     2920 3520"\n')
 

@@ -35,7 +35,10 @@ openlane:
   config: "config.tcl"
   src_directory: "." # where the source files are
 
-# gds - check size = 300x300, nothing on metal 5, do a DRC, check 141 tristate buffers
+# gds - check size = 300x300, nothing on metal 5, do a DRC, check 141 tristate buffers, check LVS
 gds:
   directory: "gds"
-  filename: "wrapper.gds"
+  gds_filename: "wrapper.gds"
+  lvs_filename: "wrapper.lvs.powered.v"
+  lef_filename: "wrapper.lef"
+
