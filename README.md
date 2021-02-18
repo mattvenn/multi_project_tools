@@ -25,10 +25,14 @@ This functionality is contained within [test_repo.py](test_repo.py)
 
 `multi_project.py group` needs a list of projects in a [collect.yaml](collect.yaml) file. It can do the following:
 
+TODO what to do about project ids?
+
 * run test_repo.py for each one
 * copy gds and lef to correct place
 * instantiate in user_project_wrapper
+    * TODO actually use the generatred verilog
 * build the OpenLANE config
+    * TODO test it
 
 This functionality is contained within [collect.py](collect.py)
 
