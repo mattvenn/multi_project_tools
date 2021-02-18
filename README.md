@@ -33,6 +33,7 @@ TODO what to do about project ids?
     * TODO actually use the generatred verilog
 * build the OpenLANE config
     * TODO test it
+* build the include file for caravel TODO
 
 This functionality is contained within [collect.py](collect.py)
 

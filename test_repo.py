@@ -14,7 +14,7 @@ def test_all(config, directory):
     test_module     (config, directory)
     prove_wrapper   (config, directory)
     wrapper_cksum   (config, directory)
-#    test_caravel    (config, directory)
+    test_caravel    (config, directory)
     test_gds        (config, directory)
     test_interface  (config, directory)
 
@@ -98,6 +98,7 @@ def add_instance_to_upw(macro_verilog):
         file.write(filedata)
 
 def cleanup(files):
+    return
     for file in files:
         logging.info("removing %s" % file)
         shutil.rmtree(file)
