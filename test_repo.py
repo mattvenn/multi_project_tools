@@ -69,8 +69,9 @@ def wrapper_cksum(config, directory):
 
     logging.info("cksum pass")
 
-def instantiate_project(template, output, module_name, instance_name, project_id):
+def instantiate_module(module_name, instance_name, project_id):
     # read the data
+    template = "module_instance.v"
     with open(template, 'r') as file :
         filedata = file.read()
 
@@ -79,8 +80,21 @@ def instantiate_project(template, output, module_name, instance_name, project_id
     filedata = filedata.replace('INSTANCE_NAME', instance_name)
     filedata = filedata.replace('PROJECT_ID', str(project_id))
 
-    # overwrite the file
-    with open(output, 'w') as file:
+    # return the string
+    return filedata
+
+def add_instance_to_upw(macro_verilog):
+    # read the data
+    upw_template = 'user_project_wrapper.sub.v'
+    with open(upw_template, 'r') as file :
+        filedata = file.read()
+
+    # replace the target strings
+    filedata = filedata.replace('MODULE_INSTANCES', macro_verilog)
+
+    # overwrite the upw
+    user_project_wrapper_path = os.path.join(CARAVEL_RTL_DIR, "user_project_wrapper.v")
+    with open(user_project_wrapper_path, 'w') as file:
         file.write(filedata)
 
 def cleanup(files):
@@ -109,9 +123,8 @@ def test_caravel(config, directory):
     try_copy(src, dst, delete_later)
 
     # instantiate inside user project wrapper
-    user_project_wrapper_template = os.path.join(CARAVEL_RTL_DIR, "user_project_wrapper.sub.v")
-    user_project_wrapper_file = os.path.join(CARAVEL_RTL_DIR, "user_project_wrapper.v")
-    instantiate_project(user_project_wrapper_template, user_project_wrapper_file, conf["module_name"], conf["instance_name"], conf["id"])
+    macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], conf["id"])
+    add_instance_to_upw(macro_verilog)
 
     # copy test inside caravel
     src = os.path.join(directory, conf["directory"])
