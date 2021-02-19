@@ -1,3 +1,20 @@
 projects:
     - ../course/wrapped_rgb_mixer
     - ../course/wrapped_frequency_counter
+
+caravel:
+    root:           /home/matt/work/asic-workshop/caravel-mph
+    test_dir:       /home/matt/work/asic-workshop/caravel-mph/verilog/dv/caravel/user_proj_example/
+    rtl_dir:        /home/matt/work/asic-workshop/caravel-mph/verilog/rtl/
+    config:         config.tcl
+
+wrapper:
+    md5sum:         0ec8fdff7ae891b1b156030a841d1800
+    interface:      interface.txt
+    instance:       module_instance.v
+    upw_template:   user_project_wrapper.sub.v
+
+env:
+    GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
+    GCC_PREFIX:     riscv64-unknown-elf
+    PDK_PATH:       /home/matt/work/asic-workshop/pdks/sky130A 
