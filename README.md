@@ -1,41 +1,44 @@
 # Multi project tools
 
-Tools to help automate verification of sub projects and collect and harden them into the final submission.
+A tool to help automate verification of sub projects and collect and harden them into the final submission.
 
-## Test a single project repo
+## Config file
 
-`multi_project.py single` needs a project's [info.yaml](info.yaml) file and can run the following tests:
+[projects.yaml](projects.yaml) contains a list of projects and system wide config.
+
+## Test everything
+
+     ./multi_tool.py --config projects.yaml  --test-all --force-delete
+
+This command will run all the tests against all projects: 
 
 * check config has correct keys
 * runs a module test given Makefile and recipe
 * runs the caravel simulation given Makefile and recipe
 * runs formal proof on wrapper
-* checks wrapper md5sum is correct
+* checks wrapper md5sum is correct (if doing an LVS with gds and powered verilog, then is there any point in doing md5sum on wrapper?)
 * TODO checks final gds is correct size, has correct io, has correct number of tristate buffers
     * run lvs against powered verilog and gds - check pass
     * search powered verilog for module interface
 
-This functionality is contained within [test_repo.py](test_repo.py)
+This functionality is contained within the [Project class](project.py)
 
-### wrapper md5sum
+To choose a single project, provide the --directory argument.
 
-* if doing an LVS with gds and powered verilog, then is there any point in doing md5sum on wrapper?
+## Generate OpenLANE config
 
-## Tools for group submission with multiple projects
+    ./multi_tool.py --config projects.yaml  --copy-gds --create-openlane-config
 
-`multi_project.py group` needs a list of projects in a [collect.yaml](collect.yaml) file. It can do the following:
+This command will get everything ready for a complete system test and hardening of user_project_wrapper:
 
-TODO what to do about project ids?
+* copy each project's GDS/LEF to the correct place
+* generate OpenLANE configuration for user_project_wrapper (macro placement and obstructions)
+* instantiate all the projects inside user_project_wrapper.v, 
+* TODO build the include file for Caravel RTL and config
 
-* run test_repo.py for each one
-* copy gds and lef to correct place
-* instantiate in user_project_wrapper
-* build the OpenLANE config
-* build the include file for caravel TODO
-
-This functionality is contained within [collect.py](collect.py)
+This functionality is contained within the [Collection class](collect.py)
 
 ## Done by hand
 
-* run OpenLANE to harden user_project_wrapper
+* run OpenLANE to harden user_project_wrapper: cd $CARAVEL_ROOT/openlane ; make user_project_wrapper
 * TODO still haven't hardened upw. use mpw-one-c?
