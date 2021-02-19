@@ -13,7 +13,7 @@ Tools to help automate verification of sub projects and collect and harden them 
 * checks wrapper md5sum is correct
 * TODO checks final gds is correct size, has correct io, has correct number of tristate buffers
     * run lvs against powered verilog and gds - check pass
-    * search powered verilog for module interface and 
+    * search powered verilog for module interface
 
 This functionality is contained within [test_repo.py](test_repo.py)
 
@@ -30,9 +30,7 @@ TODO what to do about project ids?
 * run test_repo.py for each one
 * copy gds and lef to correct place
 * instantiate in user_project_wrapper
-    * TODO actually use the generatred verilog
 * build the OpenLANE config
-    * TODO test it
 * build the include file for caravel TODO
 
 This functionality is contained within [collect.py](collect.py)

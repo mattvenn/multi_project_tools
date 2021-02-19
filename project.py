@@ -83,9 +83,9 @@ class Project():
         try_copy(src, dst, self.args.force_delete)
 
         # instantiate inside user project wrapper
-        macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], conf["id"])
+        macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], conf["id"], self.system_config['wrapper']['instance'])
         user_project_wrapper_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
-        add_instance_to_upw(macro_verilog, user_project_wrapper_path)
+        add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.system_config['wrapper']['upw_template'])
 
         # copy test inside caravel
         src = os.path.join(self.directory, conf["directory"])
@@ -120,7 +120,7 @@ class Project():
         with open(powered_v_filename) as fh:
             powered_v = fh.readlines()
           
-        with open("interface.txt") as fh:
+        with open(self.system_config["wrapper"]["interface"]) as fh:
             for io in fh.readlines():
                 if io not in powered_v:
                     logging.error("io port not found in %s: %s" % (powered_v_filename, io.strip()))

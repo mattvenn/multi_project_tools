@@ -15,9 +15,8 @@ def parse_config(config_file, required_keys):
     logging.info("config %s pass" % config_file)
     return config
 
-def instantiate_module(module_name, instance_name, project_id):
+def instantiate_module(module_name, instance_name, project_id, template):
     # read the data
-    template = "module_instance.v"
     with open(template, 'r') as file :
         filedata = file.read()
 
@@ -29,9 +28,8 @@ def instantiate_module(module_name, instance_name, project_id):
     # return the string
     return filedata
 
-def add_instance_to_upw(macro_verilog, user_project_wrapper_path):
+def add_instance_to_upw(macro_verilog, user_project_wrapper_path, upw_template):
     # read the data
-    upw_template = 'user_project_wrapper.sub.v'
     with open(upw_template, 'r') as file :
         filedata = file.read()
 

@@ -99,10 +99,10 @@ class Collection():
                 macro_obst.write ("met5 %d %d %d %d,\n" % (x - obs_border, x - obs_border, macro_w + obs_border, macro_h + obs_border))
                 macro_obst.write ("met4 %d %d %d %d,\n" % (x - obs_border, x - obs_border, macro_w + obs_border, macro_h + obs_border))
 
-                macro_verilog += instantiate_module(module_name, instance_name, proj_id)
+                macro_verilog += instantiate_module(module_name, instance_name, proj_id, self.config['wrapper']['instance'])
 
         macro_obst.write('li1  0     0     2920 3520"\n')
 
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
-        add_instance_to_upw(macro_verilog, user_project_wrapper_path)
+        add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.config['wrapper']['upw_template'])
 
