@@ -41,4 +41,10 @@ This functionality is contained within the [Collection class](collect.py)
 ## Done by hand
 
 * run OpenLANE to harden user_project_wrapper: cd $CARAVEL_ROOT/openlane ; make user_project_wrapper
+
+## TODO
+
 * TODO still haven't hardened upw. use mpw-one-c?
+* caravel test duplication is ugly
+* include files for each project, add to project yaml - try to avoid duplication in the makefiles
+* template repository with everything in the right place and a default yaml
