@@ -2,6 +2,13 @@
 
 A tool to help automate verification of sub projects and collect and harden them into the final submission.
 
+## Dependencies
+
+* OpenLANE & PDK installed (tested with v0.9)
+* projects.yaml file with correct paths
+* netgen local install: https://github.com/RTimothyEdwards/netgen
+* gdspy: https://pypi.org/project/gdspy/
+
 ## Config file
 
 [projects.yaml](projects.yaml) contains a list of projects and system wide config.
@@ -52,3 +59,4 @@ This functionality is contained within the [Collection class](collect.py)
 * caravel test duplication is ugly
 * include files for each project, add to project yaml - try to avoid duplication in the makefiles
 * template repository with everything in the right place and a default yaml
+
