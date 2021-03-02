@@ -21,6 +21,31 @@ class Project():
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
 
+    def run_tests(self):
+        if self.args.test_all or self.args.test_module:
+            self.test_module()
+
+        if self.args.test_all or self.args.prove_wrapper:
+            self.prove_wrapper()
+
+        if self.args.test_all or self.args.wrapper_cksum:
+            self.wrapper_cksum()
+
+        if self.args.test_all or self.args.test_caravel:
+            self.test_caravel()
+
+        if self.args.test_all or self.args.test_gds:
+            self.test_gds()
+
+        if self.args.test_all or self.args.test_interface:
+            self.test_interface()
+
+        if self.args.test_all or self.args.test_lvs:
+            self.test_lvs()
+
+        if self.args.test_all or self.args.test_tristate:
+            self.test_tristate()
+
     def test_module(self):
         conf = self.config["module_test"]
         cwd = os.path.join(self.directory, conf["directory"])
@@ -129,16 +154,36 @@ class Project():
         logging.info("module interface pass")
 
     def test_gds(self):
-       # gds_filename: "wrapper.gds"
-       # lvs_filename: "wrapper.lvs.powered.v"
-        """
-        need the LEF for this? will need the lef for final hardening
-        check size
-        nothing on metal 5,
-        do a DRC,
-        check 141 tristate buffers
-        check number of io
-        """
+        conf = self.config["gds"]
+        gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
+        import gdspy
+        gdsii = gdspy.GdsLibrary(infile=gds_file)
+        toplevel = gdsii.top_level()[0]
+        width = self.system_config["tests"]["gds"]["width"]
+        height = self.system_config["tests"]["gds"]["height"]
+
+        # correct size
+        assert (toplevel.get_bounding_box() == [[0,0],[width,height]]).all()
+
+        # nothing on metal 5
+        assert self.system_config["tests"]["gds"]["metal5_id"] not in toplevel.get_layers()
+        logging.info("GDS pass")
+
+
+    # not a great test, as tristate could be in use elsewhere.
+    # better to parse the cells and check outputs of the tristates are correct)
+    def test_tristate(self):
+        conf = self.config["gds"]
+        powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])
+
+        count = 0
+        with open(powered_v_filename) as fh:
+            for line in fh.readlines():
+                if 'sky130_fd_sc_hd__ebufn_2' in line:
+                    count += 1
+
+        assert(count == self.system_config["tests"]["tristates"])
+        logging.info("tristate test pass")
 
     def test_lvs(self):
         module_name = self.config['caravel_test']['module_name']

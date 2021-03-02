@@ -5,7 +5,7 @@ import shutil
 from utils import *
 from project import Project
 
-REQUIRED_KEYS_GROUP = [ "projects", "caravel", "wrapper" ]
+REQUIRED_KEYS_GROUP = [ "projects", "caravel", "wrapper", "openlane" ]
 
 class Collection():
 
@@ -27,27 +27,7 @@ class Collection():
              
     def run_tests(self):
         for project in self.projects:
-
-            if self.args.test_all or self.args.test_module:
-                project.test_module()
-
-            if self.args.test_all or self.args.prove_wrapper:
-                project.prove_wrapper()
-
-            if self.args.test_all or self.args.wrapper_cksum:
-                project.wrapper_cksum()
-
-            if self.args.test_all or self.args.test_caravel:
-                project.test_caravel()
-
-            if self.args.test_all or self.args.test_gds:
-                project.test_gds()
-
-            if self.args.test_all or self.args.test_interface:
-                project.test_interface()
-
-            if self.args.test_all or self.args.test_lvs:
-                project.test_lvs()
+            project.run_tests()
 
     def copy_gds(self):
         for project in self.projects:

@@ -1,6 +1,7 @@
 projects:
     - ../course/wrapped_rgb_mixer
     - ../course/wrapped_frequency_counter
+    - /home/matt/work/asic-workshop/course/participants/jamieiles/a5-1-wb-macro
 
 caravel:
     root:           /home/matt/work/asic-workshop/caravel-mph
@@ -21,3 +22,12 @@ env:
     GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
     GCC_PREFIX:     riscv64-unknown-elf
     PDK_PATH:       /home/matt/work/asic-workshop/pdks_v09/sky130A
+
+tests:
+    gds:
+        width:      300
+        height:     300
+        # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
+        metal5_id:  72 
+    tristates:      141
+
