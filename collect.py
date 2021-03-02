@@ -46,6 +46,9 @@ class Collection():
             if self.args.test_all or self.args.test_interface:
                 project.test_interface()
 
+            if self.args.test_all or self.args.test_lvs:
+                project.test_lvs()
+
     def copy_gds(self):
         for project in self.projects:
             src = os.path.join(project.directory, project.gds_filename)

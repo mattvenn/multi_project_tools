@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--wrapper-cksum', help="check the wrapper md5sum is what it should be", action='store_const', const=True)
     parser.add_argument('--test-caravel', help="check the caravel test", action='store_const', const=True)
     parser.add_argument('--test-gds', help="check the gds", action='store_const', const=True)
+    parser.add_argument('--test-lvs', help="check the gds against powered verilog", action='store_const', const=True)
     parser.add_argument('--test-interface', help="check the module's interface using powered Verilog", action='store_const', const=True)
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
 

@@ -8,6 +8,9 @@ caravel:
     rtl_dir:        /home/matt/work/asic-workshop/caravel-mph/verilog/rtl/
     config:         config.tcl
 
+openlane:
+    root:           /home/matt/work/asic-workshop/openlane_v09
+                    
 wrapper:
     md5sum:         0ec8fdff7ae891b1b156030a841d1800
     interface:      interface.txt
@@ -17,4 +20,4 @@ wrapper:
 env:
     GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
     GCC_PREFIX:     riscv64-unknown-elf
-    PDK_PATH:       /home/matt/work/asic-workshop/pdks/sky130A 
+    PDK_PATH:       /home/matt/work/asic-workshop/pdks_v09/sky130A

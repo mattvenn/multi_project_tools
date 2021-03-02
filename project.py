@@ -139,3 +139,79 @@ class Project():
         check 141 tristate buffers
         check number of io
         """
+
+    def test_lvs(self):
+        module_name = self.config['caravel_test']['module_name']
+        conf = self.config["gds"]
+        # given
+        lvs_test_dir    = 'lvstest'
+        os.mkdir(lvs_test_dir)
+        gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
+        powered_verilog = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["lvs_filename"]))
+
+        # generated files
+        ext_file        = module_name + ".ext"
+        log_file        = module_name + ".log"
+        spice_file      = module_name + '.spice'
+        netgen_log_file = module_name + '.netgen_log'
+        netgen_json     = module_name + '.json'
+        extract_tcl     = 'extract.tcl'
+
+        # config files
+        pdk_path        = self.system_config['env']['PDK_PATH']
+        openlane_root   = self.system_config['openlane']['root']
+
+        # env
+        test_env                       = os.environ
+        test_env["MAGIC_EXT_USE_GDS"]  = "1"
+        test_env["PDKPATH"]            = pdk_path
+
+        netgen_setup_file = os.path.join(pdk_path, 'libs.tech', 'netgen', 'sky130A_setup.tcl')
+        cwd = lvs_test_dir
+
+        # create tcl script for magic
+        tcl_contents = """
+        gds read %s;
+        load %s -dereference
+
+        extract do local;
+        extract no capacitance;
+        extract no coupling;
+        extract no resistance;
+        extract no adjust;
+        extract unique;
+        extract;
+        ext2spice lvs;
+        ext2spice %s;
+        feedback save %s;
+        exit;
+        """ % (gds_file, module_name, ext_file, log_file)
+
+        with open(os.path.join(lvs_test_dir, extract_tcl), 'w') as tcl:
+            tcl.write(tcl_contents)
+
+        magic_rcfile = os.path.join(pdk_path, 'libs.tech', 'magic', 'sky130A.magicrc')
+        cmd = ['magic', '-rcfile', magic_rcfile, '-noc', '-dnull', extract_tcl]
+        logging.info(' '.join(cmd))
+
+        subprocess.run(cmd, cwd=cwd, env=test_env, check=True)
+
+        left_side = '%s %s' % (spice_file, module_name)
+        right_side = '%s %s' % (powered_verilog, module_name)
+        # only way to get this quoted stuff to work was to use shell=True in the subprocess call
+        cmd = 'netgen -batch lvs "%s" "%s" %s %s -json' % (left_side, right_side, netgen_setup_file, netgen_log_file)
+
+        logging.info(cmd)
+        subprocess.run(cmd, env=test_env, cwd=cwd, check=True, shell=True)
+
+        lvs_count_cmd = os.path.join(openlane_root, 'scripts', 'count_lvs.py')
+        cmd = [lvs_count_cmd, '--file', netgen_json]
+        logging.info(cmd)
+        try:
+            subprocess.run(cmd, cwd=cwd, check=True)
+        except subprocess.CalledProcessError as e:
+            logging.error(e)
+            exit(1)
+
+        logging.info("LVS passed")
+        shutil.rmtree(lvs_test_dir)
