@@ -6,6 +6,8 @@ A tool to help automate verification of sub projects and collect and harden them
 
 [projects.yaml](projects.yaml) contains a list of projects and system wide config.
 
+Some tests now require a recent OpenLANE (tested with v0.9).
+
 ## Test everything
 
      ./multi_tool.py --config projects.yaml  --test-all --force-delete
@@ -18,8 +20,8 @@ This command will run all the tests against all projects:
 * runs formal proof on wrapper
 * checks wrapper md5sum is correct (if doing an LVS with gds and powered verilog, then is there any point in doing md5sum on wrapper?)
 * TODO checks final gds is correct size, has correct io, has correct number of tristate buffers
-    * run lvs against powered verilog and gds - check pass
-    * search powered verilog for module interface
+* run LVS against powered verilog and gds - requires v0.9 OpenLANE/PDK
+* search powered verilog for module interface
 
 This functionality is contained within the [Project class](project.py)
 
