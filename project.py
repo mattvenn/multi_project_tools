@@ -132,10 +132,8 @@ class Project():
             subprocess.run(cmd, cwd=cwd, env=test_env, check=True)
         except subprocess.CalledProcessError as e:
             logging.error(e)
-            cleanup(delete_later)
             exit(1)
 
-        cleanup(delete_later)
         logging.info("caravel test pass")
 
     def test_interface(self):

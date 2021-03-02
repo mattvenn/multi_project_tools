@@ -41,10 +41,6 @@ def add_instance_to_upw(macro_verilog, user_project_wrapper_path, upw_template):
     with open(user_project_wrapper_path, 'w') as file:
         file.write(filedata)
 
-def cleanup(files):
-    for file in files:
-        logging.info("removing %s" % file)
-
 def try_copy(src, dst, force_delete):
     logging.info("copying %s to %s" % (src, dst))
     try:
