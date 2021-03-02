@@ -30,7 +30,7 @@ This command will run all the tests against all projects:
 * checks GDS nothing on layer metal 5
 * run LVS against powered Verilog and GDS - requires v0.9 OpenLANE/PDK
 * checks powered Verilog has correct number of tristate buffers
-* search powered Verilog for module interface
+* checks powered Verilog has correct module interface
 
 This functionality is contained within the [Project class](project.py)
 
