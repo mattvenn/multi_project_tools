@@ -46,6 +46,13 @@ class Project():
         if self.args.test_all or self.args.test_tristate:
             self.test_tristate()
 
+    def get_module_source_paths(self):
+        src_directory = self.config['source']['directory']
+        paths = []
+        for path in self.config['source']['files']:
+            paths.append(os.path.abspath(os.path.join(self.directory, src_directory, path)))
+        return paths    
+
     def test_module(self):
         conf = self.config["module_test"]
         cwd = os.path.join(self.directory, conf["directory"])
