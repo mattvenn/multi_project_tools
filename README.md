@@ -5,7 +5,12 @@ A tool to help automate verification of sub projects and collect and harden them
 * Project outputs isolated with tristate buffers
 * Projects are activated by the Caravel logic analyser
 
-Projects must conform to the [specification](docs/project_spec.md). Here is an [example project](https://github.com/mattvenn/wrapped_frequency_counter).
+Projects must conform to the [specification](docs/project_spec.md). Here are some example projects:
+
+* [Frequency Counter](https://github.com/mattvenn/wrapped_frequency_counter)
+* [Seven Segment Seconds](https://github.com/mattvenn/seven_segment_wrapper)
+* [RGB Colour Mixer](https://github.com/mattvenn/wrapped_rgb_mixer/tree/caravel)
+* [A51 Encryption](https://github.com/mattvenn/a5-1-wb-macro/tree/multi_proj_tools)
 
 ![schematic](docs/mph.jpg)
 
@@ -72,3 +77,4 @@ run OpenLANE to harden user_project_wrapper:
 * template repository with everything in the right place and a default yaml
 * assert all projects have different IDs
 * if cocotb test fails, the return code from make is a pass
+* fetch projects from a git ref
