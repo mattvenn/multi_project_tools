@@ -2,7 +2,7 @@
 
 A tool to help automate verification of sub projects and collect and harden them into the final submission.
 
-* Project outputs insulated with tristate buffers
+* Project outputs isolated with tristate buffers
 * Projects are activated by the Caravel logic analyser
 
 Projects must conform to the [specification](docs/project_spec.md). Here is an [example project](https://github.com/mattvenn/wrapped_frequency_counter).
