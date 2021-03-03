@@ -58,15 +58,16 @@ This functionality is contained within the [Collection class](collect.py)
 
 ## Done by hand
 
-* run OpenLANE to harden user_project_wrapper: cd $CARAVEL_ROOT/openlane ; make user_project_wrapper
+run OpenLANE to harden user_project_wrapper:
+
+    cd $CARAVEL_ROOT/openlane ; make user_project_wrapper
 
 ![hardened user project wrapper](docs/mph-16designs.png)
 
 ## TODO
 
-* TODO still haven't hardened upw. use v0.9
+* TODO still haven't got a clean hardened upw. use v0.9
 * TODO test with vga_clock - as it uses .hex files. will probably break the include system
 * caravel test duplication is ugly
 * include files for each project, add to project yaml - try to avoid duplication in the makefiles
 * template repository with everything in the right place and a default yaml
-
