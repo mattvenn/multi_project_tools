@@ -71,3 +71,4 @@ run OpenLANE to harden user_project_wrapper:
 * caravel test duplication is ugly
 * include files for each project, add to project yaml - try to avoid duplication in the makefiles
 * template repository with everything in the right place and a default yaml
+* assert all projects have different IDs
