@@ -27,6 +27,7 @@ class Collection():
              
     def run_tests(self):
         for project in self.projects:
+            logging.info(project)
             project.run_tests()
 
     def copy_gds(self):
@@ -58,13 +59,18 @@ class Collection():
 
         macro_inst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro_placement.tcl')
         macro_obst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'obstruction.tcl')
-        logging.info("creating instantiation file %s" % macro_inst_file)
-        logging.info("creating obstruction file %s" % macro_obst_file)
-        macro_inst    = open(macro_inst_file, 'w') 
-        macro_obst    = open(macro_obst_file, 'w') 
+        includes_file    = os.path.join(self.config['caravel']['rtl_dir'], 'user_project_includes.v')
+
+        logging.info("creating instantiation %s" % macro_inst_file)
+        logging.info("creating obstruction   %s" % macro_obst_file)
+        logging.info("creating includes      %s" % includes_file)
+
+        macro_inst_fh    = open(macro_inst_file, 'w') 
+        macro_obst_fh    = open(macro_obst_file, 'w') 
+        includes_fh      = open(includes_file,   'w')
         macro_verilog = ""
 
-        macro_obst.write('set ::env(GLB_RT_OBS)  "')
+        macro_obst_fh.write('set ::env(GLB_RT_OBS)  "')
         for column in range(4):
             for row in range(4):
                 macro_count = row + column*4
@@ -78,14 +84,31 @@ class Collection():
 
                 y = (v_space - macro_h) / 2 + v_space * row
                 x = (h_space - macro_w) / 2 + h_space * column
-                macro_inst.write("add_macro_placement %s %d %d N\n" % (instance_name, x, y))
-                macro_obst.write ("met5 %d %d %d %d,\n" % (x - obs_border, x - obs_border, macro_w + obs_border, macro_h + obs_border))
-                macro_obst.write ("met4 %d %d %d %d,\n" % (x - obs_border, x - obs_border, macro_w + obs_border, macro_h + obs_border))
+                macro_inst_fh.write("add_macro_placement %s %d %d N\n" % (instance_name, x, y))
+                macro_obst_fh.write ("met5 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
+                macro_obst_fh.write ("met4 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
 
                 macro_verilog += instantiate_module(module_name, instance_name, proj_id, self.config['wrapper']['instance'])
 
-        macro_obst.write('li1  0     0     2920 3520"\n')
+        macro_obst_fh.write('li1  0     0     2920 3520"\n')
 
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.config['wrapper']['upw_template'])
 
+        paths = []
+        for project in self.projects:
+
+            # copy project to caravel rtl
+            # couldn't get yosys to read include file to work unless the files are below Caravel root directory
+            project.copy_project_to_caravel_rtl()
+
+            # create include file 
+            includes_fh.write("// %s\n" % project)
+            for path in project.get_module_source_paths(absolute=False):
+                path = os.path.join(os.path.basename(project.directory), path)
+                includes_fh.write('`include "%s"\n' % path)
+
+        # copy the local config.tcl file 
+        src = 'config.tcl'
+        dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.tcl')
+        shutil.copyfile(src, dst)
