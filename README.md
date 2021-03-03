@@ -66,9 +66,9 @@ run OpenLANE to harden user_project_wrapper:
 
 ## TODO
 
-* TODO still haven't got a clean hardened upw. use v0.9
-* TODO test with vga_clock - as it uses .hex files. will probably break the include system
+* still haven't got a clean hardened upw. use v0.9
+* test with vga_clock - as it uses .hex files. will probably break the include system
 * caravel test duplication is ugly
-* include files for each project, add to project yaml - try to avoid duplication in the makefiles
 * template repository with everything in the right place and a default yaml
 * assert all projects have different IDs
+* if cocotb test fails, the return code from make is a pass

@@ -2,6 +2,7 @@ projects:
     - ../course/wrapped_rgb_mixer
     - ../course/wrapped_frequency_counter
     - /home/matt/work/asic-workshop/course/participants/jamieiles/a5-1-wb-macro
+    - /home/matt/work/asic-workshop/course/projects/7seg_wrapper
 
 caravel:
     root:           /home/matt/work/asic-workshop/caravel-mph
