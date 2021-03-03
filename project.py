@@ -21,6 +21,9 @@ class Project():
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
 
+    def __str__(self):
+        return "%-20s : %s" % (self.config['project']['description'], self.directory)
+
     def run_tests(self):
         if self.args.test_all or self.args.test_module:
             self.test_module()
@@ -46,11 +49,13 @@ class Project():
         if self.args.test_all or self.args.test_tristate:
             self.test_tristate()
 
-    def get_module_source_paths(self):
-        src_directory = self.config['source']['directory']
+    def get_module_source_paths(self, absolute=True):
         paths = []
-        for path in self.config['source']['files']:
-            paths.append(os.path.abspath(os.path.join(self.directory, src_directory, path)))
+        for path in self.config['source']:
+            if absolute:
+                paths.append(os.path.abspath(os.path.join(self.directory, path)))
+            else:
+                paths.append(path)
         return paths    
 
     def test_module(self):
@@ -81,6 +86,8 @@ class Project():
         logging.info("proof pass")
 
     def wrapper_cksum(self):
+        logging.warning("skipping cksum")
+        return
         conf = self.config["wrapper_cksum"]
         wrapper = os.path.join(self.directory, conf["directory"], conf["filename"])
         instance_lines = list(range(int(conf["instance_start"]), int(conf["instance_end"]+1)))
@@ -104,15 +111,17 @@ class Project():
 
         logging.info("cksum pass")
 
+    def copy_project_to_caravel_rtl(self):
+        src = self.directory
+        dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
+        try_copy(src, dst, self.args.force_delete)
 
     def test_caravel(self):
         conf = self.config["caravel_test"]
         delete_later = []
 
         # copy src into caravel verilog dir
-        src = self.directory
-        dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
-        try_copy(src, dst, self.args.force_delete)
+        self.copy_project_to_caravel_rtl()
 
         # instantiate inside user project wrapper
         macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], conf["id"], self.system_config['wrapper']['instance'])
@@ -195,7 +204,8 @@ class Project():
         conf = self.config["gds"]
         # given
         lvs_test_dir    = 'lvstest'
-        os.mkdir(lvs_test_dir)
+        try_mkdir(lvs_test_dir, self.args.force_delete)
+
         gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
         powered_verilog = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["lvs_filename"]))
 
