@@ -47,8 +47,8 @@ set ::env(VERILOG_FILES) "\
 	$script_dir/../../verilog/rtl/user_project_wrapper.v"
 
 set ::env(VERILOG_FILES_BLACKBOX) "\
-	$script_dir/../../verilog/rtl/wrapper.v \
-	$script_dir/../../verilog/rtl/defines.v"
+	$script_dir/../../verilog/rtl/defines.v \
+	$script_dir/../../verilog/rtl/user_project_includes.v"
 
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
