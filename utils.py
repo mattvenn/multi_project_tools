@@ -52,4 +52,18 @@ def try_copy(src, dst, force_delete):
             shutil.copytree(src, dst)
         else:
             logging.error(e)
+            logging.info("use --force-delete to remove old directories")
+            exit(1)
+
+def try_mkdir(dst, force_delete):
+    try:
+        os.mkdir(dst)
+    except FileExistsError as e:
+        if force_delete:
+            logging.warning("deleting %s" % dst)
+            shutil.rmtree(dst)
+            os.mkdir(dst)
+        else:
+            logging.error(e)
+            logging.info("use --force-delete to remove old directories")
             exit(1)
