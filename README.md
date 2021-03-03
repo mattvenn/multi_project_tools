@@ -2,6 +2,13 @@
 
 A tool to help automate verification of sub projects and collect and harden them into the final submission.
 
+* Project outputs insulated with tristate buffers
+* Projects are activated by the Caravel logic analyser
+
+Projects must conform to the [specification](docs/project_spec.md). Here is an [example project](https://github.com/mattvenn/wrapped_frequency_counter).
+
+![schematic](docs/mph.jpg)
+
 ## Dependencies
 
 * OpenLANE & PDK installed (tested with v0.9)
@@ -53,9 +60,12 @@ This functionality is contained within the [Collection class](collect.py)
 
 * run OpenLANE to harden user_project_wrapper: cd $CARAVEL_ROOT/openlane ; make user_project_wrapper
 
+![hardened user project wrapper](docs/mph-16designs.png)
+
 ## TODO
 
-* TODO still haven't hardened upw. use mpw-one-c?
+* TODO still haven't hardened upw. use v0.9
+* TODO test with vga_clock - as it uses .hex files. will probably break the include system
 * caravel test duplication is ugly
 * include files for each project, add to project yaml - try to avoid duplication in the makefiles
 * template repository with everything in the right place and a default yaml
