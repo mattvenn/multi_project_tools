@@ -134,8 +134,7 @@ class Collection():
             fh.write("## %s\n\n" % conf["title"])
             fh.write("* Author: %s\n" % conf["author"])
             fh.write("* Github: [%s](%s)\n" % (conf["github"], conf["github"]))
-            fh.write("\n\n")
-            fh.write("![%s](%s)\n" % (conf["title"], pic_dst))
-            fh.write("%s\n\n" % conf["description"])
+            fh.write("* Description: %s\n\n" % conf["description"])
+            fh.write("![%s](%s)\n\n" % (conf["title"], pic_dst))
 
         logging.info("wrote index.md")
