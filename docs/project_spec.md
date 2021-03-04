@@ -1,10 +1,11 @@
 # Multi project specification - DRAFT
 
+Project provides an info.yaml file at the top level directory.
 Here is an example configuration: https://github.com/mattvenn/wrapped_frequency_counter/blob/main/info.yaml
 
 ## Information
 
-Project description and author.
+Project description, author, image, github repo, license.
 
 ## Caravel test
 

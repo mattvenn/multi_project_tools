@@ -22,7 +22,7 @@ class Project():
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
 
     def __str__(self):
-        return "%-20s : %s" % (self.config['project']['description'], self.directory)
+        return "%-30s : %s" % (self.config['project']['title'], self.directory)
 
     def run_tests(self):
         if self.args.test_all or self.args.test_module:
@@ -114,7 +114,7 @@ class Project():
     def copy_project_to_caravel_rtl(self):
         src = self.directory
         dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
-        try_copy(src, dst, self.args.force_delete)
+        try_copy_tree(src, dst, self.args.force_delete)
 
     def test_caravel(self):
         conf = self.config["caravel_test"]
@@ -131,7 +131,7 @@ class Project():
         # copy test inside caravel
         src = os.path.join(self.directory, conf["directory"])
         dst = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
-        try_copy(src, dst, self.args.force_delete)
+        try_copy_tree(src, dst, self.args.force_delete)
 
         # set up env
         test_env = os.environ

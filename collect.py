@@ -112,3 +112,30 @@ class Collection():
         src = 'config.tcl'
         dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.tcl')
         shutil.copyfile(src, dst)
+
+    """
+    * generate an index.md with a section for each project
+        - title, author, description, link, picture
+    * could also create the info.yaml file for efabless
+    * tile all images for final image
+    """
+    def generate_docs(self):
+        fh = open("index.md", 'w')
+        fh.write("# Multi Project Index\n\n")
+        fh.write("This index was made with [multi project tools](https://github.com/mattvenn/multi_project_tools)\n\n")
+        try_mkdir(self.config["docs"]["pic_dir"], self.args.force_delete)
+        for project in self.projects:
+            conf = project.config["project"]
+            # copy pic
+            pic_src = os.path.join(project.directory, conf["picture"])
+            pic_dst = os.path.join(self.config["docs"]["pic_dir"], os.path.basename(conf["picture"]))
+            shutil.copyfile(pic_src, pic_dst)
+
+            fh.write("## %s\n\n" % conf["title"])
+            fh.write("* Author: %s\n" % conf["author"])
+            fh.write("* Github: [%s](%s)\n" % (conf["github"], conf["github"]))
+            fh.write("\n\n")
+            fh.write("![%s](%s)\n" % (conf["title"], pic_dst))
+            fh.write("%s\n\n" % conf["description"])
+
+        logging.info("wrote index.md")

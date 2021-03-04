@@ -32,3 +32,6 @@ tests:
         metal5_id:  72 
     tristates:      141
 
+docs:
+    pic_dir:        pics
+    index:          index.md

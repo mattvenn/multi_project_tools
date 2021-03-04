@@ -78,3 +78,4 @@ run OpenLANE to harden user_project_wrapper:
 * assert all projects have different IDs
 * if cocotb test fails, the return code from make is a pass
 * fetch projects from a git ref
+* check license

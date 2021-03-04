@@ -41,7 +41,7 @@ def add_instance_to_upw(macro_verilog, user_project_wrapper_path, upw_template):
     with open(user_project_wrapper_path, 'w') as file:
         file.write(filedata)
 
-def try_copy(src, dst, force_delete):
+def try_copy_tree(src, dst, force_delete):
     logging.info("copying %s to %s" % (src, dst))
     try:
         shutil.copytree(src, dst)
