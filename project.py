@@ -16,13 +16,14 @@ class Project():
         self.directory = os.path.normpath(directory)
         yaml_file = os.path.join(self.directory, 'info.yaml')
         self.config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE )
+        self.id = int(self.config['caravel_test']['id'])
 
         self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
 
     def __str__(self):
-        return "%-30s : %s" % (self.config['project']['title'], self.directory)
+        return "%02d %-30s : %s" % (self.config['caravel_test']['id'], self.config['project']['title'], self.directory)
 
     def run_tests(self):
         if self.args.test_all or self.args.test_module:
@@ -152,6 +153,7 @@ class Project():
 
         logging.info("caravel test pass")
 
+    # only valid if the LVS test passes
     def test_interface(self):
         conf = self.config["gds"]
         powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])
@@ -186,6 +188,7 @@ class Project():
 
     # not a great test, as tristate could be in use elsewhere.
     # better to parse the cells and check outputs of the tristates are correct)
+    # only valid if the LVS test passes
     def test_tristate(self):
         conf = self.config["gds"]
         powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])

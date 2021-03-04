@@ -12,7 +12,7 @@ def parse_config(config_file, required_keys):
             logging.error("key %s not found" % key)
             exit(1)
 
-    logging.info("config %s pass" % config_file)
+    logging.debug("config %s pass" % config_file)
     return config
 
 def instantiate_module(module_name, instance_name, project_id, template):

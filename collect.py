@@ -18,16 +18,23 @@ class Collection():
             logging.error("bad number of projects - must be > 0 and <= 16")
             exit(1)
 
+        # if --project is given, skip others
         for project_dir in self.config['projects']:
-            if self.args.directory is not None:
-                if self.args.directory != project_dir:
-                    logging.info("skipping %s" % project_dir)
+            project = Project(args, project_dir, self.config)
+            if self.args.project is not None:
+                if self.args.project != project.id:
                     continue
-            self.projects.append(Project(args, project_dir, self.config))
+            self.projects.append(project)
+            logging.info(project)
+    
+        # assert ids are unique
+        ids = [project.id for project in self.projects]
+        if len(ids) != len(set(ids)):
+            logging.error("not all project ids are unique: %s" % ids)
+            exit(1)
              
     def run_tests(self):
         for project in self.projects:
-            logging.info(project)
             project.run_tests()
 
     def copy_gds(self):

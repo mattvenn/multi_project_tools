@@ -75,6 +75,7 @@ run OpenLANE to harden user_project_wrapper:
 * caravel test duplication is ugly
 * template repository with everything in the right place and a default yaml
 * assert all projects have different IDs
+* if lvs  fails, return code is pass
 * if cocotb test fails, the return code from make is a pass
 * fetch projects from a git ref
 * check license
