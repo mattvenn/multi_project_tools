@@ -32,16 +32,16 @@ Some tests now require a recent OpenLANE (tested with v0.9).
 
 This command will run all the tests against all projects: 
 
-* check config has correct keys
-* runs a module test given Makefile and recipe
-* runs the caravel simulation given Makefile and recipe
-* runs formal proof on wrapper
-* checks wrapper md5sum is correct (if doing an LVS with gds and powered Verilog, then is there any point in doing md5sum on wrapper?)
-* checks GDS is correct size, 
-* checks GDS nothing on layer metal 5
-* run LVS against powered Verilog and GDS - requires v0.9 OpenLANE/PDK
-* checks powered Verilog has correct number of tristate buffers
-* checks powered Verilog has correct module interface
+* Check config file
+* Runs a module test given Makefile and recipe
+* Runs the Caravel simulation given Makefile and recipe
+* Runs formal proof on wrapper tristated outputs
+* Checks wrapper md5sum is correct (if doing an LVS with gds and powered Verilog, then is there any point in doing md5sum on wrapper?)
+* Checks GDS is correct size
+* Checks GDS nothing on layer metal 5
+* Run LVS against powered Verilog and GDS - requires v0.9 OpenLANE/PDK
+* Checks powered Verilog has correct number of tristate buffers
+* Checks powered Verilog has correct module interface
 
 This functionality is contained within the [Project class](project.py)
 
@@ -49,14 +49,14 @@ To choose a single project, provide the --directory argument.
 
 ## Generate OpenLANE config
 
-    ./multi_tool.py --config projects.yaml  --copy-gds --create-openlane-config
+    ./multi_tool.py --config projects.yaml  --copy-gds --create-openlane-config --generate-doc
 
 This command will get everything ready for a complete system test and hardening of user_project_wrapper:
 
-* copy each project's GDS/LEF to the correct place
-* generate OpenLANE configuration for user_project_wrapper (macro placement and obstructions)
-* instantiate all the projects inside user_project_wrapper.v, 
-* TODO build the include file for Caravel RTL and config
+* Copy each project's GDS/LEF to the correct place in Caravel
+* Generate OpenLANE configuration for user_project_wrapper (macro placement and obstructions)
+* Instantiate all the projects inside user_project_wrapper.v
+* Generate documentation in index.md
 
 This functionality is contained within the [Collection class](collect.py)
 
@@ -74,8 +74,7 @@ run OpenLANE to harden user_project_wrapper:
 * test with vga_clock - as it uses .hex files. will probably break the include system
 * caravel test duplication is ugly
 * template repository with everything in the right place and a default yaml
-* assert all projects have different IDs
-* if lvs  fails, return code is pass
+* if lvs fails, return code is pass
 * if cocotb test fails, the return code from make is a pass
 * fetch projects from a git ref
 * check license
