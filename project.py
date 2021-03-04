@@ -23,7 +23,7 @@ class Project():
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
 
     def __str__(self):
-        return "%02d %-30s : %s" % (self.config['caravel_test']['id'], self.config['project']['title'], self.directory)
+        return "%2d %-30s : %s" % (self.config['caravel_test']['id'], self.config['project']['title'], self.directory)
 
     def run_tests(self):
         logging.info(self)

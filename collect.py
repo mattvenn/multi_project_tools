@@ -25,7 +25,6 @@ class Collection():
                 if self.args.project != project.id:
                     continue
             self.projects.append(project)
-            logging.info(project)
     
         # assert ids are unique
         ids = [project.id for project in self.projects]
