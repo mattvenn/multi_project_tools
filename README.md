@@ -5,12 +5,11 @@ A tool to help automate verification of sub projects and collect and harden them
 * Project outputs isolated with tristate buffers
 * Projects are activated by the Caravel logic analyser
 
-Projects must conform to the [specification](docs/project_spec.md). Here are some example projects:
+Projects must conform to the [specification](docs/project_spec.md). 
 
-* [Frequency Counter](https://github.com/mattvenn/wrapped_frequency_counter)
-* [Seven Segment Seconds](https://github.com/mattvenn/seven_segment_wrapper)
-* [RGB Colour Mixer](https://github.com/mattvenn/wrapped_rgb_mixer/tree/caravel)
-* [A51 Encryption](https://github.com/mattvenn/a5-1-wb-macro/tree/multi_proj_tools)
+See this [generated index page](index.md) for some example projects.
+
+## Schematic
 
 ![schematic](docs/mph.jpg)
 
