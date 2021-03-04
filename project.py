@@ -26,6 +26,7 @@ class Project():
         return "%02d %-30s : %s" % (self.config['caravel_test']['id'], self.config['project']['title'], self.directory)
 
     def run_tests(self):
+        logging.info(self)
         if self.args.test_all or self.args.test_module:
             self.test_module()
 
