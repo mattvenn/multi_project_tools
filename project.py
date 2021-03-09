@@ -180,12 +180,16 @@ class Project():
         height = self.system_config["tests"]["gds"]["height"]
 
         # correct size
-        assert (toplevel.get_bounding_box() == [[0,0],[width,height]]).all()
+        if (toplevel.get_bounding_box() != [[0,0],[width,height]]).all():
+            logging.error("%s is the wrong size %s" % (gds_file, toplevel.get_bounding_box()))
+            exit(1)
 
         # nothing on metal 5
-        assert self.system_config["tests"]["gds"]["metal5_id"] not in toplevel.get_layers()
-        logging.info("GDS pass")
+        if self.system_config["tests"]["gds"]["metal5_id"] in toplevel.get_layers():
+            logging.error("%s has layers on metal5" % gds_file)
+            exit(1)
 
+        logging.info("GDS pass")
 
     # not a great test, as tristate could be in use elsewhere.
     # better to parse the cells and check outputs of the tristates are correct)
@@ -200,7 +204,10 @@ class Project():
                 if 'sky130_fd_sc_hd__ebufn_2' in line:
                     count += 1
 
-        assert(count == self.system_config["tests"]["tristates"])
+        if count != self.system_config["tests"]["tristates"]:
+            logging.error("wrong number of tristates %d" % count)
+            exit(1)
+
         logging.info("tristate test pass")
 
     def test_lvs(self):
