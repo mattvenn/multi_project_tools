@@ -17,7 +17,7 @@ See this [generated index page](index.md) for some example projects.
 
 * OpenLANE & PDK installed (tested with v0.9)
 * projects.yaml file with correct paths
-* netgen local install: https://github.com/RTimothyEdwards/netgen
+* netgen local install: https://github.com/RTimothyEdwards/netgen - TODO use the one in the OpenLANE docker
 * gdspy: https://pypi.org/project/gdspy/
 
 ## Config file
