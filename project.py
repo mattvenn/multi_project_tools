@@ -22,6 +22,7 @@ class Project():
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
 
+
     def __str__(self):
         return "%2d %-30s : %s" % (self.config['caravel_test']['id'], self.config['project']['title'], self.directory)
 
@@ -285,4 +286,3 @@ class Project():
             exit(1)
 
         logging.info("LVS passed")
-        shutil.rmtree(lvs_test_dir)
