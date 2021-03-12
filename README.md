@@ -77,3 +77,4 @@ run OpenLANE to harden user_project_wrapper:
 * if lvs fails, return code is pass
 * fetch projects from a git ref
 * check license
+* some of the projects make a results.xml in local directory
