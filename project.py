@@ -21,10 +21,11 @@ class Project():
         self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
+        self.title = self.config['project']['title'],
 
 
     def __str__(self):
-        return "%2d %-30s : %s" % (self.config['caravel_test']['id'], self.config['project']['title'], self.directory)
+        return "%2d %-30s : %s" % (self.id, self.title, self.directory)
 
     def run_tests(self):
         logging.info(self)
@@ -127,7 +128,7 @@ class Project():
         self.copy_project_to_caravel_rtl()
 
         # instantiate inside user project wrapper
-        macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], conf["id"], self.system_config['wrapper']['instance'])
+        macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], self.id, self.system_config['wrapper']['instance'])
         user_project_wrapper_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
         add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.system_config['wrapper']['upw_template'])
 

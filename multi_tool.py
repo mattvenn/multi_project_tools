@@ -24,6 +24,7 @@ if __name__ == '__main__':
     parser.add_argument('--create-openlane-config', help="create the OpenLANE configs for user project wrapper", action='store_const', const=True)
     parser.add_argument('--copy-gds', help="copy the projects GDS and LEF files", action='store_const', const=True)
     parser.add_argument('--generate-doc', help="generate a index.md file with information about each project", action='store_const', const=True)
+    parser.add_argument('--duplicate', help="for testing, duplicate a single project this number of times", type=int)
 
 
     args = parser.parse_args()

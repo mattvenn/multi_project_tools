@@ -1,6 +1,7 @@
 import yaml
 import logging
 import os
+import copy
 import shutil
 from utils import *
 from project import Project
@@ -25,7 +26,20 @@ class Collection():
                 if self.args.project != project.id:
                     continue
             self.projects.append(project)
-    
+   
+        # create duplicate projects, only works with --project for a single project
+        if args.duplicate:
+            # requires project id
+            if self.args.project is None:
+                logging.error("provide the project ID to duplicate with --project")
+
+            # make the copies
+            for i in range(args.duplicate):
+                dup_project = copy.deepcopy(self.projects[0])
+                dup_project.id += i + 1
+                dup_project.config['caravel_test']['instance_name'] += str(dup_project.id)
+                self.projects.append(dup_project)
+
         # assert ids are unique
         ids = [project.id for project in self.projects]
         if len(ids) != len(set(ids)):
@@ -86,7 +100,7 @@ class Collection():
                 
                 module_name     = self.projects[macro_count].config['caravel_test']['module_name']
                 instance_name   = self.projects[macro_count].config['caravel_test']['instance_name']
-                proj_id         = self.projects[macro_count].config['caravel_test']['id']
+                proj_id         = self.projects[macro_count].id
 
                 y = (v_space - macro_h) / 2 + v_space * row
                 x = (h_space - macro_w) / 2 + h_space * column
