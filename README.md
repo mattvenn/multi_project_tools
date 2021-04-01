@@ -68,6 +68,10 @@ run OpenLANE to harden user_project_wrapper:
 
 ![hardened user project wrapper](docs/mph-16designs.png)
 
+The above was generated with config created by this command that duplicates 1 test design 16 times:
+
+    ./multi_tool.py --project 0 --copy-gds  --create-openlane-config --duplicate 16 --force-delete
+
 ## TODO
 
 * test with vga_clock - as it uses .hex files. will probably break the include system
