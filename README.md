@@ -11,7 +11,7 @@ See this [generated index page](index.md) for some example projects.
 
 ## Schematic
 
-![schematic](docs/tristate_wrapper.jpg)
+![schematic](docs/tristate_wrapper.png)
 
 ## Dependencies
 
