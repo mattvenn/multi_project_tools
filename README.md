@@ -24,7 +24,7 @@ See this [generated index page](index.md) for some example projects.
 
 [projects.yaml](projects.yaml) contains a list of projects and system wide config.
 
-Some tests now require a recent OpenLANE (tested with v0.9).
+Some tests now require a recent OpenLANE (tested with v0.9). #TODO make a note why
 
 ## Test everything
 
@@ -70,11 +70,10 @@ run OpenLANE to harden user_project_wrapper:
 
 ## TODO
 
-* still haven't got a clean hardened upw. use v0.9
 * test with vga_clock - as it uses .hex files. will probably break the include system
 * caravel test duplication is ugly
 * template repository with everything in the right place and a default yaml
 * if lvs fails, return code is pass
 * fetch projects from a git ref
 * check license
-* some of the projects make a results.xml in local directory
+* one of the tests make a results.xml in local directory

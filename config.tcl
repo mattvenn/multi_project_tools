@@ -24,10 +24,13 @@ set ::env(FP_IO_HTHICKNESS_MULT) 4
 # read auto generated obstructions
 source ./user_project_wrapper/obstruction.tcl
 
-#set ::env(GLB_RT_ADJUSTMENT) 0.2
+set ::env(GLB_RT_ADJUSTMENT) 0.5
+#set ::env(GLB_RT_ADJUSTMENT) 0.2 # increase this number to spread the tracks out a bit
 # tell fastroute to use less resources on the first 2 layers
-set ::env(GLB_RT_L2_ADJUSTMENT) 0.2
-set ::env(GLB_RT_L3_ADJUSTMENT) 0.2
+# 0 -> 1: 1 means don't use the layer
+# l2 is met1
+set ::env(GLB_RT_L2_ADJUSTMENT) 1.0 
+set ::env(GLB_RT_L3_ADJUSTMENT) 0.5 
 
 set ::env(CLOCK_PORT) "user_clock2"
 set ::env(CLOCK_NET) "mprj.clk"
