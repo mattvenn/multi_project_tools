@@ -13,6 +13,37 @@ See this [generated index page](index.md) for some example projects.
 
 ![schematic](docs/tristate_wrapper.png)
 
+The shared bus contains the following signals:
+
+    // Wishbone
+    input wire wb_clk_i,
+    input wire wb_rst_i,
+    input wire wbs_stb_i,
+    input wire wbs_cyc_i,
+    input wire wbs_we_i,
+    input wire [3:0] wbs_sel_i,
+    input wire [31:0] wbs_dat_i,
+    input wire [31:0] wbs_adr_i,
+    output wire wbs_ack_o,
+    output wire [31:0] wbs_dat_o,
+
+    // Logic Analyzer Signals
+    input  wire [31:0] la_data_in,
+    output wire [31:0] la_data_out,
+    input  wire [31:0] la_oen,
+
+    // IOs
+    input  wire [`MPRJ_IO_PADS-1:0] io_in,
+    output wire [`MPRJ_IO_PADS-1:0] io_out,
+    output wire [`MPRJ_IO_PADS-1:0] io_oeb,
+   
+Each project is connected to one bit of the active bus:
+
+    // active input, only connect tristated outputs if this is high
+    input wire active [31:0]
+
+When the active wire goes high, the wrapper's outputs are switched from high-z to the project's outputs.
+
 ## Dependencies
 
 * OpenLANE & PDK installed (tested with v0.9)
