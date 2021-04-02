@@ -112,3 +112,5 @@ The above was generated with config created by this command that duplicates 1 te
 * fetch projects from a git ref
 * check license
 * one of the tests make a results.xml in local directory
+* tries to use caravel/openlane/user_project_wrapper/macros/{gds|lef} which are things I do but not part of caravel
+* make a note of commits for caravel and openlane that worked
