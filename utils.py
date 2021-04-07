@@ -9,7 +9,7 @@ def parse_config(config_file, required_keys):
    
     for key in required_keys:
         if key not in config:
-            logging.error("key %s not found" % key)
+            logging.error("key %s not found in %s" % (key, config_file))
             exit(1)
 
     logging.debug("config %s pass" % config_file)

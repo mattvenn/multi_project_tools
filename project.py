@@ -231,8 +231,8 @@ class Project():
         extract_tcl     = 'extract.tcl'
 
         # config files
-        pdk_path        = self.system_config['env']['PDK_PATH']
-        openlane_root   = self.system_config['openlane']['root']
+        pdk_path        = self.system_config['lvs']['PDK_PATH']
+        openlane_root   = self.system_config['lvs']['OPENLANE']
         logging.info("using PDK %s and OpenLANE %s" % (pdk_path, openlane_root))
 
         # env

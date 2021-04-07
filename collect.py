@@ -6,7 +6,7 @@ import shutil
 from utils import *
 from project import Project
 
-REQUIRED_KEYS_GROUP = [ "projects", "caravel", "wrapper", "openlane" ]
+REQUIRED_KEYS_GROUP = [ "projects", "caravel", "wrapper", "lvs" ]
 
 class Collection():
 
