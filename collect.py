@@ -77,7 +77,7 @@ class Collection():
 
         obs_border = 30
 
-        macro_inst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro_placement.tcl')
+        macro_inst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
         macro_obst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'obstruction.tcl')
         includes_file    = os.path.join(self.config['caravel']['rtl_dir'], 'user_project_includes.v')
 
@@ -104,7 +104,7 @@ class Collection():
 
                 y = (v_space - macro_h) / 2 + v_space * row
                 x = (h_space - macro_w) / 2 + h_space * column
-                macro_inst_fh.write("add_macro_placement %s %d %d N\n" % (instance_name, x, y))
+                macro_inst_fh.write("%s %d %d N\n" % (instance_name, x, y))
                 macro_obst_fh.write ("met5 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
                 macro_obst_fh.write ("met4 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
 
