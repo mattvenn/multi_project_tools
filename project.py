@@ -280,10 +280,17 @@ class Project():
         lvs_count_cmd = os.path.join(openlane_root, 'scripts', 'count_lvs.py')
         cmd = [lvs_count_cmd, '--file', netgen_json]
         logging.info(cmd)
+
+        # lvs count command doesn't return valid exit codes
         try:
-            subprocess.run(cmd, cwd=cwd, check=True)
+            result = subprocess.run(cmd, cwd=cwd, capture_output=True)
         except subprocess.CalledProcessError as e:
             logging.error(e)
             exit(1)
 
-        logging.info("LVS passed")
+        # so search for string in output
+        if 'Total errors = 0' in str(result.stdout):
+            logging.info("LVS passed")
+        else:
+            logging.error(result.stdout)
+            exit(1)
