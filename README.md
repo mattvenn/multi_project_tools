@@ -111,8 +111,8 @@ The above was generated with config created by this command that duplicates 1 te
 * test with vga_clock - as it uses .hex files. will probably break the include system
 * caravel test duplication is ugly
 * template repository with everything in the right place and a default yaml
-* if lvs fails, return code is pass
 * fetch projects from a git ref
-* check license
+* check license in projects
 * one of the tests make a results.xml in local directory
 * tries to use caravel/openlane/user_project_wrapper/macros/{gds|lef} which are things I do but not part of caravel
+* LVS only passes with netgen setup from v09 pdk. Need to check against some other projects
