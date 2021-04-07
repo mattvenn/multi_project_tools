@@ -6,9 +6,9 @@ projects:
 #    - /home/matt/work/asic-workshop/course/participants/mike/z2a_project
 
 caravel:
-    root:           /home/matt/work/asic-workshop/caravel-mph
-    test_dir:       /home/matt/work/asic-workshop/caravel-mph/verilog/dv/caravel/user_proj_example/
-    rtl_dir:        /home/matt/work/asic-workshop/caravel-mph/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/video-caravel
+    test_dir:       /home/matt/work/asic-workshop/video-caravel/verilog/dv/caravel/user_proj_example/
+    rtl_dir:        /home/matt/work/asic-workshop/video-caravel/verilog/rtl/
     config:         config.tcl
 
 openlane:
@@ -23,7 +23,7 @@ wrapper:
 env:
     GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
     GCC_PREFIX:     riscv64-unknown-elf
-    PDK_PATH:       /home/matt/work/asic-workshop/pdks_v09/sky130A
+    PDK_PATH:       /home/matt/work/asic-workshop/pdks-mpw-one-b/sky130A
 
 tests:
     gds:
