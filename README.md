@@ -103,6 +103,9 @@ The above was generated with config created by this command that duplicates 1 te
 
     ./multi_tool.py --project 0 --copy-gds  --create-openlane-config --duplicate 16 --force-delete
 
+* Caravel was commit b228c6a0d557dbeaf90aed0ec0ae585d03a531bc on git@github.com:mattvenn/caravel-mph
+* OpenLANE was mpw-one-b tag
+
 ## TODO
 
 * test with vga_clock - as it uses .hex files. will probably break the include system
@@ -113,4 +116,3 @@ The above was generated with config created by this command that duplicates 1 te
 * check license
 * one of the tests make a results.xml in local directory
 * tries to use caravel/openlane/user_project_wrapper/macros/{gds|lef} which are things I do but not part of caravel
-* make a note of commits for caravel and openlane that worked
