@@ -6,9 +6,9 @@ projects:
 #    - /home/matt/work/asic-workshop/course/participants/mike/z2a_project
 
 caravel:
-    root:           /home/matt/work/asic-workshop/video-caravel
-    test_dir:       /home/matt/work/asic-workshop/video-caravel/verilog/dv/caravel/user_proj_example/
-    rtl_dir:        /home/matt/work/asic-workshop/video-caravel/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/video_caravel
+    test_dir:       /home/matt/work/asic-workshop/video_caravel/verilog/dv/caravel/user_proj_example/
+    rtl_dir:        /home/matt/work/asic-workshop/video_caravel/verilog/rtl/
     config:         config.tcl
 
 openlane:
