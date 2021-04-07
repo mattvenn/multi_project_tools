@@ -233,6 +233,7 @@ class Project():
         # config files
         pdk_path        = self.system_config['env']['PDK_PATH']
         openlane_root   = self.system_config['openlane']['root']
+        logging.info("using PDK %s and OpenLANE %s" % (pdk_path, openlane_root))
 
         # env
         test_env                       = os.environ
