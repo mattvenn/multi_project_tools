@@ -97,14 +97,16 @@ run OpenLANE to harden user_project_wrapper:
 
     cd $CARAVEL_ROOT/openlane ; make user_project_wrapper
 
-![hardened user project wrapper](docs/mph-16designs.png)
+![hardened user project wrapper](docs/mph-16-mpw-one-b-designs.png)
 
 The above was generated with config created by this command that duplicates 1 test design 16 times:
 
     ./multi_tool.py --project 0 --copy-gds  --create-openlane-config --duplicate 16 --force-delete
 
-* Caravel was commit b228c6a0d557dbeaf90aed0ec0ae585d03a531bc on git@github.com:mattvenn/caravel-mph
+* Caravel was mpw-one-b tag
 * OpenLANE was mpw-one-b tag
+* took XXXX to complete on 3GHz with 4 cores and 32GB RAM.
+* needed GLB_RT_ADJUSTMENT set to 0.8 vs 0.5 for mpw-one-a tools.
 
 ## TODO
 
