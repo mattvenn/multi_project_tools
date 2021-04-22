@@ -122,7 +122,6 @@ class Project():
 
     def test_caravel(self):
         conf = self.config["caravel_test"]
-        delete_later = []
 
         # copy src into caravel verilog dir
         self.copy_project_to_caravel_rtl()
