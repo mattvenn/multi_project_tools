@@ -105,11 +105,13 @@ class Collection():
                 y = (v_space - macro_h) / 2 + v_space * row
                 x = (h_space - macro_w) / 2 + h_space * column
                 macro_inst_fh.write("%s %d %d N\n" % (instance_name, x, y))
-                macro_obst_fh.write ("met5 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
-                macro_obst_fh.write ("met4 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
+                # macro obstructions make it worse with mpw-one-b
+                #        macro_obst_fh.write ("met5 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
+                #        macro_obst_fh.write ("met4 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
 
                 macro_verilog += instantiate_module(module_name, instance_name, proj_id, self.config['wrapper']['instance'])
 
+        # still need obstruction for li though.
         macro_obst_fh.write('li1  0     0     2920 3520"\n')
 
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
