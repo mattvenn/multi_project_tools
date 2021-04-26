@@ -30,6 +30,7 @@ def instantiate_module(module_name, instance_name, project_id, template):
 
 def add_instance_to_upw(macro_verilog, user_project_wrapper_path, upw_template):
     # read the data
+    logging.info("instantiating macro inside upw")
     with open(upw_template, 'r') as file :
         filedata = file.read()
 

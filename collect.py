@@ -78,19 +78,15 @@ class Collection():
         obs_border = 30
 
         macro_inst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
-        macro_obst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'obstruction.tcl')
         includes_file    = os.path.join(self.config['caravel']['rtl_dir'], 'user_project_includes.v')
 
         logging.info("creating instantiation %s" % macro_inst_file)
-        logging.info("creating obstruction   %s" % macro_obst_file)
         logging.info("creating includes      %s" % includes_file)
 
         macro_inst_fh    = open(macro_inst_file, 'w') 
-        macro_obst_fh    = open(macro_obst_file, 'w') 
         includes_fh      = open(includes_file,   'w')
         macro_verilog = ""
 
-        macro_obst_fh.write('set ::env(GLB_RT_OBS)  "')
         for column in range(4):
             for row in range(4):
                 macro_count = row + column*4
@@ -105,14 +101,9 @@ class Collection():
                 y = (v_space - macro_h) / 2 + v_space * row
                 x = (h_space - macro_w) / 2 + h_space * column
                 macro_inst_fh.write("%s %d %d N\n" % (instance_name, x, y))
-                # macro obstructions make it worse with mpw-one-b
-                #        macro_obst_fh.write ("met5 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
-                #        macro_obst_fh.write ("met4 %d %d %d %d,\n" % (x - obs_border, y - obs_border, macro_w + obs_border, macro_h + obs_border))
 
                 macro_verilog += instantiate_module(module_name, instance_name, proj_id, self.config['wrapper']['instance'])
 
-        # still need obstruction for li though.
-        macro_obst_fh.write('li1  0     0     2920 3520"\n')
 
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.config['wrapper']['upw_template'])

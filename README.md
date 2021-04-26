@@ -46,7 +46,7 @@ When the active wire goes high, the wrapper's outputs are switched from high-z t
 
 ## Dependencies
 
-* OpenLANE & PDK installed (tested with v0.9)
+* caravel_user_project with OpenLANE & PDK installed as given in instructions.
 * projects.yaml file with correct paths
 * netgen local install: https://github.com/RTimothyEdwards/netgen - TODO use the one in the OpenLANE docker
 * gdspy: https://pypi.org/project/gdspy/
@@ -95,18 +95,18 @@ This functionality is contained within the [Collection class](collect.py)
 
 run OpenLANE to harden user_project_wrapper:
 
-    cd $CARAVEL_ROOT/openlane ; make user_project_wrapper
+    cd $CARAVEL_ROOT; make user_project_wrapper
 
-![hardened user project wrapper](docs/mph-16-mpw-one-b-designs.png)
+![hardened user project wrapper](docs/mph-16-mpw-two-a-designs.png)
 
 The above was generated with config created by this command that duplicates 1 test design 16 times:
 
     ./multi_tool.py --project 0 --copy-gds  --create-openlane-config --duplicate 16 --force-delete
 
-* Caravel was mpw-one-b tag
-* OpenLANE was mpw-one-b tag
-* took XXXX to complete on 3GHz with 4 cores and 32GB RAM.
-* needed GLB_RT_ADJUSTMENT set to 0.8 vs 0.5 for mpw-one-a tools.
+* Caravel was installed by caravel_user_project (599c0a77f2a8c40dbccdd604ea3ce08f2f8dc0a8)
+* OpenLANE was rc0.12 (as installed by caravel_user_project)
+* took 18minutes to complete on 3GHz with 4 cores and 32GB RAM.
+* main config adjustment was GLB_RT_ADJUSTMENT set to 0.8
 
 ## TODO
 

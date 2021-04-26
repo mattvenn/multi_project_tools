@@ -6,9 +6,9 @@ projects:
 #    - /home/matt/work/asic-workshop/course/participants/mike/z2a_project
 
 caravel:
-    root:           /home/matt/work/asic-workshop/video_caravel
-    test_dir:       /home/matt/work/asic-workshop/video_caravel/verilog/dv/caravel/user_proj_example/
-    rtl_dir:        /home/matt/work/asic-workshop/video_caravel/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/shuttle2/caravel_user_project
+    test_dir:       /home/matt/work/asic-workshop/shuttle2/caravel_user_project/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle2/caravel_user_project/verilog/rtl/
     config:         config.tcl
 
 wrapper:
@@ -23,8 +23,8 @@ env:
     PDK_PATH:       /home/matt/work/asic-workshop/pdks-mpw-one-b/sky130A
 
 lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/pdks_v09/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
-    OPENLANE:       /home/matt/work/asic-workshop/openlane-mpw-one-b/ # only used to find the count_lvs.py script
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle2/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle2/openlane    # only used to find the count_lvs.py script
 
 tests:
     gds:
