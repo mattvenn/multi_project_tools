@@ -131,6 +131,10 @@ class Project():
         user_project_wrapper_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
         add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.system_config['wrapper']['upw_template'])
 
+        # setup includes
+        includes_path = os.path.join(self.system_config['caravel']['rtl_dir'], "uprj_netlists.v")
+        add_verilog_includes([self], includes_path, self.system_config['wrapper']['includes_template'])
+
         # copy test inside caravel
         src = os.path.join(self.directory, conf["directory"])
         dst = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
@@ -141,6 +145,7 @@ class Project():
         test_env["GCC_PATH"]    = self.system_config['env']['GCC_PATH']
         test_env["GCC_PREFIX"]  = self.system_config['env']['GCC_PREFIX']
         test_env["PDK_PATH"]    = self.system_config['env']['PDK_PATH']
+        test_env["CARAVEL_ROOT"]    = os.path.join(self.system_config['caravel']['root'], 'caravel')
 
         cwd = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
         cmd = ["make", conf["recipe"]]
@@ -161,12 +166,12 @@ class Project():
         powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])
 
         with open(powered_v_filename) as fh:
-            powered_v = fh.readlines()
-          
+            powered_v = fh.read()
+        
         with open(self.system_config["wrapper"]["interface"]) as fh:
             for io in fh.readlines():
-                if io not in powered_v:
-                    logging.error("io port not found in %s: %s" % (powered_v_filename, io.strip()))
+                if io.strip() not in powered_v:
+                    logging.error("io port [%s] not found in %s" % (io.strip(), powered_v_filename))
                     exit(1)
             
         logging.info("module interface pass")
@@ -200,13 +205,14 @@ class Project():
         powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])
 
         count = 0
+        tristate_cell = 'sky130_fd_sc_hd__ebufn_' # 1 or 2 is fine
         with open(powered_v_filename) as fh:
             for line in fh.readlines():
-                if 'sky130_fd_sc_hd__ebufn_2' in line:
+                if tristate_cell in line:
                     count += 1
 
         if count != self.system_config["tests"]["tristates"]:
-            logging.error("wrong number of tristates %d" % count)
+            logging.error("wrong number of tristates [%s] %d in %s" % (tristate_cell, count, powered_v_filename))
             exit(1)
 
         logging.info("tristate test pass")
