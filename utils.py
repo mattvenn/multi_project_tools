@@ -15,6 +15,27 @@ def parse_config(config_file, required_keys):
     logging.debug("config %s pass" % config_file)
     return config
 
+def add_verilog_includes(projects, upw_includes_path, upw_includes_template):
+    with open(upw_includes_template, 'r') as file :
+        filedata = file.read()
+
+    # replace the target strings
+    filedata = filedata.replace('GL_INCLUDES', "") # TODO
+
+    project_includes = ""
+    for project in projects:
+        project_includes += ("// %s\n" % project)
+        for path in project.get_module_source_paths(absolute=False):
+            path = os.path.join(os.path.basename(project.directory), path)
+            project_includes += ('	`include "%s"\n' % path)
+
+    filedata = filedata.replace('RTL_INCLUDES', project_includes)
+
+    # overwrite the includes
+    logging.info("writing to %s" % upw_includes_path)
+    with open(upw_includes_path, 'w') as file:
+        file.write(filedata)
+
 def instantiate_module(module_name, instance_name, project_id, template):
     # read the data
     with open(template, 'r') as file :
