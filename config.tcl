@@ -38,6 +38,7 @@ set ::env(CLOCK_PERIOD) "10"
 ## Internal Macros
 ### Macro Placement
 set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
+set ::env(GLB_RT_ALLOW_CONGESTION) "1"
 
 set ::env(GLB_RT_OBS)  "li1  0     0     2920 3520"
 
