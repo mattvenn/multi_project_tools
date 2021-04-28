@@ -22,6 +22,10 @@ source $script_dir/../../caravel/openlane/user_project_wrapper_empty/fixed_wrapp
 set ::env(DESIGN_NAME) user_project_wrapper
 #section end
 
+# save some time
+set ::env(RUN_KLAYOUT_XOR) 0
+set ::env(RUN_KLAYOUT_DRC) 0
+
 # User Configurations
 
 ## Source Verilog Files
@@ -55,9 +59,10 @@ set ::env(VERILOG_FILES_BLACKBOX) "\
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
 
-set ::env(GLB_RT_ADJUSTMENT) 0.8
+set ::env(GLB_RT_ADJUSTMENT) 0.7
 
 set ::env(GLB_RT_MAXLAYER) 5
+set ::env(ROUTING_OPT_ITERS) 80
 
 set ::env(FP_PDN_CHECK_NODES) 0
 
