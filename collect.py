@@ -72,8 +72,8 @@ class Collection():
         macro_w = 300
         macro_h = 300
 
-        h_space = width / 4
-        v_space = height / 4
+        h_space = (width -  (4 * macro_w)) / 5
+        v_space = (height - (4 * macro_h)) / 5
 
         obs_border = 30
 
@@ -98,8 +98,8 @@ class Collection():
                 instance_name   = self.projects[macro_count].config['caravel_test']['instance_name']
                 proj_id         = self.projects[macro_count].id
 
-                y = (v_space - macro_h) / 2 + v_space * row
-                x = (h_space - macro_w) / 2 + h_space * column
+                y = v_space + (v_space + macro_h)  * row
+                x = h_space + (h_space + macro_w)  * column
                 macro_inst_fh.write("%s %d %d N\n" % (instance_name, x, y))
 
                 macro_verilog += instantiate_module(module_name, instance_name, proj_id, self.config['wrapper']['instance'])
