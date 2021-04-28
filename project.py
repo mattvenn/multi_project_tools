@@ -6,7 +6,7 @@ import os, sys
 import subprocess
 from utils import *
 
-REQUIRED_KEYS_SINGLE = [ "project", "caravel_test", "module_test", "wrapper_proof", "wrapper_cksum", "openlane", "gds" ]
+REQUIRED_KEYS_SINGLE = [ "project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds" ]
 
 class Project():
 
@@ -34,9 +34,6 @@ class Project():
 
         if self.args.test_all or self.args.prove_wrapper:
             self.prove_wrapper()
-
-        if self.args.test_all or self.args.wrapper_cksum:
-            self.wrapper_cksum()
 
         if self.args.test_all or self.args.test_caravel:
             self.test_caravel()
@@ -88,32 +85,6 @@ class Project():
             exit(1)
 
         logging.info("proof pass")
-
-    def wrapper_cksum(self):
-        logging.warning("skipping cksum")
-        return
-        conf = self.config["wrapper_cksum"]
-        wrapper = os.path.join(self.directory, conf["directory"], conf["filename"])
-        instance_lines = list(range(int(conf["instance_start"]), int(conf["instance_end"]+1)))
-        logging.info("skipping instance lines %s" % instance_lines)
-
-        wrapper_text = ""
-        line_num = 1
-
-        with open(wrapper) as fh:
-            for line in fh.readlines():
-                if line_num not in instance_lines:
-                    wrapper_text += line
-                else:
-                    logging.info("skip %d: %s" % (line_num, line.strip()))
-                line_num += 1
-                
-        md5sum = hashlib.md5(wrapper_text.encode('utf-8')).hexdigest()
-        if md5sum != self.system_config['wrapper']['md5sum']:
-            logging.error("md5sum %s doesn't match" % (md5sum))
-            exit(1)
-
-        logging.info("cksum pass")
 
     def copy_project_to_caravel_rtl(self):
         src = self.directory
