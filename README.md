@@ -9,6 +9,8 @@ Projects must conform to the [specification](docs/project_spec.md).
 
 See this [generated index page](index.md) for some example projects.
 
+See this repo you can use as a template: https://github.com/mattvenn/wrapped_project_template
+
 ## Schematic
 
 ![schematic](docs/tristate_wrapper.png)
@@ -110,11 +112,11 @@ The above was generated with config created by this command that duplicates 1 te
 
 ## TODO
 
+* put tool command that generated config into the readme
+* put gds image into the readme
 * test with vga_clock - as it uses .hex files. will probably break the include system
-* caravel test duplication is ugly
 * template repository with everything in the right place and a default yaml
 * fetch projects from a git ref
 * check license in projects
 * one of the tests make a results.xml in local directory
 * tries to use caravel/openlane/user_project_wrapper/macros/{gds|lef} which are things I do but not part of caravel
-* LVS only passes with netgen setup from v09 pdk. Need to check against some other projects
