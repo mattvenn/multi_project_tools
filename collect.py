@@ -51,14 +51,19 @@ class Collection():
             project.run_tests()
 
     def copy_gds(self):
+        lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds')
+        gds_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
+        os.makedirs(lef_dir, exist_ok=True)
+        os.makedirs(gds_dir, exist_ok=True)
+
         for project in self.projects:
             src = os.path.join(project.directory, project.gds_filename)
-            dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds', os.path.basename(project.gds_filename))
+            dst = os.path.join(gds_dir, os.path.basename(project.gds_filename))
             logging.info("copying %s to %s" % (src, dst))
             shutil.copyfile(src, dst)
 
             src = os.path.join(project.directory, project.lef_filename)
-            dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef', os.path.basename(project.lef_filename))
+            dst = os.path.join(lef_dir, os.path.basename(project.lef_filename))
             logging.info("copying %s to %s" % (src, dst))
             shutil.copyfile(src, dst)
 
