@@ -71,13 +71,11 @@ class Collection():
         width = 2920
         height =  3520
 
-        macro_w = 300
-        macro_h = 300
+        macro_w = self.config['tests']['gds']['width']
+        macro_h = self.config['tests']['gds']['height']
 
         h_space = (width -  (4 * macro_w)) / 5
         v_space = (height - (4 * macro_h)) / 5
-
-        obs_border = 30
 
         macro_inst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
         includes_file    = os.path.join(self.config['caravel']['rtl_dir'], 'user_project_includes.v')
