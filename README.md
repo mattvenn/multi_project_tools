@@ -107,8 +107,9 @@ The above was generated with config created by this command that fills all 16 sl
 
 * Caravel was installed by caravel_user_project (599c0a77f2a8c40dbccdd604ea3ce08f2f8dc0a8)
 * OpenLANE was rc0.12 (as installed by caravel_user_project)
-* took 18minutes to complete on 3GHz with 4 cores and 32GB RAM.
-* main config adjustment was GLB_RT_ADJUSTMENT set to 0.78
+* took 13minutes to complete on 3GHz with 4 cores and 32GB RAM.
+* LVS & DRC clean
+* main config adjustment was GLB_RT_ADJUSTMENT set to 0.8
 
 ## TODO
 
