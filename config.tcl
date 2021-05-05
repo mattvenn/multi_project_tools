@@ -59,7 +59,7 @@ set ::env(VERILOG_FILES_BLACKBOX) "\
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
 
-set ::env(GLB_RT_ADJUSTMENT) 0.7
+set ::env(GLB_RT_ADJUSTMENT) 0.80
 
 set ::env(GLB_RT_MAXLAYER) 5
 set ::env(ROUTING_OPT_ITERS) 80
