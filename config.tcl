@@ -59,7 +59,11 @@ set ::env(VERILOG_FILES_BLACKBOX) "\
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
 
-set ::env(GLB_RT_ADJUSTMENT) 0.80
+set ::env(GLB_RT_ADJUSTMENT) 0.60
+# 0 -> 1: 1 means don't use the layer                                                        
+# l2 is met1                                                                                 
+set ::env(GLB_RT_L2_ADJUSTMENT) 0.9
+set ::env(GLB_RT_L3_ADJUSTMENT) 0.7
 
 set ::env(GLB_RT_MAXLAYER) 5
 set ::env(ROUTING_OPT_ITERS) 80
