@@ -18,3 +18,11 @@ This index was made with [multi project tools](https://github.com/mattvenn/multi
 
 ![Frequency counter](pics/frequency_counter.png)
 
+## A5/1 Wishbone
+
+* Author: Jamie Iles
+* Github: [https://github.com/mattvenn/a5-1-wb-macro/tree/multi_proj_tools](https://github.com/mattvenn/a5-1-wb-macro/tree/multi_proj_tools)
+* Description: A5/1 cryto block connected via wishbone to PicoRV32
+
+![A5/1 Wishbone](pics/a5macro.png)
+

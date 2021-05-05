@@ -101,14 +101,14 @@ run OpenLANE to harden user_project_wrapper:
 
 ![hardened user project wrapper](docs/mph-16-mpw-two-a-designs.png)
 
-The above was generated with config created by this command that duplicates 1 test design 16 times:
+The above was generated with config created by this command that fills all 16 slots with repeated projects:
 
-    ./multi_tool.py --project 0 --copy-gds  --create-openlane-config --duplicate 16 --force-delete
+    ./multi_tool.py --copy-gds  --create-openlane-config --fill 16 --force-delete
 
 * Caravel was installed by caravel_user_project (599c0a77f2a8c40dbccdd604ea3ce08f2f8dc0a8)
 * OpenLANE was rc0.12 (as installed by caravel_user_project)
 * took 18minutes to complete on 3GHz with 4 cores and 32GB RAM.
-* main config adjustment was GLB_RT_ADJUSTMENT set to 0.8
+* main config adjustment was GLB_RT_ADJUSTMENT set to 0.78
 
 ## TODO
 

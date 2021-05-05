@@ -27,16 +27,13 @@ class Collection():
                     continue
             self.projects.append(project)
    
-        # create duplicate projects, only works with --project for a single project
-        if args.duplicate:
-            # requires project id
-            if self.args.project is None:
-                logging.error("provide the project ID to duplicate with --project")
-
+        # fill space with duplicated projects
+        if args.fill and args.fill > len(self.projects):
+            num_real_projects = len(self.projects)
             # make the copies
-            for i in range(args.duplicate):
-                dup_project = copy.deepcopy(self.projects[0])
-                dup_project.id += i + 1
+            for i in range(len(self.projects), args.fill):
+                dup_project = copy.deepcopy(self.projects[i % num_real_projects])
+                dup_project.id = i
                 dup_project.config['caravel_test']['instance_name'] += str(dup_project.id)
                 self.projects.append(dup_project)
 
@@ -51,8 +48,8 @@ class Collection():
             project.run_tests()
 
     def copy_gds(self):
-        lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds')
-        gds_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
+        lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
+        gds_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds')
         os.makedirs(lef_dir, exist_ok=True)
         os.makedirs(gds_dir, exist_ok=True)
 
