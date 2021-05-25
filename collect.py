@@ -1,21 +1,18 @@
-import yaml
-import logging
-import os
 import copy
-import shutil
 from utils import *
 from project import Project
 
-REQUIRED_KEYS_GROUP = [ "projects", "caravel", "wrapper", "lvs" ]
+REQUIRED_KEYS_GROUP = ["projects", "caravel", "wrapper", "lvs"]
 
-class Collection():
+
+class Collection(object):
 
     def __init__(self, args):
         self.args = args
         self.config = parse_config(args.config, REQUIRED_KEYS_GROUP)
         self.projects = []
 
-        if not (len(self.config['projects']) > 0 and len(self.config['projects']) <= 16):
+        if not (0 < len(self.config['projects']) <= 16):
             logging.error("bad number of projects - must be > 0 and <= 16")
             exit(1)
 
@@ -104,11 +101,9 @@ class Collection():
 
                 macro_verilog += instantiate_module(module_name, instance_name, proj_id, self.config['wrapper']['instance'])
 
-
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.config['wrapper']['upw_template'])
 
-        paths = []
         for project in self.projects:
 
             # copy project to caravel rtl

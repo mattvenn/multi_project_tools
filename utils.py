@@ -1,4 +1,8 @@
-import yaml, logging, shutil, os
+import logging
+import os
+import shutil
+import yaml
+
 
 def parse_config(config_file, required_keys):
     with open(config_file, 'r') as stream:
@@ -15,8 +19,9 @@ def parse_config(config_file, required_keys):
     logging.debug("config %s pass" % config_file)
     return config
 
+
 def add_verilog_includes(projects, upw_includes_path, upw_includes_template):
-    with open(upw_includes_template, 'r') as file :
+    with open(upw_includes_template, 'r') as file:
         filedata = file.read()
 
     # replace the target strings
@@ -36,9 +41,10 @@ def add_verilog_includes(projects, upw_includes_path, upw_includes_template):
     with open(upw_includes_path, 'w') as file:
         file.write(filedata)
 
+
 def instantiate_module(module_name, instance_name, project_id, template):
     # read the data
-    with open(template, 'r') as file :
+    with open(template, 'r') as file:
         filedata = file.read()
 
     # replace the target strings
@@ -49,10 +55,11 @@ def instantiate_module(module_name, instance_name, project_id, template):
     # return the string
     return filedata
 
+
 def add_instance_to_upw(macro_verilog, user_project_wrapper_path, upw_template):
     # read the data
     logging.info("instantiating macro inside upw")
-    with open(upw_template, 'r') as file :
+    with open(upw_template, 'r') as file:
         filedata = file.read()
 
     # replace the target strings
@@ -62,6 +69,7 @@ def add_instance_to_upw(macro_verilog, user_project_wrapper_path, upw_template):
     logging.info("writing to %s" % user_project_wrapper_path)
     with open(user_project_wrapper_path, 'w') as file:
         file.write(filedata)
+
 
 def try_copy_tree(src, dst, force_delete):
     logging.info("copying %s to %s" % (src, dst))
@@ -76,6 +84,7 @@ def try_copy_tree(src, dst, force_delete):
             logging.error(e)
             logging.info("use --force-delete to remove old directories")
             exit(1)
+
 
 def try_mkdir(dst, force_delete):
     try:

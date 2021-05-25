@@ -1,2 +1,4 @@
 lvstest
 __pycache__
+.history/
+.idea/

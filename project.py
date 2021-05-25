@@ -1,14 +1,10 @@
-import yaml
-import logging
-import hashlib
-import shutil
-import os, sys
 import subprocess
 from utils import *
 
-REQUIRED_KEYS_SINGLE = [ "project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds" ]
+REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds"]
 
-class Project():
+
+class Project(object):
 
     def __init__(self, args, directory, system_config):
         self.args = args
@@ -22,7 +18,6 @@ class Project():
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
         self.title = self.config['project']['title'],
-
 
     def __str__(self):
         return "%2d %-30s : %s" % (self.id, self.title, self.directory)
