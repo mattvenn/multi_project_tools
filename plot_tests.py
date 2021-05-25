@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import re
 import datetime
+
 caravel = '/home/matt/work/asic-workshop/shuttle2-mpw-two-b/caravel_user_project'
 for config_number in range (1, 15):
     elapsed_times = []

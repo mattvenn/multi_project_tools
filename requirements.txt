@@ -1,1 +1,5 @@
 gdspy==1.6.3
+pyyaml==5.4.1
+cocotb==1.5.2
+cocotb-bus==0.1.1
+matplotlib==3.4.2
