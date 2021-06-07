@@ -1,14 +1,14 @@
 projects:
-    - ../course/wrapped_rgb_mixer
-    - ../course/wrapped_frequency_counter
-    - /home/matt/work/asic-workshop/course/participants/group1/jamieiles/a5-1-wb-macro
+    - /home/matt/work/asic-workshop/course/participants/wrapped_memLCDdriver
+#    - ../course/wrapped_frequency_counter
+#    - /home/matt/work/asic-workshop/course/participants/group1/jamieiles/a5-1-wb-macro
 #    - /home/matt/work/asic-workshop/course/projects/7seg_wrapper
 #    - /home/matt/work/asic-workshop/course/participants/mike/z2a_project
 
 caravel:
-    root:           /home/matt/work/asic-workshop/shuttle2-mpw-two-b/caravel_user_project
-    test_dir:       /home/matt/work/asic-workshop/shuttle2-mpw-two-b/caravel_user_project/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle2-mpw-two-b/caravel_user_project/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/shuttle2/caravel_user_project
+    test_dir:       /home/matt/work/asic-workshop/shuttle2/caravel_user_project/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle2/caravel_user_project/verilog/rtl/
     config:         config.tcl
 
 wrapper:
@@ -19,13 +19,14 @@ wrapper:
     includes_template:  uprj_netlists.sub.v
 
 env: # used for simulation
-    GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
+    GCC_PATH:           /home/matt/work/fpga/ecp5-toolchain-linux_x86_64-v1.6.9/bin/
     GCC_PREFIX:     riscv64-unknown-elf
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle2-mpw-two-b/pdk/sky130A
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle2/pdk/sky130A
+
 
 lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle2-mpw-two-b/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle2-mpw-two-b/openlane    # only used to find the count_lvs.py script
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle2/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle2/openlane    # only used to find the count_lvs.py script
 
 tests:
     gds:
