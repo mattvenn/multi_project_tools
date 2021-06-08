@@ -50,7 +50,7 @@ When the active wire goes high, the wrapper's outputs are switched from high-z t
 
 * caravel_user_project with OpenLANE & PDK installed as given in instructions.
 * projects.yaml file with correct paths
-* netgen local install: https://github.com/RTimothyEdwards/netgen - TODO use the one in the OpenLANE docker
+* netgen local install: https://github.com/RTimothyEdwards/netgen (commit 402e1f0f254c6c0cf36c90ff5d6a09134b9196ba for MPW2)- TODO use the one in the OpenLANE docker
 * gdspy: https://pypi.org/project/gdspy/
 
 ## Config file
