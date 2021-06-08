@@ -1,3 +1,4 @@
+input user_clock2;
 input active;
 input [37:0] io_in;
 output [37:0] io_oeb;

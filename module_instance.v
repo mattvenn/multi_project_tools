@@ -34,6 +34,9 @@
 
         // IRQs
         .irq        (user_irq),
+
+        // Extra clock
+        .user_clock2        (user_clock2),
         
         // active input, only connect tristated outputs if this is high
         .active     (la_data_in[32+PROJECT_ID])
