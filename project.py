@@ -1,4 +1,5 @@
 import subprocess
+import shutil
 from utils import *
 
 REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds"]
@@ -190,8 +191,13 @@ class Project(object):
         lvs_test_dir    = 'lvstest'
         try_mkdir(lvs_test_dir, self.args.force_delete)
 
+        # copy the gds and verilog to local directory
         gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
         powered_verilog = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["lvs_filename"]))
+        shutil.copyfile(gds_file, os.path.join(lvs_test_dir, conf["gds_filename"]))
+        shutil.copyfile(powered_verilog, os.path.join(lvs_test_dir, conf["lvs_filename"]))
+        gds_file = conf["gds_filename"]
+        powered_verilog = conf["lvs_filename"]
 
         # generated files
         ext_file        = module_name + ".ext"
