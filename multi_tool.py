@@ -16,7 +16,8 @@ if __name__ == '__main__':
     parser.add_argument('--test-gds', help="check the gds", action='store_const', const=True)
     parser.add_argument('--test-lvs', help="check the gds against powered verilog", action='store_const', const=True)
     parser.add_argument('--test-interface', help="check the module's interface using powered Verilog", action='store_const', const=True)
-    parser.add_argument('--test-tristate', help="check powered verilog has correct number of tristate buffers", action='store_const', const=True)
+    parser.add_argument('--test-tristate-num', help="check powered verilog has correct number of tristate buffers", action='store_const', const=True)
+    parser.add_argument('--test-tristate-z', help="check outputs are z when not active", action='store_const', const=True)
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
 
     parser.add_argument('--create-openlane-config', help="create the OpenLANE configs for user project wrapper", action='store_const', const=True)

@@ -43,8 +43,11 @@ class Project(object):
         if self.args.test_all or self.args.test_lvs:
             self.test_lvs()
 
-        if self.args.test_all or self.args.test_tristate:
-            self.test_tristate()
+        if self.args.test_all or self.args.test_tristate_num:
+            self.test_tristate_num()
+
+        if self.args.test_all or self.args.test_tristate_z:
+            self.test_tristate_z()
 
     def get_module_source_paths(self, absolute=True):
         paths = []
@@ -167,7 +170,7 @@ class Project(object):
     # not a great test, as tristate could be in use elsewhere.
     # better to parse the cells and check outputs of the tristates are correct)
     # only valid if the LVS test passes
-    def test_tristate(self):
+    def test_tristate_num(self):
         conf = self.config["gds"]
         powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])
 
@@ -272,3 +275,23 @@ class Project(object):
         else:
             logging.error(result.stdout)
             exit(1)
+
+    def test_tristate_z(self):
+        # env
+        test_env                       = os.environ
+        test_env["POWERED_VERILOG"]    = powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["gds"]["directory"], self.config["gds"]["lvs_filename"]))
+        test_env["TOPLEVEL"]           = self.config["caravel_test"]["module_name"]
+
+        cmd = ["make", "clean", "test"]
+        cwd = "buffertest"
+
+        logging.info("attempting to run %s in %s" % (cmd, cwd))
+
+        # run makefile
+        try:
+            subprocess.run(cmd, cwd=cwd, env=test_env, check=True)
+        except subprocess.CalledProcessError as e:
+            logging.error(e)
+            exit(1)
+
+        logging.info("caravel test pass")
