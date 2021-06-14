@@ -188,6 +188,10 @@ class Project(object):
         logging.info("tristate test pass")
 
     def test_lvs(self):
+        if 'waive_lvs' in self.config['project']:
+            logging.info("skipping LVS in this test due to %s" % self.config['project']['waive_lvs'])
+            return
+
         module_name = self.config['caravel_test']['module_name']
         conf = self.config["gds"]
         # given
