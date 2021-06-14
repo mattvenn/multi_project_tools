@@ -272,6 +272,8 @@ class Project(object):
         # so search for string in output
         if 'Total errors = 0' in str(result.stdout):
             logging.info("LVS passed")
+        elif 'Total errors = 6' in str(result.stdout) and 'unmatched pins = 6' in str(result.stdout):
+            logging.info("LVS passed (waived 6 unconnected power pins)")
         else:
             logging.error(result.stdout)
             exit(1)
