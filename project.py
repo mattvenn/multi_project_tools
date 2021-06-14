@@ -300,4 +300,4 @@ class Project(object):
             logging.error(e)
             exit(1)
 
-        logging.info("caravel test pass")
+        logging.info("tristate z test pass")
