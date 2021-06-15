@@ -1,5 +1,6 @@
-import copy
 from utils import *
+import subprocess
+import copy
 from project import Project
 
 REQUIRED_KEYS_GROUP = ["projects", "caravel", "wrapper", "lvs"]
@@ -43,6 +44,17 @@ class Collection(object):
     def run_tests(self):
         for project in self.projects:
             project.run_tests()
+
+    def sync_repos(self):
+        for project in self.projects:
+            cmd = ["git", "pull"]
+            cwd = project.directory
+            logging.info("attempting to run %s in %s" % (cmd, cwd))
+            try:
+                subprocess.run(cmd, cwd=cwd, check=True)
+            except subprocess.CalledProcessError as e:
+                logging.error(e)
+                exit(1)
 
     def copy_gds(self):
         lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
