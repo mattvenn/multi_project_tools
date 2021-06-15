@@ -1,15 +1,19 @@
 projects:
-#    - /home/matt/work/asic-workshop/shuttle2-mpw-two-c/openlane/designs/wrapped_rgb_mixer
     - ../course/wrapped_rgb_mixer
     - ../course/wrapped_frequency_counter
     - /home/matt/work/asic-workshop/course/participants/group1/jamieiles/a5-1-wb-macro
     - /home/matt/work/asic-workshop/course/participants/group3/konrad/fibonacci
-    - /home/matt/work/asic-workshop/course/participants/group2/ericz/wrapped_pong 
-#    - /home/matt/work/asic-workshop/course/participants/group4/brange/wrapped_project_template
-#    - /home/matt/work/asic-workshop/course/participants/group2/chris/wrapped_project_template
+    - /home/matt/work/asic-workshop/course/participants/group2/chris/wrapped_quad_pwm_fet_drivers
     - /home/matt/work/asic-workshop/course/participants/group3/matthewb/wrapped_memLCDdriver 
-#    - /home/matt/work/asic-workshop/course/projects/7seg_wrapper
-#    - /home/matt/work/asic-workshop/course/participants/mike/z2a_project
+    - /home/matt/work/asic-workshop/course/participants/group3/petri/wrapped_chacha_wb_accel
+    - /home/matt/work/asic-workshop/course/participants/group2/tomg/wrapped-fbless-graphics-core
+    - /home/matt/work/asic-workshop/course/participants/group2/ericz/wrapped_pong
+#    - /home/matt/work/asic-workshop/course/participants/group3/mbalestrini/wrapped_hack_soc
+    - /home/matt/work/asic-workshop/course/participants/kbeckmann/wrapped_gfxdemo
+#    - /home/matt/work/asic-workshop/course/participants/group4/brange/wrapped_qarma
+#    - /home/matt/work/asic-workshop/course/participants/group2/pawel/wrapped_wb_hyperram
+    - /home/matt/work/asic-workshop/course/participants/openlane/wrapped_newmot
+    - /home/matt/work/asic-workshop/course/participants/openlane/wrapped_hoggephase_project
 
 caravel:
     root:           /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project
