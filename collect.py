@@ -47,14 +47,7 @@ class Collection(object):
 
     def sync_repos(self):
         for project in self.projects:
-            cmd = ["git", "pull"]
-            cwd = project.directory
-            logging.info("attempting to run %s in %s" % (cmd, cwd))
-            try:
-                subprocess.run(cmd, cwd=cwd, check=True)
-            except subprocess.CalledProcessError as e:
-                logging.error(e)
-                exit(1)
+            project.sync_repo()
 
     def copy_gds(self):
         lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')

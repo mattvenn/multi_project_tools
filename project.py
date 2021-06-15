@@ -49,6 +49,16 @@ class Project(object):
         if self.args.test_all or self.args.test_tristate_z:
             self.test_tristate_z()
 
+    def sync_repo(self):
+        cmd = ["git", "pull", "--recurse-submodules"]
+        cwd = self.directory
+        logging.info("attempting to sync repo: %s in %s" % (cmd, cwd))
+        try:
+            subprocess.run(cmd, cwd=cwd, check=True)
+        except subprocess.CalledProcessError as e:
+            logging.error(e)
+            exit(1)
+
     def get_module_source_paths(self, absolute=True):
         paths = []
         for path in self.config['source']:
