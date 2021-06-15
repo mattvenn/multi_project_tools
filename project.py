@@ -111,7 +111,7 @@ class Project(object):
         try_copy_tree(src, dst, self.args.force_delete)
 
         # set up env
-        test_env = os.environ
+        test_env = os.environ.copy()
         test_env["GCC_PATH"]    = self.system_config['env']['GCC_PATH']
         test_env["GCC_PREFIX"]  = self.system_config['env']['GCC_PREFIX']
         test_env["PDK_PATH"]    = self.system_config['env']['PDK_PATH']
@@ -220,7 +220,7 @@ class Project(object):
         logging.info("using PDK %s and OpenLANE %s" % (pdk_path, openlane_root))
 
         # env
-        test_env                       = os.environ
+        test_env                       = os.environ.copy()
         test_env["MAGIC_EXT_USE_GDS"]  = "1"
         test_env["PDKPATH"]            = pdk_path
 
@@ -284,7 +284,7 @@ class Project(object):
 
     def test_tristate_z(self):
         # env
-        test_env                       = os.environ
+        test_env                       = os.environ.copy()
         test_env["POWERED_VERILOG"]    = powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["gds"]["directory"], self.config["gds"]["lvs_filename"]))
         test_env["TOPLEVEL"]           = self.config["caravel_test"]["module_name"]
 
