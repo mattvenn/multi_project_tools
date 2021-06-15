@@ -11,11 +11,12 @@ async def test_output_z(dut):
     # not active
     dut.active <= 0
 
-    await Timer(1, units="ns")
+    for i in range(10):
+        await Timer(1, units="ns")
 
-    # all outputs must be z
-    assert str(dut.io_oeb.value)        == 'z' * 38
-    assert str(dut.io_out.value)        == 'z' * 38
-    assert str(dut.la_data_out.value)   == 'z' * 32
-    assert str(dut.wbs_ack_o.value)     == 'z'
-    assert str(dut.wbs_dat_o.value)     == 'z' * 32
+        # all outputs must be z
+        assert str(dut.io_oeb.value)        == 'z' * 38
+        assert str(dut.io_out.value)        == 'z' * 38
+        assert str(dut.la_data_out.value)   == 'z' * 32
+        assert str(dut.wbs_ack_o.value)     == 'z'
+        assert str(dut.wbs_dat_o.value)     == 'z' * 32
