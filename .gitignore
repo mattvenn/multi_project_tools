@@ -2,3 +2,8 @@ lvstest
 __pycache__
 .history/
 .idea/
+buffertest/results.xml
+buffertest/sim_build/
+buffertest/wrapped_design.v
+buffertest/wrapper.vcd
+
