@@ -52,8 +52,8 @@ class Collection(object):
     def copy_gds(self):
         lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
         gds_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds')
-        os.makedirs(lef_dir, exist_ok=True)
-        os.makedirs(gds_dir, exist_ok=True)
+        try_mkdir(lef_dir, self.args.force_delete)
+        try_mkdir(gds_dir, self.args.force_delete)
 
         for project in self.projects:
             src = os.path.join(project.directory, project.gds_filename)
