@@ -8,16 +8,17 @@ projects:
     - /home/matt/work/asic-workshop/course/participants/group3/petri/wrapped_chacha_wb_accel
     - /home/matt/work/asic-workshop/course/participants/group2/tomg/wrapped-fbless-graphics-core
     - /home/matt/work/asic-workshop/course/participants/group2/ericz/wrapped_pong
-#    - /home/matt/work/asic-workshop/course/participants/group3/mbalestrini/wrapped_hack_soc
+    - /home/matt/work/asic-workshop/course/participants/group3/mbalestrini/wrapped_hack_soc
     - /home/matt/work/asic-workshop/course/participants/kbeckmann/wrapped_gfxdemo
-#    - /home/matt/work/asic-workshop/course/participants/group4/brange/wrapped_qarma
+    - /home/matt/work/asic-workshop/course/participants/group4/brange/wrapped_qarma
     - /home/matt/work/asic-workshop/course/participants/group2/pawel/wrapped_wb_hyperram
     - /home/matt/work/asic-workshop/course/participants/openlane/wrapped_newmot
     - /home/matt/work/asic-workshop/course/participants/openlane/wrapped_hoggephase_project
-#    - /home/matt/work/asic-workshop/course/participants/openlane/mensa.wip
+#    - /home/matt/work/asic-workshop/course/participants/openlane/bfloat16_fma
 
 caravel:
     root:           /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project
+    gl_dir:         /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project/verilog/gl
     test_dir:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project/verilog/dv
     rtl_dir:        /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project/verilog/rtl/
     config:         config.tcl

@@ -34,6 +34,9 @@ class Project(object):
         if self.args.test_all or self.args.test_caravel:
             self.test_caravel()
 
+        if self.args.test_all or self.args.test_caravel_gl:
+            self.test_caravel(gl=True)
+
         if self.args.test_all or self.args.test_gds:
             self.test_gds()
 
@@ -100,7 +103,12 @@ class Project(object):
         dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
         try_copy_tree(src, dst, self.args.force_delete)
 
-    def test_caravel(self):
+    def copy_gl(self):
+        dst = os.path.join(self.system_config['caravel']['gl_dir'], self.config['gds']['lvs_filename'])
+        src = os.path.join(self.directory, self.config['gds']['directory'], self.config['gds']['lvs_filename'])
+        shutil.copyfile(src, dst)
+        
+    def test_caravel(self, gl=False):
         conf = self.config["caravel_test"]
 
         # copy src into caravel verilog dir
@@ -129,6 +137,11 @@ class Project(object):
 
         cwd = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
         cmd = ["make", conf["recipe"]]
+
+        # if gl, use the gl_recipe
+        if gl:
+            cmd = ["make", conf["gl_recipe"]]
+
         logging.info("attempting to run %s in %s" % (cmd, cwd))
 
         # run makefile
@@ -157,6 +170,10 @@ class Project(object):
         logging.info("module interface pass")
 
     def test_gds(self):
+        if 'waive_gds' in self.config['project']:
+            logging.info("skipping GDS in this test due to %s" % self.config['project']['waive_gds'])
+            return
+
         conf = self.config["gds"]
         gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
         import gdspy
@@ -166,7 +183,7 @@ class Project(object):
         height = self.system_config["tests"]["gds"]["height"]
 
         # correct size
-        if (toplevel.get_bounding_box() != [[0,0],[width,height]]).all():
+        if not (toplevel.get_bounding_box() == [[0,0],[width,height]]).all():
             logging.error("%s is the wrong size %s" % (gds_file, toplevel.get_bounding_box()))
             exit(1)
 

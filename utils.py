@@ -24,9 +24,7 @@ def add_verilog_includes(projects, upw_includes_path, upw_includes_template):
     with open(upw_includes_template, 'r') as file:
         filedata = file.read()
 
-    # replace the target strings
-    filedata = filedata.replace('GL_INCLUDES', "") # TODO
-
+    gl_includes = ""
     project_includes = ""
     for project in projects:
         project_includes += ("// %s\n" % project)
@@ -34,7 +32,11 @@ def add_verilog_includes(projects, upw_includes_path, upw_includes_template):
             path = os.path.join(os.path.basename(project.directory), path)
             project_includes += ('	`include "%s"\n' % path)
 
+        
+        gl_includes += ('`include "gl/%s"\n' % project.config['gds']['lvs_filename'])
+
     filedata = filedata.replace('RTL_INCLUDES', project_includes)
+    filedata = filedata.replace('GL_INCLUDES',  gl_includes) 
 
     # overwrite the includes
     logging.info("writing to %s" % upw_includes_path)

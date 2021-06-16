@@ -66,6 +66,9 @@ class Collection(object):
             logging.info("copying %s to %s" % (src, dst))
             shutil.copyfile(src, dst)
 
+            # gl
+            project.copy_gl()
+
     def create_openlane_config(self):
         num_macros = len(self.projects)
         logging.info("create macro config for user_project_wrapper with %d projects" % num_macros)
