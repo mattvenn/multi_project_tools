@@ -34,7 +34,8 @@ class Project(object):
         if self.args.test_all or self.args.test_caravel:
             self.test_caravel()
 
-        if self.args.test_all or self.args.test_caravel_gl:
+        # don't run this as part of test-all
+        if self.args.test_caravel_gl:
             self.test_caravel(gl=True)
 
         if self.args.test_all or self.args.test_gds:
