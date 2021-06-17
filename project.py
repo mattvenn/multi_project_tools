@@ -63,6 +63,10 @@ class Project(object):
             logging.error(e)
             exit(1)
 
+    def get_git_version(self):
+        git_version = subprocess.check_output(['git', '-C', self.directory, 'log', '--pretty=format:%h', '-n', '1']).decode('utf-8')
+        return git_version
+
     # hack - better to add this to the info.yaml but for now we do it by searching all the source files. not all are called wrapper.v
     def get_top_module(self):
         paths = self.get_module_source_paths(absolute=False)
