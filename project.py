@@ -63,6 +63,17 @@ class Project(object):
             logging.error(e)
             exit(1)
 
+    # hack - better to add this to the info.yaml but for now we do it by searching all the source files. not all are called wrapper.v
+    def get_top_module(self):
+        paths = self.get_module_source_paths(absolute=False)
+        top_instance = 'module %s' % self.config['caravel_test']['module_name']
+        # now check each source for the top_name
+        for path in paths:
+            abs_path = os.path.abspath(os.path.join(self.directory, path))
+            with open(abs_path) as fh:
+                if top_instance in fh.read():
+                    return path
+
     def get_module_source_paths(self, absolute=True):
         paths = []
         for path in self.config['source']:

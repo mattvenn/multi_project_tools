@@ -118,11 +118,11 @@ class Collection(object):
             # couldn't get yosys to read include file to work unless the files are below Caravel root directory
             project.copy_project_to_caravel_rtl()
 
-            # create include file 
+            # create include file - only need top module as everything is blackboxed in config.tcl
             includes_fh.write("// %s\n" % project)
-            for path in project.get_module_source_paths(absolute=False):
-                path = os.path.join(os.path.basename(project.directory), path)
-                includes_fh.write('`include "%s"\n' % path)
+            top_module = project.get_top_module()
+            top_path = os.path.join(os.path.basename(project.directory), top_module)
+            includes_fh.write('`include "%s"\n' % top_path)
 
         # copy the local config.tcl file 
         src = 'config.tcl'
