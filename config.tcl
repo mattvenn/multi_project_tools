@@ -46,6 +46,7 @@ set ::env(GLB_RT_ALLOW_CONGESTION) "1"
 
 # no LI to be used for routing
 set ::env(GLB_RT_OBS)  "li1  0     0     2920 3520"
+set ::env(GLB_RT_OBS)  "met2 0     3519  2920 3540"
 
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
@@ -55,7 +56,8 @@ set ::env(VERILOG_FILES_BLACKBOX) "\
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
 
-set ::env(GLB_RT_ADJUSTMENT) 0.68
+set ::env(ROUTING_CORES) 8
+set ::env(GLB_RT_ADJUSTMENT) 0.70
 # 0 -> 1: 1 means don't use the layer                                                        
 # l2 is met1                                                                                 
 set ::env(GLB_RT_L2_ADJUSTMENT) 0.9
