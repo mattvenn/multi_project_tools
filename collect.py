@@ -79,8 +79,13 @@ class Collection(object):
         macro_w = self.config['tests']['gds']['width']
         macro_h = self.config['tests']['gds']['height']
 
-        h_space = (width -  (4 * macro_w)) / 5
-        v_space = (height - (4 * macro_h)) / 5
+        # area to leave around the edge for routing
+        h_edge = 344 # was 344
+        v_edge = 464 # was 464
+
+        # calculate space between the macros
+        h_space = (width  - 2 * h_edge - (4 * macro_w)) / 3
+        v_space = (height - 2 * v_edge - (4 * macro_h)) / 3
 
         macro_inst_file  = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
         includes_file    = os.path.join(self.config['caravel']['rtl_dir'], 'user_project_includes.v')
@@ -103,9 +108,14 @@ class Collection(object):
                 instance_name   = self.projects[macro_count].config['caravel_test']['instance_name']
                 proj_id         = self.projects[macro_count].id
 
-                y = v_space + (v_space + macro_h)  * row
-                x = h_space + (h_space + macro_w)  * column
-                macro_inst_fh.write("%s %d %d N\n" % (instance_name, x, y))
+                y = v_edge + (v_space + macro_h)  * row
+                x = h_edge + (h_space + macro_w)  * column
+
+                # TODO HACK wrapped_qarma is bigger. should read the size out of the gds and centre it
+                if module_name == "wrapped_qarma":
+                    macro_inst_fh.write("%s %d %d N\n" % (instance_name, x - 30, y - 30))
+                else:
+                    macro_inst_fh.write("%s %d %d N\n" % (instance_name, x, y))
 
                 macro_verilog += instantiate_module(module_name, instance_name, proj_id, self.config['wrapper']['instance'])
 
