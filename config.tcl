@@ -44,22 +44,18 @@ set ::env(CLOCK_PERIOD) "10"
 set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
 set ::env(GLB_RT_ALLOW_CONGESTION) "1"
 
+# no LI to be used for routing
 set ::env(GLB_RT_OBS)  "li1  0     0     2920 3520"
-
 
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
 	$script_dir/../../caravel/verilog/rtl/defines.v \
 	$script_dir/../../verilog/rtl/user_project_includes.v"
 
-
-
-
-
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
 
-set ::env(GLB_RT_ADJUSTMENT) 0.70
+set ::env(GLB_RT_ADJUSTMENT) 0.68
 # 0 -> 1: 1 means don't use the layer                                                        
 # l2 is met1                                                                                 
 set ::env(GLB_RT_L2_ADJUSTMENT) 0.9
