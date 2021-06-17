@@ -133,7 +133,7 @@ class Project(object):
 
         # setup includes
         includes_path = os.path.join(self.system_config['caravel']['rtl_dir'], "uprj_netlists.v")
-        add_verilog_includes([self], includes_path, self.system_config['wrapper']['includes_template'])
+        add_verilog_includes([self], includes_path, self.system_config['wrapper']['includes_template'], gl)
 
         # copy test inside caravel
         src = os.path.join(self.directory, conf["directory"])

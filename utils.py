@@ -20,7 +20,7 @@ def parse_config(config_file, required_keys):
     return config
 
 
-def add_verilog_includes(projects, upw_includes_path, upw_includes_template):
+def add_verilog_includes(projects, upw_includes_path, upw_includes_template, gl=False):
     with open(upw_includes_template, 'r') as file:
         filedata = file.read()
 
@@ -35,8 +35,16 @@ def add_verilog_includes(projects, upw_includes_path, upw_includes_template):
         
         gl_includes += ('`include "gl/%s"\n' % project.config['gds']['lvs_filename'])
 
-    filedata = filedata.replace('RTL_INCLUDES', project_includes)
-    filedata = filedata.replace('GL_INCLUDES',  gl_includes) 
+    # TODO
+    # GL is broken in caravel, so can't use this file the way it's meant to be used. 
+    # Setting GL in the Makefile will always die until the GL of Caravel is fixed
+    # So instead, put the GL includes in the RTL includes, and don't set GL
+    filedata = filedata.replace('GL_INCLUDES',  "")
+    if gl == True:
+        filedata = filedata.replace('RTL_INCLUDES', gl_includes)
+    else:
+        filedata = filedata.replace('RTL_INCLUDES', project_includes)
+
 
     # overwrite the includes
     logging.info("writing to %s" % upw_includes_path)
