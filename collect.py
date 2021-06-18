@@ -77,6 +77,7 @@ class Collection(object):
         img = Image.open(image_file)
         draw = ImageDraw.Draw(img)
 
+        # hack TODO better to base this off the relative size of the image and the die
         h_edge = 378
         v_edge = 280
         h_space = 122
