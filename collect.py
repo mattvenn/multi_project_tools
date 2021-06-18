@@ -69,6 +69,42 @@ class Collection(object):
             # gl
             project.copy_gl()
 
+    def annotate_image(self):
+        image_file = os.path.join(self.config['caravel']['root'], 'pics', 'multi_macro.png')
+        from PIL import Image, ImageFont, ImageDraw
+        font_author = ImageFont.truetype("/usr/share/fonts/dejavu/DejaVuSans.ttf", 27)
+        font_title = ImageFont.truetype("/usr/share/fonts/dejavu/DejaVuSans.ttf", 22)
+        img = Image.open(image_file)
+        draw = ImageDraw.Draw(img)
+
+        h_edge = 378
+        v_edge = 280
+        h_space = 122
+        v_space = 185
+        macro_h = 220
+        macro_w = 220
+
+        for column in range(4):
+            for row in range(4):
+                macro_count = (3-row) + column*4
+
+                y = v_edge + (v_space + macro_h)  * row
+                x = h_edge + (h_space + macro_w)  * column
+
+                title = self.projects[macro_count].config['project']['title']
+                author = self.projects[macro_count].config['project']['author']
+                draw.text((x,y-70), author, (0,0,0), font=font_author)
+                draw.text((x,y-40), title, (0,0,0), font=font_title)
+
+                draw.line((x,           y          , x + macro_w, y          ), fill=(0,0,0), width=2)
+                draw.line((x + macro_w, y          , x + macro_w, y + macro_h), fill=(0,0,0), width=2)
+                draw.line((x + macro_w, y + macro_h, x          , y + macro_h), fill=(0,0,0), width=2)
+                draw.line((x          , y + macro_h, x          , y          ), fill=(0,0,0), width=2)
+#                draw.line((x + macro_w, y, x + macro_h, fill=128)
+#                draw.line((macro_w, y + macro_h, fill=128)
+#                draw.line((0, img.size[1], img.size[0], 0), fill=128)
+        img.save("multi_macro_label.png")
+
     def create_openlane_config(self):
         num_macros = len(self.projects)
         logging.info("create macro config for user_project_wrapper with %d projects" % num_macros)
