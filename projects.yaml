@@ -1,9 +1,9 @@
 projects:
-    - ['https://github.com/mattvenn/wrapped_rgb_mixer', 'caravel-mpw-two-c']
-    - ['https://github.com/mattvenn/wrapped_frequency_counter', 'caravel-mpw-two-c']
+    - ['https://github.com/mattvenn/wrapped_rgb_mixer', 'mpw3']
+    - ['https://github.com/mattvenn/wrapped_frequency_counter', 'mpw3']
 
 configuration:
-    project_directory: "/tmp/mpt"
+    project_directory: "mpw3_repos"
 
 caravel:
     root:           /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project
