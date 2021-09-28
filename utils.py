@@ -2,6 +2,7 @@ import logging
 import os
 import shutil
 import yaml
+import git
 
 
 def parse_config(config_file, required_keys):
@@ -108,3 +109,20 @@ def try_mkdir(dst, force_delete):
             logging.error(e)
             logging.info("use --force-delete to remove old directories")
             exit(1)
+
+
+def clone_repo(repo_url, commit, repo_dir, force_delete):
+
+    if os.path.exists(repo_dir) and force_delete:
+        logging.warning("deleting %s" % repo_dir)
+        shutil.rmtree(repo_dir)
+
+    logging.info("cloning %s" % repo_url)
+    repo = git.Repo.clone_from(repo_url, repo_dir)
+    logging.info("checking out to %s" % commit)
+    repo.git.checkout(commit)
+
+    logging.info("installing submodules")
+    # the submodule support for gitpython is broken, so use git (via repo) to do the work instead.
+    repo.git.submodule('update', '--init', '--recursive')
+

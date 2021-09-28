@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--test-tristate-z', help="check outputs are z when not active", action='store_const', const=True)
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
 
-    parser.add_argument('--sync-repos', help="git pull in the repo", action='store_const', const=True)
+    parser.add_argument('--clone-repos', help="git clone the repo", action='store_const', const=True)
     parser.add_argument('--create-openlane-config', help="create the OpenLANE configs for user project wrapper", action='store_const', const=True)
     parser.add_argument('--copy-gds', help="copy the projects GDS and LEF files", action='store_const', const=True)
     parser.add_argument('--generate-doc', help="generate a index.md file with information about each project", action='store_const', const=True)
@@ -59,10 +59,6 @@ if __name__ == '__main__':
     # generate doc
     if args.generate_doc:
         collection.generate_docs()
-
-    # sync repos
-    if args.sync_repos:
-        collection.sync_repos()
 
     # image
     if args.annotate_image:

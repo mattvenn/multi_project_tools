@@ -1,18 +1,31 @@
 import subprocess
 import shutil
 from utils import *
+from urllib.parse import urlparse
+import os
 
 REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds"]
 
 
 class Project(object):
 
-    def __init__(self, args, directory, system_config):
+    def __init__(self, args, repo, commit, system_config):
         self.args = args
         self.system_config = system_config
-        self.directory = os.path.normpath(directory)
+        self.repo = repo
+        self.commit = commit
+
+        project_dir = self.system_config['configuration']['project_directory']
+
+        # the project's directory is made by joining project dir to last part of the repo url 
+        parsed = urlparse(repo)
+        self.directory = os.path.join(project_dir, parsed.path.rpartition('/')[-1])
+
+        if args.clone_repos:
+            self.clone_repo()
+
         yaml_file = os.path.join(self.directory, 'info.yaml')
-        self.config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE )
+        self.config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE)
         self.id = int(self.config['caravel_test']['id'])
 
         self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
@@ -53,17 +66,11 @@ class Project(object):
         if self.args.test_all or self.args.test_tristate_z:
             self.test_tristate_z()
 
-    def sync_repo(self):
-        cmd = ["git", "pull", "--recurse-submodules"]
-        cwd = self.directory
-        logging.info("attempting to sync repo: %s in %s" % (cmd, cwd))
-        try:
-            subprocess.run(cmd, cwd=cwd, check=True)
-        except subprocess.CalledProcessError as e:
-            logging.error(e)
-            exit(1)
+    def clone_repo(self):
+        clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
 
     def get_git_version(self):
+        exit("deprecated")
         git_version = subprocess.check_output(['git', '-C', self.directory, 'log', '--pretty=format:%h', '-n', '1']).decode('utf-8')
         return git_version
 

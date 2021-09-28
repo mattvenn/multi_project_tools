@@ -18,8 +18,10 @@ class Collection(object):
             exit(1)
 
         # if --project is given, skip others
-        for project_dir in self.config['projects']:
-            project = Project(args, project_dir, self.config)
+        for project_info in self.config['projects']:
+            repo = project_info[0]
+            commit = project_info[1]
+            project = Project(args, repo, commit, self.config)
             if self.args.project is not None:
                 if self.args.project != project.id:
                     continue
@@ -44,10 +46,6 @@ class Collection(object):
     def run_tests(self):
         for project in self.projects:
             project.run_tests()
-
-    def sync_repos(self):
-        for project in self.projects:
-            project.sync_repo()
 
     def copy_gds(self):
         lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
