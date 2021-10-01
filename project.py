@@ -9,11 +9,12 @@ REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof
 
 class Project(object):
 
-    def __init__(self, args, repo, commit, system_config):
+    def __init__(self, args, repo, commit, interfaces, system_config):
         self.args = args
         self.system_config = system_config
         self.repo = repo
         self.commit = commit
+        self.interfaces = interfaces
 
         project_dir = self.system_config['configuration']['project_directory']
 
@@ -31,7 +32,8 @@ class Project(object):
         self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
         self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
-        self.title = self.config['project']['title'],
+        self.title = self.config['project']['title']
+        self.author = self.config['project']['author']
 
     def __str__(self):
         return "%2d %-30s : %s" % (self.id, self.title, self.directory)

@@ -30,8 +30,8 @@ set ::env(RUN_KLAYOUT_DRC) 0
 
 ## Source Verilog Files
 set ::env(VERILOG_FILES) "\
-	$script_dir/../../caravel/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_project_wrapper.v"
+	$script_dir/../../../caravel/verilog/rtl/defines.v \
+	$script_dir/../../../verilog/rtl/user_project_wrapper.v"
 
 ## Clock configurations
 set ::env(CLOCK_PORT) "user_clock2"
@@ -50,8 +50,8 @@ set ::env(GLB_RT_OBS)  "met2 0     3519  2920 3540"
 
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
-	$script_dir/../../caravel/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_project_includes.v"
+	$script_dir/../../../caravel/verilog/rtl/defines.v \
+	$script_dir/../../../verilog/rtl/user_project_includes.v"
 
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
