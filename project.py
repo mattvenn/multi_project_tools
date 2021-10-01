@@ -2,7 +2,7 @@ import subprocess
 import shutil
 from utils import *
 from urllib.parse import urlparse
-import os
+import os, json
 
 REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds"]
 
@@ -64,6 +64,9 @@ class Project(object):
 
         if self.args.test_all or self.args.test_tristate_num:
             self.test_tristate_num()
+
+        if self.args.test_all or self.args.test_ports:
+            self.validate_ports()
 
         if self.args.test_all or self.args.test_tristate_z:
             self.test_tristate_z()
@@ -353,3 +356,53 @@ class Project(object):
             exit(1)
 
         logging.info("tristate z test pass")
+
+    def validate_ports(self):
+        # assume first source is top, bad idea
+        top_module = self.config['source'][0]       
+        top_path = os.path.join(self.directory, top_module)
+
+        # use yosys to parse the verilog and dump a list of ports
+        json_file = '/tmp/ports.json'
+        os.system("yosys -qp 'read_verilog %s; json -o %s x:*' -DUSE_POWER_PINS=1 -DMPRJ_IO_PADS=38" % (top_path, json_file))
+        with open(json_file) as fh:
+            ports = json.load(fh)
+        
+        module_ports = ports['modules'][self.config['caravel_test']['module_name']]['ports']
+
+        # check required ports
+        for port_type, port_def in self.system_config['interfaces']['required'].items(): 
+            for port_name, bits in port_def.items():
+                # assert port is there
+                if port_name not in module_ports:
+                    logging.error("required port %s not in interface" % port_name)
+                    exit(1)
+                # and it's the correct length
+                if len(module_ports[port_name]['bits']) != bits:
+                    logging.error("required port %s is wrong size" % port_name)
+                    exit(1)
+
+                # delete it
+                del module_ports[port_name]
+
+        # for all the optional ports defined in the projects yaml
+        for optional_port in self.config['interfaces']: 
+            # look up its definition
+            for port_name, bits in self.system_config['interfaces']['optional'][optional_port].items():
+                # assert port is there
+                if port_name not in module_ports:
+                    logging.error("optional port %s was set but %s is not in interface" % (optional_port, port_name))
+                    exit(1)
+                # and it's the correct length
+                if len(module_ports[port_name]['bits']) != bits:
+                    logging.error("optional port %s is wrong size" % (port_name))
+                    exit(1)
+            
+                # delete it
+                del module_ports[port_name]
+
+        # module def should now be empty
+        if len(module_ports) != 0:
+            logging.error("additional interfaces found in module")
+            logging.error(module_ports)
+            exit(1)

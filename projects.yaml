@@ -22,6 +22,19 @@ projects:
         commit: 'mpw3'
         interfaces: ["gpio", "clock"]
 
+interfaces:
+    required:
+        power : {vccd1: 1, vssd1: 1}
+        clock : {wb_clk_i: 1}
+        active: {active: 1}
+
+    optional:
+        gpio  : {io_in: 38, io_out: 38, io_oeb: 38}
+        la    : {la_data_in: 32, la_data_out: 32, la_oenb: 32}
+        irq   : {irq: 3}
+        clk2  : {user_clock2: 1}
+        wb    : {wb_rst_i: 1, wb_stb_i: 1, wb_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_addr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+
 configuration:
     project_directory: "mpw3_repos"
     user_area_width: 2920
@@ -45,8 +58,8 @@ env: # used for simulation
     PDK_PATH:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/pdk/sky130A
 
 lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/openlane    # only used to find the count_lvs.py script
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
 
 tests:
     gds:
