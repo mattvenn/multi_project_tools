@@ -6,10 +6,10 @@ configuration:
     project_directory: "mpw3_repos"
 
 caravel:
-    root:           /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project
-    gl_dir:         /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project/verilog/gl
-    test_dir:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle2-mpw-two-c/caravel_user_project/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project
+    gl_dir:         /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/gl
+    test_dir:       /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/rtl/
     config:         config.tcl
 
 wrapper:
@@ -25,8 +25,8 @@ env: # used for simulation
     PDK_PATH:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/pdk/sky130A
 
 lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle2-mpw-two-c/openlane    # only used to find the count_lvs.py script
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
 
 tests:
     gds:
