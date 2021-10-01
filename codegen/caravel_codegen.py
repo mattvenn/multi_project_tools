@@ -87,9 +87,9 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     verilog_snippets.append("")
 
     verilog_snippets.append("    wire [31: 0] la2_data_in, la2_data_out, la2_data_oenb;")
-    verilog_snippets.append("    assign la2_data_in = la_data_in[127:64];")
-    verilog_snippets.append("    assign la2_data_out = la_data_out[127:64];")
-    verilog_snippets.append("    assign la2_oenb = la_oenb[127:64];")
+    verilog_snippets.append("    assign la2_data_in = la_data_in[95:64];")
+    verilog_snippets.append("    assign la2_data_out = la_data_out[95:64];")
+    verilog_snippets.append("    assign la2_oenb = la_oenb[95:64];")
     verilog_snippets.append("")
 
     verilog_snippets.append("    wire [31: 0] la3_data_in, la3_data_out, la3_data_oenb;")

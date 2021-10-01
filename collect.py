@@ -13,7 +13,6 @@ class Collection(object):
     def __init__(self, args):
         self.args = args
         self.config = parse_config(args.config, REQUIRED_KEYS_GROUP)
-
         self.projects = []
 
         if not (0 < len(self.config['projects']) <= 16):
@@ -26,7 +25,7 @@ class Collection(object):
             repo = project_info["repo"]
             commit = project_info["commit"]
             
-            ifaces = project_info["interfaces"] + list(self.config["forced_interfaces"].keys())
+            ifaces = project_info["interfaces"] + list(self.config["required_interfaces"].keys())
 
             project = Project(args, repo, commit, ifaces, self.config)
             if self.args.project is not None:
@@ -56,7 +55,7 @@ class Collection(object):
 
         self.interface_definitions = {
             **self.config['interfaces'], 
-            **self.config['forced_interfaces']
+            **self.config['required_interfaces']
         }
 
     def run_tests(self):
@@ -151,7 +150,7 @@ class Collection(object):
             allocation_policy = "legacy"
         )
 
-        macro_inst_file = os.path.join(self.config['caravel']['root'], 'caravel', 'openlane', 'user_project_wrapper_empty', 'macro.cfg')
+        macro_inst_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
         with open(macro_inst_file, "w") as f:
             for project in self.projects:
                 name = project.title
