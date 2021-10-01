@@ -19,6 +19,7 @@ if __name__ == '__main__':
     parser.add_argument('--test-interface', help="check the module's interface using powered Verilog", action='store_const', const=True)
     parser.add_argument('--test-tristate-num', help="check powered verilog has correct number of tristate buffers", action='store_const', const=True)
     parser.add_argument('--test-tristate-z', help="check outputs are z when not active", action='store_const', const=True)
+    parser.add_argument('--test-ports', help="check ports defined in yaml match the verilog", action='store_const', const=True)
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
 
     parser.add_argument('--clone-repos', help="git clone the repo", action='store_const', const=True)
