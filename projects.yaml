@@ -1,26 +1,25 @@
-required_interfaces:
-    power: {vccd1: 1, vssd1: 1}
-    active: {active: 1}
-
 interfaces:
-    gpio: {io_in: 38, io_out: 38, io_oeb: 38}
-    la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
-    la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
-    la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
-    irq: {irq: 3}
-    clock: {wb_clk_i: 1}
-    extra_clk: {extra_clk: 1}
-    wishbone: {wb_rst_i: 1, wb_clk_i: 1, wb_stb_i: 1, wb_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_addr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+    required:
+        power: {vccd1: 1, vssd1: 1}
+        clock: {wb_clk_i: 1}
+        active: {active: 1}
+
+    optional:
+        gpio: {io_in: 38, io_out: 38, io_oeb: 38}
+        la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
+        la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
+        la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
+        irq: {irq: 3}
+        clk2 : {user_clock2: 1}
+        wishbone: {wb_rst_i: 1, wb_clk_i: 1, wb_stb_i: 1, wb_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_addr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
 
 projects:
     rgb mixer:
         repo: 'https://github.com/mattvenn/wrapped_rgb_mixer'
         commit: 'mpw3'
-        interfaces: ["gpio", "clock"]
     frequency counter:
         repo: 'https://github.com/mattvenn/wrapped_frequency_counter'
         commit: 'mpw3'
-        interfaces: ["gpio", "clock"]
 
 configuration:
     project_directory: "mpw3_repos"
@@ -28,10 +27,10 @@ configuration:
     user_area_height: 3520
 
 caravel:
-    root:           /home/zerotoasic/asic_tools/caravel_user_project
-    gl_dir:         /home/zerotoasic/asic_tools/caravel_user_project/verilog/gl
-    test_dir:       /home/zerotoasic/asic_tools/caravel_user_project/verilog/dv
-    rtl_dir:        /home/zerotoasic/asic_tools/caravel_user_project/verilog/rtl/
+    root:           ../caravel_user_project
+    gl_dir:         ../caravel_user_project/verilog/gl
+    test_dir:       ../caravel_user_project/verilog/dv
+    rtl_dir:        ../caravel_user_project/verilog/rtl/
     config:         config.tcl
 
 wrapper:

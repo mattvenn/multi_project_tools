@@ -21,13 +21,11 @@ class Collection(object):
 
         # if --project is given, skip others
         for project_info in self.config['projects'].values():
-            print(project_info)
             repo = project_info["repo"]
             commit = project_info["commit"]
             
-            ifaces = project_info["interfaces"] + list(self.config["required_interfaces"].keys())
-
-            project = Project(args, repo, commit, ifaces, self.config)
+            required_interfaces = list(self.config['interfaces']['required'].keys())
+            project = Project(args, repo, commit, required_interfaces, self.config)
             if self.args.project is not None:
                 if self.args.project != project.id:
                     continue
@@ -54,8 +52,8 @@ class Collection(object):
         self.height = self.config['configuration']['user_area_height']
 
         self.interface_definitions = {
-            **self.config['interfaces'], 
-            **self.config['required_interfaces']
+            **self.config['interfaces']['required'], 
+            **self.config['interfaces']['optional']
         }
 
     def run_tests(self):
@@ -137,7 +135,7 @@ class Collection(object):
         # copy the local config.tcl file 
         src = 'config.tcl'
         dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.tcl')
-        print(f"copying {src} to {dst}")
+        logging.info(f"copying {src} to {dst}")
         shutil.copyfile(src, dst)
 
         # allocate macros and generate macro.cfg
@@ -156,7 +154,7 @@ class Collection(object):
                 name = project.title
                 alloc = allocation[project.id]
                 verilog_name = "wrapped_" + name.lower().replace(" ", "_") + "_" + str(project.id)
-                print(f"placing {verilog_name} @ {alloc}")
+                logging.info(f"placing {verilog_name} @ {alloc}")
                 f.write(f"{verilog_name} {alloc[0]} {alloc[1]} N\n")
 
 

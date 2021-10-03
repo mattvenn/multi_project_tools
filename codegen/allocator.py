@@ -1,5 +1,6 @@
 import itertools
 from typing import Dict, Tuple
+import logging
 
 def allocate_macros(
     design_size_x: int,
@@ -13,7 +14,7 @@ def allocate_macros(
     if allocation_policy == "legacy":
         return legacy_allocation(design_size_x, design_size_y, h_edge, v_edge, projects)
 
-    print(f"unknown allocation policy {allocation_policy}")
+    logging.critical(f"unknown allocation policy {allocation_policy}")
     exit(1)
 
 def legacy_allocation(

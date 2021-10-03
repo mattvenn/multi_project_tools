@@ -2,6 +2,7 @@ from typing import List, Dict, Optional
 from tabulate import tabulate
 import shutil
 import os
+import logging
 
 def generate_openlane_files(
     projects, 
@@ -13,26 +14,26 @@ def generate_openlane_files(
     ### user project wrapper ###
     user_project_wrapper_filename = "user_project_wrapper.v"
 
-    print(f"generating {user_project_wrapper_filename} locally")
+    logging.info(f"generating {user_project_wrapper_filename} locally")
     generate_openlane_user_project_wrapper(projects, interface_definitions, user_project_wrapper_filename)
 
     if target_user_project_wrapper_path:
-        print(f"{user_project_wrapper_filename} to {target_user_project_wrapper_path}")
+        logging.info(f"{user_project_wrapper_filename} to {target_user_project_wrapper_path}")
         shutil.move(user_project_wrapper_filename, target_user_project_wrapper_path)
     else:
-        print(f"leaving {user_project_wrapper_filename} here")
+        logging.info(f"leaving {user_project_wrapper_filename} here")
     
     ### user project includes ###
     user_project_includes_filename = "user_project_includes.v"
 
-    print(f"generating {user_project_includes_filename} locally")
+    logging.info(f"generating {user_project_includes_filename} locally")
     generate_openlane_user_project_include(projects, user_project_includes_filename)
 
     if target_user_project_includes_path:
-        print(f"{user_project_includes_filename} to {target_user_project_includes_path}")
+        logging.info(f"{user_project_includes_filename} to {target_user_project_includes_path}")
         shutil.move(user_project_includes_filename, target_user_project_includes_path)
     else:
-        print(f"leaving {user_project_includes_filename} here")
+        logging.info(f"leaving {user_project_includes_filename} here")
     
 
 def generate_openlane_user_project_include(projects, outfile):
