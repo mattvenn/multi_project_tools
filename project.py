@@ -357,12 +357,17 @@ class Project(object):
 
     def validate_ports(self):
         # assume first source is top, bad idea
-        top_module = self.config['source'][0]       
-        top_path = os.path.join(self.directory, top_module)
+        sources = ""
+        for source_file in self.config['source']:
+            sources += os.path.join(self.directory, source_file)
+            sources += " "
+           
+        top = self.config['caravel_test']['module_name']
 
         # use yosys to parse the verilog and dump a list of ports
         json_file = '/tmp/ports.json'
-        os.system("yosys -qp 'read_verilog %s; json -o %s x:*' -DUSE_POWER_PINS=1 -DMPRJ_IO_PADS=38" % (top_path, json_file))
+
+        os.system("yosys -qp 'read_verilog %s; hierarchy -top %s ; proc; json -o %s x:*' -DUSE_POWER_PINS=1 -DMPRJ_IO_PADS=38" % (sources, top, json_file))
         with open(json_file) as fh:
             ports = json.load(fh)
         

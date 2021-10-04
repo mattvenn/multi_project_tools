@@ -10,7 +10,9 @@ interfaces:
 
     optional:
         gpio  : {io_in: 38, io_out: 38, io_oeb: 38}
-        la    : {la_data_in: 32, la_data_out: 32, la_oenb: 32}
+        la1   : {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
+        la2   : {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
+        la3   : {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
         irq   : {irq: 3}
         clk2  : {user_clock2: 1}
         wb    : {wb_rst_i: 1, wb_stb_i: 1, wb_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_addr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
