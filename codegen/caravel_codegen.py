@@ -132,6 +132,9 @@ def generate_openlane_user_project_wrapper_instance(
     verilog_snippet.append(f"    wrapped_{verilog_name} wrapped_{verilog_name}_{instance_name}(")
     
     for macro_interface in interfaces:
+        if macro_interface == "power":
+            verilog_snippet.append("        `ifdef USE_POWER_PINS")
+
         for wire_name, width in interface_defs[macro_interface].items():
             if wire_name == "active":
                 verilog_snippet.append(f"        .{wire_name} ({wire_name}[{instance_name}]),")
@@ -139,6 +142,9 @@ def generate_openlane_user_project_wrapper_instance(
                 verilog_snippet.append(f"        .{wire_name} ({wire_name}),")
             else:
                 verilog_snippet.append(f"        .{wire_name} ({wire_name}[{width - 1}:0]),")
+
+        if macro_interface == "power":
+            verilog_snippet.append("        `endif")
 
     # werilog likes complaining about trailing commas, remove the last one
     verilog_snippet[-1] = verilog_snippet[-1][:-1]
