@@ -8,9 +8,9 @@
         .wb_clk_i   (wb_clk_i),
 
         // only provide first 32 bits to reduce wiring congestion
-        .la_data_in (la_data_in [31:0]),
-        .la_data_out(la_data_out[31:0]),
-        .la_oenb    (la_oenb[31:0]),
+        .la1_data_in (la_data_in [31:0]),
+        .la1_data_out(la_data_out[31:0]),
+        .la1_oenb    (la_oenb[31:0]),
 
         // IOs
         .io_in      (io_in),
