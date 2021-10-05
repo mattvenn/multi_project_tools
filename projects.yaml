@@ -1,37 +1,41 @@
-projects:
-    - ['https://github.com/mattvenn/wrapped_rgb_mixer', 'mpw3']
-    - ['https://github.com/mattvenn/wrapped_frequency_counter', 'mpw3']
-
 interfaces:
     required:
-        power : {vccd1: 1, vssd1: 1}
-        clock : {wb_clk_i: 1}
+        power: {vccd1: 1, vssd1: 1}
+        clock: {wb_clk_i: 1}
         active: {active: 1}
 
     optional:
-        gpio  : {io_in: 38, io_out: 38, io_oeb: 38}
-        la1   : {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
-        la2   : {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
-        la3   : {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
-        irq   : {irq: 3}
-        clk2  : {user_clock2: 1}
-        wb    : {wb_rst_i: 1, wb_stb_i: 1, wb_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_addr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+        gpio: {io_in: 38, io_out: 38, io_oeb: 38}
+        la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
+        la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
+        la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
+        irq: {irq: 3}
+        clk2 : {user_clock2: 1}
+        wishbone: {wb_rst_i: 1, wb_clk_i: 1, wb_stb_i: 1, wb_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_addr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+
+projects:
+    rgb mixer:
+        repo: 'https://github.com/mattvenn/wrapped_rgb_mixer'
+        commit: 'mpw3'
+    frequency counter:
+        repo: 'https://github.com/mattvenn/wrapped_frequency_counter'
+        commit: 'mpw3'
 
 configuration:
     project_directory: "mpw3_repos"
+    user_area_width: 2920
+    user_area_height: 3520
 
 caravel:
-    root:           /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project
-    gl_dir:         /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/gl
-    test_dir:       /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/rtl/
+    root:           ../caravel_user_project
+    gl_dir:         ../caravel_user_project/verilog/gl
+    test_dir:       ../caravel_user_project/verilog/dv
+    rtl_dir:        ../caravel_user_project/verilog/rtl/
     config:         config.tcl
 
 wrapper:
     md5sum:             0ec8fdff7ae891b1b156030a841d1800
-    interface:          interface.txt
     instance:           module_instance.v
-    upw_template:       user_project_wrapper.sub.v
     includes_template:  uprj_netlists.sub.v
 
 env: # used for simulation
