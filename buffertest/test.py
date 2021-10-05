@@ -14,9 +14,14 @@ async def test_output_z(dut):
     for i in range(10):
         await Timer(1, units="ns")
 
-        # all outputs must be z
-        assert str(dut.io_oeb.value)        == 'z' * 38
-        assert str(dut.io_out.value)        == 'z' * 38
-        assert str(dut.la_data_out.value)   == 'z' * 32
-        assert str(dut.wbs_ack_o.value)     == 'z'
-        assert str(dut.wbs_dat_o.value)     == 'z' * 32
+        # all outputs that exist must be z
+        if getattr(dut, "io_oeb", None):
+            assert str(dut.io_oeb.value)        == 'z' * 38
+        if getattr(dut, "io_out", None):
+            assert str(dut.io_out.value)        == 'z' * 38
+        if getattr(dut, "la_data_out", None):
+            assert str(dut.la_data_out.value)   == 'z' * 32
+        if getattr(dut, "wbs_ack_o", None):
+            assert str(dut.wbs_ack_o.value)     == 'z'
+        if getattr(dut, "wbs_dat_o", None):
+            assert str(dut.wbs_dat_o.value)     == 'z' * 32
