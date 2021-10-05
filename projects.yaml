@@ -27,10 +27,10 @@ configuration:
     user_area_height: 3520
 
 caravel:
-    root:           ../caravel_user_project
-    gl_dir:         ../caravel_user_project/verilog/gl
-    test_dir:       ../caravel_user_project/verilog/dv
-    rtl_dir:        ../caravel_user_project/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project_def_int
+    gl_dir:         /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project_def_int/verilog/gl
+    test_dir:       /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project_def_int/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project_def_int/verilog/rtl/
     config:         config.tcl
 
 wrapper:
