@@ -23,6 +23,7 @@ projects:
 
 configuration:
     project_directory: "mpw3_repos"
+    macro_snap: 0.23 # half of met2 pin/track space
     user_area_width: 2920
     user_area_height: 3520
 

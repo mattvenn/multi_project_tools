@@ -144,6 +144,7 @@ class Collection(object):
             design_size_y = self.height,
             h_edge = 344,
             v_edge = 464,
+            macro_snap = self.config['configuration']['macro_snap'],
             projects = self.projects,
             allocation_policy = "legacy"
         )
