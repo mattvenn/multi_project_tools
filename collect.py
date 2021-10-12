@@ -61,8 +61,12 @@ class Collection(object):
             project.run_tests()
 
     def copy_gds(self):
+        macros_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
         lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
         gds_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds')
+        # macros directory might not exist
+        os.makedirs(macros_dir, exist_ok=True)
+
         try_mkdir(lef_dir, self.args.force_delete)
         try_mkdir(gds_dir, self.args.force_delete)
 
