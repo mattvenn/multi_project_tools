@@ -65,7 +65,6 @@ set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
 # turn off li for any routing
 set ::env(GLB_RT_OBS)  "li1  0     0     2920 3520"
 
-set ::env(GLB_RT_TILES) 5
 set ::env(GLB_RT_ALLOW_CONGESTION) "1"
 
 #Reduction in the routing capacity of the edges between the cells in the global routing graph. Values range from 0 to 1.
