@@ -90,6 +90,9 @@ class Project(object):
             with open(abs_path) as fh:
                 if top_instance in fh.read():
                     return path
+        else:
+            logging.error("couldn't find top module for %s" % self)
+            exit(1)
 
     def get_module_source_paths(self, absolute=True):
         paths = []
