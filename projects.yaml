@@ -39,7 +39,6 @@ caravel:
 
 wrapper:
     md5sum:             0ec8fdff7ae891b1b156030a841d1800
-    instance:           module_instance.v
     includes_template:  uprj_netlists.sub.v
 
 env: # used for simulation

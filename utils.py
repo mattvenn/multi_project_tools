@@ -53,20 +53,6 @@ def add_verilog_includes(projects, upw_includes_path, upw_includes_template, gl=
         file.write(filedata)
 
 
-def instantiate_module(module_name, instance_name, project_id, template):
-    # read the data
-    with open(template, 'r') as file:
-        filedata = file.read()
-
-    # replace the target strings
-    filedata = filedata.replace('MODULE_NAME', module_name)
-    filedata = filedata.replace('INSTANCE_NAME', instance_name)
-    filedata = filedata.replace('PROJECT_ID', str(project_id))
-
-    # return the string
-    return filedata
-
-
 def add_instance_to_upw(macro_verilog, user_project_wrapper_path, upw_template):
     # read the data
     logging.info("instantiating macro inside upw")
