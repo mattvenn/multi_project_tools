@@ -1,6 +1,7 @@
 import subprocess
 import shutil
 from utils import *
+from codegen.caravel_codegen import generate_openlane_files
 from urllib.parse import urlparse
 import os, json
 
@@ -147,9 +148,21 @@ class Project(object):
         self.copy_project_to_caravel_rtl()
 
         # instantiate inside user project wrapper
-        macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], self.id, self.system_config['wrapper']['instance'])
+        #macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], self.id, self.system_config['wrapper']['instance'])
         user_project_wrapper_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
-        add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.system_config['wrapper']['upw_template'])
+        #add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.system_config['wrapper']['upw_template'])
+
+        interface_definitions = {
+            **self.system_config['interfaces']['required'], 
+            **self.system_config['interfaces']['optional']
+        }
+
+        generate_openlane_files(
+            [self], 
+            interface_definitions,
+            user_project_wrapper_path, 
+            None,
+        )
 
         # setup includes
         includes_path = os.path.join(self.system_config['caravel']['rtl_dir'], "uprj_netlists.v")
