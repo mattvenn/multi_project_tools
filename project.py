@@ -58,12 +58,15 @@ class Project(object):
         if self.args.test_all or self.args.test_gds:
             self.test_gds()
 
+        # think this should be removed now
         if self.args.test_all or self.args.test_interface:
             self.test_interface()
 
+        # currently broken, waiting on testing a new netgen
         if self.args.test_all or self.args.test_lvs:
             self.test_lvs()
 
+        # no longer valid
         if self.args.test_all or self.args.test_tristate_num:
             self.test_tristate_num()
 
@@ -147,10 +150,11 @@ class Project(object):
         # copy src into caravel verilog dir
         self.copy_project_to_caravel_rtl()
 
-        # instantiate inside user project wrapper
-        #macro_verilog = instantiate_module(conf["module_name"], conf["instance_name"], self.id, self.system_config['wrapper']['instance'])
-        user_project_wrapper_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
-        #add_instance_to_upw(macro_verilog, user_project_wrapper_path, self.system_config['wrapper']['upw_template'])
+        # generate includes & instantiate inside user project wrapper
+        # could this be removed and just do it in collect.py ?
+        user_project_wrapper_path =  os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
+        caravel_includes_path =      os.path.join(self.system_config['caravel']['rtl_dir'], "uprj_netlists.v")
+        user_project_includes_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_includes.v")
 
         interface_definitions = {
             **self.system_config['interfaces']['required'], 
@@ -161,12 +165,9 @@ class Project(object):
             [self], 
             interface_definitions,
             user_project_wrapper_path, 
-            None,
+            user_project_includes_path,
+            caravel_includes_path
         )
-
-        # setup includes
-        includes_path = os.path.join(self.system_config['caravel']['rtl_dir'], "uprj_netlists.v")
-        add_verilog_includes([self], includes_path, self.system_config['wrapper']['includes_template'], gl)
 
         # copy test inside caravel
         src = os.path.join(self.directory, conf["directory"])
@@ -380,7 +381,7 @@ class Project(object):
         for source_file in self.config['source']:
             sources += os.path.join(self.directory, source_file)
             sources += " "
-           
+
         top = self.config['caravel_test']['module_name']
 
         # use yosys to parse the verilog and dump a list of ports

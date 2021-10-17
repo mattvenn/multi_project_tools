@@ -9,6 +9,7 @@ def generate_openlane_files(
     interface_definitions: Dict[str, Dict[str, int]],
     target_user_project_wrapper_path: Optional[str],
     target_user_project_includes_path: Optional[str],
+    target_caravel_includes_path: Optional[str],
 ) -> None:
 
     ### user project wrapper ###
@@ -24,6 +25,7 @@ def generate_openlane_files(
         logging.info(f"leaving {user_project_wrapper_filename} here")
     
     ### user project includes ###
+    ### used for blackboxing the projects for the openlane config.tcl
     user_project_includes_filename = "user_project_includes.v"
 
     logging.info(f"generating {user_project_includes_filename} locally")
@@ -34,6 +36,19 @@ def generate_openlane_files(
         shutil.move(user_project_includes_filename, target_user_project_includes_path)
     else:
         logging.info(f"leaving {user_project_includes_filename} here")
+    
+    ### caravel includes ###
+    ### for simulation
+    caravel_includes_filename = "uprj_netlists.v"
+
+    logging.info(f"generating {caravel_includes_filename} locally")
+    generate_caravel_includes(projects, caravel_includes_filename)
+
+    if target_caravel_includes_path:
+        logging.info(f"{caravel_includes_filename} to {target_caravel_includes_path}")
+        shutil.move(caravel_includes_filename, target_caravel_includes_path)
+    else:
+        logging.info(f"leaving {caravel_includes_filename} here")
     
 
 def generate_openlane_user_project_include(projects, outfile):
@@ -59,6 +74,34 @@ def generate_openlane_user_project_include(projects, outfile):
 
     with open(outfile, "w") as f:
         f.write("\n".join(include_snippets))
+
+def generate_caravel_includes(projects, outfile):
+    with open("codegen/uprj_netlists.txt", "r") as f:
+        filedata = f.read()
+
+    gl_includes = ""
+    project_includes = ""
+    for project in projects:
+        project_includes += ("// %s\n" % project)
+        for path in project.get_module_source_paths(absolute=False):
+            path = os.path.join(os.path.basename(project.directory), path)
+            project_includes += ('	`include "%s"\n' % path)
+
+        gl_includes += ('`include "gl/%s"\n' % project.config['gds']['lvs_filename'])
+
+    # TODO
+    # GL is broken in caravel, so can't use this file the way it's meant to be used. 
+    # Setting GL in the Makefile will always die until the GL of Caravel is fixed
+    # So instead, put the GL includes in the RTL includes, and don't set GL
+    filedata = filedata.replace('GL_INCLUDES',  gl_includes)
+#    if gl == True:
+#        filedata = filedata.replace('RTL_INCLUDES', gl_includes)
+#    else:
+    filedata = filedata.replace('RTL_INCLUDES', project_includes)
+
+    with open(outfile, "w") as f:
+        f.write(filedata)
+
 
 def generate_openlane_user_project_wrapper(projects, interface_definitions, outfile):
     verilog_snippets: List[str] = []
