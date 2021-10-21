@@ -22,7 +22,7 @@ projects:
         commit: 'mpw3'
     vga clock:
         repo: 'https://github.com/mattvenn/wrapped_vga_clock'
-        commit: 'mpw3'
+        commit: 'main'
 
 configuration:
     project_directory: "mpw3_repos"
