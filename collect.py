@@ -183,8 +183,8 @@ class Collection(object):
 
             fh.write("## %s\n\n" % conf["title"])
             fh.write("* Author: %s\n" % conf["author"])
-            fh.write("* Github: [%s](%s)\n" % (conf["github"], conf["github"]))
-            fh.write("* commit: %s\n" % project.get_git_version())
+            fh.write("* Github: %s\n" % project.repo)
+            fh.write("* commit: %s\n" % project.commit)
             fh.write("* Description: %s\n\n" % conf["description"])
             fh.write("![%s](%s)\n\n" % (conf["title"], pic_dst))
 
