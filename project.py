@@ -58,17 +58,9 @@ class Project(object):
         if self.args.test_all or self.args.test_gds:
             self.test_gds()
 
-        # think this should be removed now
-        if self.args.test_all or self.args.test_interface:
-            self.test_interface()
-
         # currently broken, waiting on testing a new netgen
         if self.args.test_all or self.args.test_lvs:
             self.test_lvs()
-
-        # no longer valid
-        if self.args.test_all or self.args.test_tristate_num:
-            self.test_tristate_num()
 
         if self.args.test_all or self.args.test_ports:
             self.validate_ports()
@@ -199,22 +191,6 @@ class Project(object):
 
         logging.info("caravel test pass")
 
-    # only valid if the LVS test passes
-    def test_interface(self):
-        conf = self.config["gds"]
-        powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])
-
-        with open(powered_v_filename) as fh:
-            powered_v = fh.read()
-        
-        with open(self.system_config["wrapper"]["interface"]) as fh:
-            for io in fh.readlines():
-                if io.strip() not in powered_v:
-                    logging.error("io port [%s] not found in %s" % (io.strip(), powered_v_filename))
-                    exit(1)
-            
-        logging.info("module interface pass")
-
     def test_gds(self):
         if 'waive_gds' in self.config['project']:
             logging.info("skipping GDS in this test due to %s" % self.config['project']['waive_gds'])
@@ -232,26 +208,6 @@ class Project(object):
             exit(1)
 
         logging.info("GDS pass")
-
-    # not a great test, as tristate could be in use elsewhere.
-    # better to parse the cells and check outputs of the tristates are correct)
-    # only valid if the LVS test passes
-    def test_tristate_num(self):
-        conf = self.config["gds"]
-        powered_v_filename = os.path.join(self.directory, conf["directory"], conf["lvs_filename"])
-
-        count = 0
-        tristate_cell = 'sky130_fd_sc_hd__ebufn_' # 1 or 2 is fine
-        with open(powered_v_filename) as fh:
-            for line in fh.readlines():
-                if tristate_cell in line:
-                    count += 1
-
-        if count != self.system_config["tests"]["tristates"]:
-            logging.error("wrong number of tristates [%s] %d in %s" % (tristate_cell, count, powered_v_filename))
-            exit(1)
-
-        logging.info("tristate test pass")
 
     def test_lvs(self):
         if 'waive_lvs' in self.config['project']:

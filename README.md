@@ -70,11 +70,9 @@ This command will run all the tests against all projects:
 * Runs a module test given Makefile and recipe
 * Runs the Caravel simulation given Makefile and recipe
 * Runs formal proof on wrapper tristated outputs
-* Checks wrapper md5sum is correct (if doing an LVS with gds and powered Verilog, then is there any point in doing md5sum on wrapper?)
 * Checks GDS nothing on layer metal 5
-* Run LVS against powered Verilog and GDS - requires v0.9 OpenLANE/PDK
-* Checks powered Verilog has correct number of tristate buffers
-* Checks powered Verilog has correct module interface
+* Run LVS against powered Verilog and GDS - requires new netgen
+* Checks powered Verilog has Z outputs if not active
 
 This functionality is contained within the [Project class](project.py)
 

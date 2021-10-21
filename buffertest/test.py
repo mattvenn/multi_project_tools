@@ -5,11 +5,11 @@ from cocotb.triggers import Timer
 async def test_output_z(dut):
 
     # power up
-    dut.vccd1 <= 1
-    dut.vssd1 <= 0
+    dut.vccd1.value = 1
+    dut.vssd1.value = 0
 
     # not active
-    dut.active <= 0
+    dut.active.value = 0
 
     for i in range(10):
         await Timer(1, units="ns")

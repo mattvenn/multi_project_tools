@@ -4,6 +4,8 @@ COMPILE_ARGS=-I $(PDK_ROOT)/sky130A/
 # MODULE is the basename of the Python test file
 MODULE = test
 
+export COCOTB_REDUCED_LOG_FMT=1
+export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
 
