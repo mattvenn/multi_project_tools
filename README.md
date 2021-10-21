@@ -50,8 +50,9 @@ When the active wire goes high, the wrapper's outputs are switched from high-z t
 
 * caravel_user_project with OpenLANE & PDK installed as given in instructions.
 * projects.yaml file with correct paths
-* netgen local install: https://github.com/RTimothyEdwards/netgen (commit 402e1f0f254c6c0cf36c90ff5d6a09134b9196ba for MPW2)- TODO use the one in the OpenLANE docker
-* gdspy: https://pypi.org/project/gdspy/
+* netgen local install: https://github.com/RTimothyEdwards/netgen (version 1.5.205)- TODO use the one in the OpenLANE docker
+
+See the requirements.txt file for Python reqs.
 
 ## Config file
 
@@ -70,7 +71,6 @@ This command will run all the tests against all projects:
 * Runs the Caravel simulation given Makefile and recipe
 * Runs formal proof on wrapper tristated outputs
 * Checks wrapper md5sum is correct (if doing an LVS with gds and powered Verilog, then is there any point in doing md5sum on wrapper?)
-* Checks GDS is correct size
 * Checks GDS nothing on layer metal 5
 * Run LVS against powered Verilog and GDS - requires v0.9 OpenLANE/PDK
 * Checks powered Verilog has correct number of tristate buffers

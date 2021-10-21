@@ -225,13 +225,6 @@ class Project(object):
         import gdspy
         gdsii = gdspy.GdsLibrary(infile=gds_file)
         toplevel = gdsii.top_level()[0]
-        width = self.system_config["tests"]["gds"]["width"]
-        height = self.system_config["tests"]["gds"]["height"]
-
-        # correct size
-        if not (toplevel.get_bounding_box() == [[0,0],[width,height]]).all():
-            logging.error("%s is the wrong size %s" % (gds_file, toplevel.get_bounding_box()))
-            exit(1)
 
         # nothing on metal 5
         if self.system_config["tests"]["gds"]["metal5_id"] in toplevel.get_layers():
