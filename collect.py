@@ -129,7 +129,8 @@ class Collection(object):
             self.projects, 
             self.interface_definitions, 
             user_project_wrapper_path, 
-            user_project_includes_path
+            user_project_includes_path,
+            None
         )
 
         ### copy out rtl ###

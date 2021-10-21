@@ -7,7 +7,7 @@ A tool to help automate verification of sub projects and collect and harden them
 
 Projects must conform to the [specification](docs/project_spec.md). 
 
-See this [generated index page](https://github.com/mattvenn/caravel_user_project/blob/submission-mpw-two-c/README.md) for some example projects.
+See this [generated index page](https://github.com/mattvenn/zero_to_asic_mpw3/README.md) for some example projects.
 
 See this repo you can use as a template: https://github.com/mattvenn/wrapped_project_template
 
