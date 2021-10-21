@@ -378,3 +378,5 @@ class Project(object):
             logging.error("additional interfaces found in module")
             logging.error(module_ports)
             exit(1)
+
+        logging.info("test ports pass")
