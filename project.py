@@ -304,6 +304,7 @@ class Project(object):
         test_env                       = os.environ.copy()
         test_env["POWERED_VERILOG"]    = powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["gds"]["directory"], self.config["gds"]["lvs_filename"]))
         test_env["TOPLEVEL"]           = self.config["caravel_test"]["module_name"]
+        test_env["PDK_ROOT"]           = self.system_config["lvs"]["PDK_ROOT"]
 
         cmd = ["make", "clean", "test"]
         cwd = "buffertest"

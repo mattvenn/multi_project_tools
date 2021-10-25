@@ -5,7 +5,7 @@ from project import Project
 from codegen.caravel_codegen import generate_openlane_files
 from codegen.allocator import allocate_macros
 
-REQUIRED_KEYS_GROUP = ["projects", "caravel", "wrapper", "lvs"]
+REQUIRED_KEYS_GROUP = ["projects", "caravel", "lvs"]
 
 
 class Collection(object):

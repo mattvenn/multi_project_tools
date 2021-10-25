@@ -23,6 +23,9 @@ projects:
     vga clock:
         repo: 'https://github.com/mattvenn/wrapped_vga_clock'
         commit: 'main'
+    TPM2137:
+        repo: 'https://github.com/mattvenn/wrapped_tpm2137'
+        commit: 'main'
 
 configuration:
     project_directory: "mpw3_repos"
@@ -37,10 +40,6 @@ caravel:
     rtl_dir:        /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/rtl/
     config:         config.tcl
 
-wrapper:
-    md5sum:             0ec8fdff7ae891b1b156030a841d1800
-    includes_template:  uprj_netlists.sub.v
-
 env: # used for simulation
     GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
     GCC_PREFIX:     riscv64-unknown-elf
@@ -48,15 +47,13 @@ env: # used for simulation
 
 lvs:
     PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
+    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/
     OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
 
 tests:
     gds:
-        width:      300
-        height:     300
         # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
         metal5_id:  72 
-    tristates:      144
 
 docs:
     pic_dir:        pics
