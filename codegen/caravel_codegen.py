@@ -147,7 +147,7 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     for project in projects:
         verilog_snippets.append(
             generate_openlane_user_project_wrapper_instance(
-                project.title,
+                project.module_name,
                 project.id,
                 project.interfaces,
                 interface_definitions
@@ -169,10 +169,10 @@ def generate_openlane_user_project_wrapper_instance(
     interfaces: List[str],
     interface_defs: Dict[str, Dict[str, int]]
 ) -> str:
-    verilog_name = macro_name.lower().replace(" ", "_")
+    verilog_name = macro_name
     
     verilog_snippet: List[str] = []
-    verilog_snippet.append(f"    wrapped_{verilog_name} wrapped_{verilog_name}_{instance_name}(")
+    verilog_snippet.append(f"    {verilog_name} {verilog_name}_{instance_name}(")
     
     for macro_interface in interfaces:
         if macro_interface == "power":

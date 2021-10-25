@@ -28,6 +28,7 @@ class Project(object):
         yaml_file = os.path.join(self.directory, 'info.yaml')
         self.config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE)
         self.id = int(self.config['caravel_test']['id'])
+        self.module_name = self.config['caravel_test']['module_name']
 
         self.interfaces = required_interfaces + self.config['interfaces'] 
         
