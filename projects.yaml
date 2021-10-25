@@ -9,9 +9,9 @@ interfaces:
         la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
         la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
         la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
-        irq: {irq: 3}
+        irq: {user_irq: 3}
         clk2 : {user_clock2: 1}
-        wishbone: {wb_rst_i: 1, wb_clk_i: 1, wb_stb_i: 1, wb_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_addr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+        wishbone: {wb_rst_i: 1, wbs_stb_i: 1, wbs_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_adr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
 
 projects:
     rgb mixer:
@@ -26,6 +26,9 @@ projects:
     TPM2137:
         repo: 'https://github.com/mattvenn/wrapped_tpm2137'
         commit: 'main'
+    zube:
+        repo: 'https://github.com/thejpster/zube_submission'
+        commit: 'v1.1.0'
 
 configuration:
     project_directory: "mpw3_repos"
