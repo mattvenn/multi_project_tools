@@ -28,10 +28,10 @@ projects:
         commit: 'main'
     zube:
         repo: 'https://github.com/thejpster/zube_submission'
-        commit: 'v1.1.0'
+        commit: 'v1.2.0'
 
 configuration:
-    project_directory: "mpw3_repos"
+    project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
     macro_snap: 0.23 # half of met2 pin/track space
     user_area_width: 2920
     user_area_height: 3520
