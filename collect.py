@@ -159,7 +159,8 @@ class Collection(object):
             for project in self.projects:
                 name = project.title
                 alloc = allocation[project.id]
-                verilog_name = "wrapped_" + name.lower().replace(" ", "_") + "_" + str(project.id)
+                # TODO fixme! this is also generated in caravel_codegen
+                verilog_name = project.module_name + "_" + str(project.id)
                 logging.info(f"placing {verilog_name} @ {alloc}")
                 f.write(f"{verilog_name} {alloc[0]} {alloc[1]} N\n")
 
