@@ -100,6 +100,8 @@ class Collection(object):
         macro_h = 220
         macro_w = 220
 
+        # TODO fix this - use the macro generation code instead.
+        # this breaks as soon as there are gaps in the project ids
         for column in range(4):
             for row in range(4):
                 macro_count = (3-row) + column*4
@@ -116,9 +118,6 @@ class Collection(object):
                 draw.line((x + macro_w, y          , x + macro_w, y + macro_h), fill=(0,0,0), width=2)
                 draw.line((x + macro_w, y + macro_h, x          , y + macro_h), fill=(0,0,0), width=2)
                 draw.line((x          , y + macro_h, x          , y          ), fill=(0,0,0), width=2)
-#                draw.line((x + macro_w, y, x + macro_h, fill=128)
-#                draw.line((macro_w, y + macro_h, fill=128)
-#                draw.line((0, img.size[1], img.size[0], 0), fill=128)
         img.save("multi_macro_label.png")
 
     def create_openlane_config(self):
