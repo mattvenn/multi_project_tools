@@ -26,6 +26,9 @@ projects:
     TPM2137:
         repo: 'https://github.com/mattvenn/wrapped_tpm2137'
         commit: 'main'
+    WS2812:
+        repo: 'https://github.com/mattvenn/wrapped_ws2812'
+        commit: 'main'
     zube:
         repo: 'https://github.com/thejpster/zube_submission'
         commit: 'v1.2.0'
