@@ -1,7 +1,15 @@
-# Multi project specification - DRAFT
+# Multi project specification - updated for MPW3
 
 Project provides an info.yaml file at the top level directory.
-See example specs in the [project index](../index.md)
+See example specs in the [project index](https://github.com/mattvenn/zero_to_asic_mpw3/blob/mpw3/README.md)
+
+# Updates for MPW3
+
+* Optional interface - use only the parts of the shared interface you need
+* Don't require pin_config for OpenLANE
+* Don't require 300x300um size. You can make it smaller, although it should be at least 200 um tall to pick up the power lines
+* Remove github link in the project section
+* LA0 is now used for selecting the active project, LA1 is used for communication between RISCV & your project - this means your firmware.c needs to change.
 
 ## Information
 
