@@ -10,8 +10,27 @@ See example specs in the [project index](../index.md)
       description: "reads 3 encoders and generates PWM signals to drive an RGB LED"
       author: "Matt Venn"       
       picture: doc/schematic.jpg
-      github: https://github.com/mattvenn/wrapped_rgb_mixer/tree/caravel-mpw2
       license: LICENSE
+
+## Interfaces
+
+Each project must have some required interfaces. See the example https://github.com/mattvenn/wrapped_project_template/blob/mpw3/wrapper.v
+
+        power: {vccd1: 1, vssd1: 1}
+        clock: {wb_clk_i: 1}
+        active: {active: 1}
+
+Then there are the optional interfaces. These can be turned on my commenting the ifdefs at the top of the file.
+
+        gpio: {io_in: 38, io_out: 38, io_oeb: 38}
+        la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
+        la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
+        la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
+        irq: {user_irq: 3}
+        clk2 : {user_clock2: 1}
+        wishbone: {wb_rst_i: 1, wbs_stb_i: 1, wbs_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_adr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+
+By having optional interfaces, you can use less pins, and make your design smaller.
 
 ## Caravel test
 
@@ -36,7 +55,7 @@ Update the info.yaml config:
     caravel_test:
       recipe: "coco_test"                   # name of the recipe
       directory: "caravel_rgb_mixer"        # directory that contains the Makefile, firmware, testbench
-      id: 0                                 # ID of your project, 
+      id: 0                                 # ID of your project - request this from Matt, 
       module_name: "wrapped_rgb_mixer"      # module name for instantiation inside user project wrapper
       instance_name: "wrapped_rgb_mixer"    # instance name for instantiation inside user project wrapper
 
@@ -78,7 +97,7 @@ A list of all the source files. These are used in 2 contexts: simulation inside 
 
 ## GDS
 
-GDS, LEF and post synth netlist files. These are used to check size, layers and LVS. With LVS correct, module interface can be verified and number of tristate buffers verified.
+GDS, LEF and post synth netlist files. These are used to layers and LVS. With LVS correct, module interface can be verified.
 
     gds:
       directory: "gds"          # directory containing the following files:
