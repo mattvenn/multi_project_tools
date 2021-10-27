@@ -32,6 +32,9 @@ projects:
     zube:
         repo: 'https://github.com/thejpster/zube_submission'
         commit: 'v1.2.0'
+    Hack Soc:
+        repo: 'https://github.com/mbalestrini/wrapped_hack_soc'
+        commit: 'f9c39c3cff53683a6e26b55d6d7da565dff1822c'
 
 configuration:
     project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
