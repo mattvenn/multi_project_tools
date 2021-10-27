@@ -31,7 +31,7 @@ projects:
         commit: 'main'
     zube:
         repo: 'https://github.com/thejpster/zube_submission'
-        commit: 'v1.2.0'
+        commit: 'v1.3.0'
     Hack Soc:
         repo: 'https://github.com/mbalestrini/wrapped_hack_soc'
         commit: 'f9c39c3cff53683a6e26b55d6d7da565dff1822c'
