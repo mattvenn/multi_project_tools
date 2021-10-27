@@ -51,9 +51,13 @@ def try_mkdir(dst, force_delete):
 
 def clone_repo(repo_url, commit, repo_dir, force_delete):
 
-    if os.path.exists(repo_dir) and force_delete:
-        logging.warning("deleting %s" % repo_dir)
-        shutil.rmtree(repo_dir)
+    if os.path.exists(repo_dir):
+        if force_delete:
+            logging.warning("deleting %s" % repo_dir)
+            shutil.rmtree(repo_dir)
+        else:
+            logging.warning("directory already exists - skipping. Use --force-delete to remove")
+            return
 
     logging.info("cloning %s" % repo_url)
     repo = git.Repo.clone_from(repo_url, repo_dir)
