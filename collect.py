@@ -104,8 +104,10 @@ class Collection(object):
         y_offset = (2000 - user_height) / 2
 
         allocation = self.allocate_macros()
+        logging.info("annotating image")
         for project in self.projects:
             alloc = allocation[project.id]
+            logging.info(project)
             x = x_offset + alloc[0] * px_per_um - macro_border
             y = 2000 - (y_offset + alloc[1] * px_per_um - macro_border) # flip, gds is bottom left 0,0, png is top left 0,0
             # takes a while
