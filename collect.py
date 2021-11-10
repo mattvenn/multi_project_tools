@@ -85,40 +85,57 @@ class Collection(object):
             project.copy_gl()
 
     def annotate_image(self):
-        image_file = os.path.join(self.config['caravel']['root'], 'pics', 'multi_macro.png')
+        final_gds_file = os.path.join(self.config['caravel']['root'], 'gds', 'user_project_wrapper.gds.gz')
+        # dump a 2000x2000 image with klayout to pics/multi_macro.png, check the dump_pic.rb file
+        os.system("klayout -l caravel.lyp %s -r dump_pic.rb" % final_gds_file)
+        image_file = os.path.join('pics', 'multi_macro.png')
         from PIL import Image, ImageFont, ImageDraw
         font_author = ImageFont.truetype("/usr/share/fonts/dejavu/DejaVuSans.ttf", 27)
         font_title = ImageFont.truetype("/usr/share/fonts/dejavu/DejaVuSans.ttf", 22)
         img = Image.open(image_file)
         draw = ImageDraw.Draw(img)
 
-        # hack TODO better to base this off the relative size of the image and the die
-        h_edge = 378
-        v_edge = 280
-        h_space = 122
-        v_space = 185
-        macro_h = 220
-        macro_w = 220
+        px_per_um = self.config['docs']['px_per_um']
+        macro_border = self.config['docs']['macro_border']
+        user_width = self.width * px_per_um
+        user_height = self.height * px_per_um
 
-        # TODO fix this - use the macro generation code instead.
-        # this breaks as soon as there are gaps in the project ids
-        for column in range(4):
-            for row in range(4):
-                macro_count = (3-row) + column*4
+        x_offset = (2000 - user_width) / 2
+        y_offset = (2000 - user_height) / 2
 
-                y = v_edge + (v_space + macro_h)  * row
-                x = h_edge + (h_space + macro_w)  * column
+        allocation = self.allocate_macros()
+        for project in self.projects:
+            alloc = allocation[project.id]
+            x = x_offset + alloc[0] * px_per_um - macro_border
+            y = 2000 - (y_offset + alloc[1] * px_per_um - macro_border) # flip, gds is bottom left 0,0, png is top left 0,0
+            # takes a while
+            macro_w, macro_h = project.get_gds_size()
+            macro_w = macro_w * px_per_um + 2*macro_border
+            macro_h = macro_h * px_per_um + 2*macro_border
 
-                title = self.projects[macro_count].config['project']['title']
-                author = self.projects[macro_count].config['project']['author']
-                draw.text((x,y-70), author, (0,0,0), font=font_author)
-                draw.text((x,y-40), title, (0,0,0), font=font_title)
+            draw.text((x,y-macro_h-70), project.author, (0,0,0), font=font_author)
+            draw.text((x,y-macro_h-40), project.title, (0,0,0), font=font_title)
 
-                draw.line((x,           y          , x + macro_w, y          ), fill=(0,0,0), width=2)
-                draw.line((x + macro_w, y          , x + macro_w, y + macro_h), fill=(0,0,0), width=2)
-                draw.line((x + macro_w, y + macro_h, x          , y + macro_h), fill=(0,0,0), width=2)
-                draw.line((x          , y + macro_h, x          , y          ), fill=(0,0,0), width=2)
-        img.save("multi_macro_label.png")
+            draw.line((x,           y          , x + macro_w, y          ), fill=(0,0,0), width=2)
+            draw.line((x + macro_w, y          , x + macro_w, y - macro_h), fill=(0,0,0), width=2)
+            draw.line((x + macro_w, y - macro_h, x          , y - macro_h), fill=(0,0,0), width=2)
+            draw.line((x          , y - macro_h, x          , y          ), fill=(0,0,0), width=2)
+
+        annotated_image_file = os.path.join('pics', 'multi_macro_annotated.png')
+        img.save(annotated_image_file)
+
+    def allocate_macros(self):
+        # allocate macros and generate macro.cfg
+        allocation = allocate_macros(
+            design_size_x = self.width,
+            design_size_y = self.height,
+            h_edge = 344,
+            v_edge = 464,
+            macro_snap = self.config['configuration']['macro_snap'],
+            projects = self.projects,
+            allocation_policy = "legacy"
+        )
+        return allocation
 
     def create_openlane_config(self):
         ### generate user wrapper and include ###
@@ -142,16 +159,7 @@ class Collection(object):
         logging.info(f"copying {src} to {dst}")
         shutil.copyfile(src, dst)
 
-        # allocate macros and generate macro.cfg
-        allocation = allocate_macros(
-            design_size_x = self.width,
-            design_size_y = self.height,
-            h_edge = 344,
-            v_edge = 464,
-            macro_snap = self.config['configuration']['macro_snap'],
-            projects = self.projects,
-            allocation_policy = "legacy"
-        )
+        allocation = self.allocate_macros()
 
         macro_inst_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
         with open(macro_inst_file, "w") as f:

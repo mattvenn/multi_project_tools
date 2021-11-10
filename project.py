@@ -1,4 +1,5 @@
 import subprocess
+import gdspy
 import shutil
 from utils import *
 from codegen.caravel_codegen import generate_openlane_files
@@ -187,6 +188,13 @@ class Project(object):
 
         logging.info("caravel test pass")
 
+    def get_gds_size(self):
+        conf = self.config["gds"]
+        gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
+        gdsii = gdspy.GdsLibrary(infile=gds_file)
+        toplevel = gdsii.top_level()[0]
+        return toplevel.get_bounding_box()[1]
+
     def test_gds(self):
         if 'waive_gds' in self.config['project']:
             logging.info("skipping GDS in this test due to %s" % self.config['project']['waive_gds'])
@@ -194,9 +202,9 @@ class Project(object):
 
         conf = self.config["gds"]
         gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
-        import gdspy
         gdsii = gdspy.GdsLibrary(infile=gds_file)
         toplevel = gdsii.top_level()[0]
+
 
         # nothing on metal 5
         if self.system_config["tests"]["gds"]["metal5_id"] in toplevel.get_layers():

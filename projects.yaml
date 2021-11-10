@@ -31,7 +31,7 @@ projects:
         commit: 'main'
     zube:
         repo: 'https://github.com/thejpster/zube_submission'
-        commit: 'v1.4.0'
+        commit: 'v1.4.1'
     Hack Soc:
         repo: 'https://github.com/mbalestrini/wrapped_hack_soc'
         commit: 'f9c39c3cff53683a6e26b55d6d7da565dff1822c'
@@ -70,3 +70,5 @@ tests:
 docs:
     pic_dir:        pics
     index:          index.md
+    px_per_um:      0.53 # for the image markup
+    macro_border:   25 # px
