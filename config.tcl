@@ -69,7 +69,7 @@ lappend ::env(EXTRA_GDS_FILES) $::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram
 # turn off li for any routing
 # and add workaround for precheck issues with met4 clearance after maglef substitution for OpenRAM
 set ::env(GLB_RT_OBS)  "li1  0     0     2920 3520,
-                        met4 1000 1000 1479.78 1397.50"
+                        met4 2020 480 2499.78 877.5"
 
 
 set ::env(GLB_RT_ALLOW_CONGESTION) "1"

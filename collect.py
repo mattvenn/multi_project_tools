@@ -175,7 +175,8 @@ class Collection(object):
                 f.write(f"{verilog_name} {alloc[0]} {alloc[1]} N\n")
 
             if self.args.openram:
-                f.write(f"openram_1kB 1000 1000 N\n")
+                # TODO
+                f.write(f"openram_1kB 2020 480 N\n")
                 
 
 
