@@ -20,6 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('--test-ports', help="check ports defined in yaml match the verilog", action='store_const', const=True)
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
 
+    parser.add_argument('--openram', help="use openram", action='store_const', const=True)
     parser.add_argument('--clone-repos', help="git clone the repo", action='store_const', const=True)
     parser.add_argument('--create-openlane-config', help="create the OpenLANE configs for user project wrapper", action='store_const', const=True)
     parser.add_argument('--copy-gds', help="copy the projects GDS and LEF files", action='store_const', const=True)

@@ -10,13 +10,14 @@ def generate_openlane_files(
     target_user_project_wrapper_path: Optional[str],
     target_user_project_includes_path: Optional[str],
     target_caravel_includes_path: Optional[str],
+    openram
 ) -> None:
 
     ### user project wrapper ###
     user_project_wrapper_filename = "user_project_wrapper.v"
 
     logging.info(f"generating {user_project_wrapper_filename} locally")
-    generate_openlane_user_project_wrapper(projects, interface_definitions, user_project_wrapper_filename)
+    generate_openlane_user_project_wrapper(projects, interface_definitions, user_project_wrapper_filename, openram)
 
     if target_user_project_wrapper_path:
         logging.info(f"{user_project_wrapper_filename} to {target_user_project_wrapper_path}")
@@ -42,7 +43,7 @@ def generate_openlane_files(
     caravel_includes_filename = "uprj_netlists.v"
 
     logging.info(f"generating {caravel_includes_filename} locally")
-    generate_caravel_includes(projects, caravel_includes_filename)
+    generate_caravel_includes(projects, caravel_includes_filename, openram)
 
     if target_caravel_includes_path:
         logging.info(f"{caravel_includes_filename} to {target_caravel_includes_path}")
@@ -75,7 +76,7 @@ def generate_openlane_user_project_include(projects, outfile):
     with open(outfile, "w") as f:
         f.write("\n".join(include_snippets))
 
-def generate_caravel_includes(projects, outfile):
+def generate_caravel_includes(projects, outfile, openram):
     with open("codegen/uprj_netlists.txt", "r") as f:
         filedata = f.read()
 
@@ -88,6 +89,10 @@ def generate_caravel_includes(projects, outfile):
             project_includes += ('	`include "%s"\n' % path)
 
         gl_includes += ('`include "gl/%s"\n' % project.config['gds']['lvs_filename'])
+
+    if openram:
+        project_includes += ('	// include openram model\n')
+        project_includes += ('	`include "libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"\n')
 
     # TODO
     # GL is broken in caravel, so can't use this file the way it's meant to be used. 
@@ -103,7 +108,7 @@ def generate_caravel_includes(projects, outfile):
         f.write(filedata)
 
 
-def generate_openlane_user_project_wrapper(projects, interface_definitions, outfile):
+def generate_openlane_user_project_wrapper(projects, interface_definitions, outfile, openram):
     verilog_snippets: List[str] = []
 
     ### generate header ###
@@ -141,6 +146,34 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     verilog_snippets.append("    assign la3_data_out = la_data_out[127:96];")
     verilog_snippets.append("    assign la3_oenb = la_oenb[127:96];")
     verilog_snippets.append("")
+
+    ### openram
+    if openram:
+        verilog_snippets.append("    // Signals connecting OpenRAM with its wrapper")
+        verilog_snippets.append("    wire openram_clk0;")
+        verilog_snippets.append("    wire openram_csb0;")
+        verilog_snippets.append("    wire openram_web0;")
+        verilog_snippets.append("    wire [3:0] openram_wmask0;")
+        verilog_snippets.append("    wire [7:0] openram_addr0;")
+        verilog_snippets.append("    wire [31:0] openram_din0;")
+        verilog_snippets.append("    wire [31:0] openram_dout0;")
+        verilog_snippets.append("    ")
+        verilog_snippets.append("    // OpenRAM instance")
+        verilog_snippets.append("    sky130_sram_1kbyte_1rw1r_32x256_8 openram_1kB")
+        verilog_snippets.append("    (")
+        verilog_snippets.append("    `ifdef USE_POWER_PINS")
+        verilog_snippets.append("        .vccd1 (vccd1),")
+        verilog_snippets.append("        .vssd1 (vssd1),")
+        verilog_snippets.append("    `endif")
+        verilog_snippets.append("    ")
+        verilog_snippets.append("        .clk0 (openram_clk0),")
+        verilog_snippets.append("        .csb0 (openram_csb0),")
+        verilog_snippets.append("        .web0 (openram_web0),")
+        verilog_snippets.append("        .wmask0 (openram_wmask0),")
+        verilog_snippets.append("        .addr0 (openram_addr0),")
+        verilog_snippets.append("        .din0 (openram_din0),")
+        verilog_snippets.append("        .dout0 (openram_dout0)")
+        verilog_snippets.append("    );")
 
     ### generate project includes ###
 

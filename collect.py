@@ -148,7 +148,8 @@ class Collection(object):
             self.interface_definitions, 
             user_project_wrapper_path, 
             user_project_includes_path,
-            None
+            None,
+            self.args.openram
         )
 
         ### copy out rtl ###
@@ -172,6 +173,10 @@ class Collection(object):
                 verilog_name = project.module_name + "_" + str(project.id)
                 logging.info(f"placing {verilog_name} @ {alloc}")
                 f.write(f"{verilog_name} {alloc[0]} {alloc[1]} N\n")
+
+            if self.args.openram:
+                f.write(f"openram_1kB 1000 1000 N\n")
+                
 
 
     """

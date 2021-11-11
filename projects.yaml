@@ -12,6 +12,7 @@ interfaces:
         irq: {user_irq: 3}
         clk2 : {user_clock2: 1}
         wishbone: {wb_rst_i: 1, wbs_stb_i: 1, wbs_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_adr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+        openram: { openram_clk0: 1, openram_csb0: 1, openram_web0: 1,  openram_wmask0: 4, openram_addr0: 8, openram_din0: 32, openram_dout0: 32}
 
 projects:
     rgb mixer:
@@ -38,6 +39,12 @@ projects:
     NCO:
         repo: 'https://github.com/ameetgohil/mpw3-nco'
         commit: 'main'
+    WB_HyperRAM:
+        repo:   'https://github.com/embelon/wrapped_wb_hyperram'
+        commit: 'a9d3646c1d7455d49b34a20d22175bcbe81a0d16'
+    WB_OpenRAM:
+        repo:   'https://github.com/embelon/wrapped_wb_openram_shim'
+        commit: 'mpw3'
 
 configuration:
     project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"

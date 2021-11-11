@@ -155,7 +155,8 @@ class Project(object):
             interface_definitions,
             user_project_wrapper_path, 
             user_project_includes_path,
-            caravel_includes_path
+            caravel_includes_path,
+            self.args.openram
         )
 
         # copy test inside caravel
