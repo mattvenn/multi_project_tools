@@ -179,6 +179,7 @@ class Collection(object):
                 # TODO
                 f.write(f"openram_1kB 2020 480 N\n")
     
+        """
         with open("obs.txt", "w") as f:
             for project in self.projects:
                 alloc = allocation[project.id]
@@ -186,6 +187,7 @@ class Collection(object):
                 f.write("met 4 %.2d %.2d %.2d %.2d,\n" % (alloc[0]+5, alloc[1]+5, alloc[0]+macro_w-5, alloc[1]+macro_h-5))
                 f.write("met 3 %.2d %.2d %.2d %.2d,\n" % (alloc[0]+5, alloc[1]+5, alloc[0]+macro_w-5, alloc[1]+macro_h-5))
                 f.write("met 2 %.2d %.2d %.2d %.2d,\n" % (alloc[0]+5, alloc[1]+5, alloc[0]+macro_w-5, alloc[1]+macro_h-5))
+        """
             
 
     """
