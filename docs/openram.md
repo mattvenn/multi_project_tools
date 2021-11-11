@@ -30,3 +30,6 @@ From caravel_user_project setup as usual, instead of running make pdk, I do this
 * If you get DRC errors or your precheck fails, you can try the following:
     *  
 
+## Todo
+
+* OpenRAM block gets placed with hardcoded co-ordinates in collect.py and also in config.tcl (for the obstruction layer)
