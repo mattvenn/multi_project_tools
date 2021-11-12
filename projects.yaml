@@ -42,17 +42,20 @@ projects:
     WB_HyperRAM:
         repo:   'https://github.com/embelon/wrapped_wb_hyperram'
         commit: 'mpw3'
+    Parallax:
+        repo:   'https://github.com/rejunity/zero-to-asic-wrapped-parallax'
+        commit: 'main'
     WB_OpenRAM:
         repo:   'https://github.com/embelon/wrapped_wb_openram_shim'
         commit: 'mpw3'
-    WB_demo:
-        repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
-        commit: 'main'
     Wiggly:
         repo:   'https://github.com/osnr/wrapped_wiggly_ic_1'
         commit: 'main'
     KeyValue:
         repo:   'https://github.com/giraypultar/wrapped_keyvalue'
+        commit: 'main'
+    WB_demo:
+        repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
         commit: 'main'
 
 configuration:
