@@ -42,17 +42,21 @@ def legacy_allocation(
         y = y_edge + (y_space + macro_y)  * py
 
         # snap to grid
-        x = int(x / macro_snap) * macro_snap
-        y = int(y / macro_snap) * macro_snap
+        x = round(int(x / macro_snap) * macro_snap, 2)
+        y = round(int(y / macro_snap) * macro_snap, 2)
 
         allocation[id_] = (x, y)
    
     # HACK! TODO, hope this will be fixed with new allocator
+    # this is so terrid
     if openram:
         # put whatever is in position 0 to the end so there is room for openram
-        num_projects = len(projects)
-        allocation[0] = allocation[num_projects]
-        logging.info("moving project with id 0 to %d" % num_projects)
+        max_id = 0
+        for project in projects:
+            if project.id > max_id:
+                max_id = project.id
+        allocation[0] = allocation[max_id + 1]
+        logging.info("moving project with id 0 to %d" % (max_id + 1))
 
         # swap whatever is in pos 4 (to the right of openram) with the wb shim
         for project in projects:
@@ -60,7 +64,7 @@ def legacy_allocation(
                 logging.info("swapping projects %s and %s to put shim next to openram" % (projects[4], project))
                 old = allocation[4]
                 allocation[4] = allocation[project.id]
-                old = (int(old[0] + 200), old[1]) # move it 200um to the right
+                old = (int(old[0] + 150), old[1]) # move it 150 to the right to give routing to openram more space
                 allocation[project.id] = old
                 break
 
