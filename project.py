@@ -14,8 +14,8 @@ class Project(object):
     def __init__(self, args, repo, commit, required_interfaces, system_config):
         self.args = args
         self.system_config = system_config
-        self.repo = repo
-        self.commit = commit
+        self.repo = repo # the repo on github
+        self.commit = commit # not strictly a commit, could be a branch
 
         project_dir = self.system_config['configuration']['project_directory']
 
@@ -25,6 +25,8 @@ class Project(object):
 
         if args.clone_repos:
             self.clone_repo()
+
+        self.gitsha = get_git_sha(self.directory)
 
         yaml_file = os.path.join(self.directory, 'info.yaml')
         self.config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE)
@@ -43,7 +45,12 @@ class Project(object):
         return "%2d %-30s : %s" % (self.id, self.title, self.directory)
 
     def run_tests(self):
-        logging.info(self)
+        # print out info about the project
+        if self.args.dump_hash:
+            logging.info("%-30s %-20s %s %s" % (self.author, self.title, self.gitsha, self.repo))
+        else:
+            logging.info(self)
+
         if self.args.test_all or self.args.test_module:
             self.test_module()
 

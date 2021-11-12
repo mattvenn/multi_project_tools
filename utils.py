@@ -49,6 +49,9 @@ def try_mkdir(dst, force_delete):
             exit(1)
 
 
+def get_git_sha(repo_dir):
+    return git.Repo(repo_dir).head.object.hexsha
+
 def clone_repo(repo_url, commit, repo_dir, force_delete):
 
     if os.path.exists(repo_dir):
