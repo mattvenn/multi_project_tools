@@ -24,11 +24,13 @@ From caravel_user_project setup as usual, instead of running make pdk, I do this
 
 ## Hardening
 
-* add OpenRAM to macro - at the moment this is manually placed in the bottom right corner
-* OpenRAM doesn't play very well with OpenLANE, and one of the work arounds to get a good result is to add an obstruction layer on MET4 around it
+* what was at position 0 move to the end
+* add OpenRAM to macro at pos 0
+* swaps anything in position 5 (next to OpenRAM) and exchange with the wishbone shim to keep them close
+* OpenRAM doesn't play very well with OpenLANE, and one of the work arounds to get a good result is to add an obstruction layer on MET4,3,2 around it
 * run make user_project_wrapper as normal
-* If you get DRC errors or your precheck fails, you can try the following:
-    *  
+* you will get DRC errors that you can ignore
+* Run the precheck, this will show if there are any real DRC errors to fix.
 
 ## Todo
 

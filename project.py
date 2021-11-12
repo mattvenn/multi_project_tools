@@ -342,7 +342,7 @@ class Project(object):
         # use yosys to parse the verilog and dump a list of ports
         json_file = '/tmp/ports.json'
 
-        os.system("yosys -qp 'read_verilog %s; hierarchy -top %s ; proc; json -o %s x:*' -DUSE_POWER_PINS=1 -DMPRJ_IO_PADS=38" % (sources, top, json_file))
+        os.system("yosys -qp 'read_verilog -sv %s; hierarchy -top %s ; proc; json -o %s x:*' -DUSE_POWER_PINS=1 -DMPRJ_IO_PADS=38" % (sources, top, json_file))
         with open(json_file) as fh:
             ports = json.load(fh)
         

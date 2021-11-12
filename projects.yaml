@@ -35,16 +35,25 @@ projects:
         commit: 'v1.4.1'
     Hack Soc:
         repo: 'https://github.com/mbalestrini/wrapped_hack_soc'
-        commit: 'f9c39c3cff53683a6e26b55d6d7da565dff1822c'
+        commit: '009a903f28b54a620bedea825d59de13c468f51a'
     NCO:
         repo: 'https://github.com/ameetgohil/mpw3-nco'
         commit: 'main'
     WB_HyperRAM:
         repo:   'https://github.com/embelon/wrapped_wb_hyperram'
-        commit: 'a9d3646c1d7455d49b34a20d22175bcbe81a0d16'
+        commit: 'mpw3'
     WB_OpenRAM:
         repo:   'https://github.com/embelon/wrapped_wb_openram_shim'
         commit: 'mpw3'
+    WB_demo:
+        repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
+        commit: 'main'
+    Wiggly:
+        repo:   'https://github.com/osnr/wrapped_wiggly_ic_1'
+        commit: 'main'
+    KeyValue:
+        repo:   'https://github.com/giraypultar/wrapped_keyvalue'
+        commit: 'main'
 
 configuration:
     project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"

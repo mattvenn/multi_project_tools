@@ -136,7 +136,8 @@ class Collection(object):
             v_edge = 464,
             macro_snap = self.config['configuration']['macro_snap'],
             projects = self.projects,
-            allocation_policy = "legacy"
+            allocation_policy = "legacy",
+            openram = self.args.openram
         )
         return allocation
 
@@ -177,7 +178,7 @@ class Collection(object):
 
             if self.args.openram:
                 # TODO
-                f.write(f"openram_1kB 2020 480 N\n")
+                f.write(f"openram_1kB 344 464 N\n")
     
         """
         with open("obs.txt", "w") as f:

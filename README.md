@@ -4,7 +4,7 @@ A tool to help automate verification of sub projects and collect and harden them
 
 * Project outputs isolated with tristate buffers
 * Projects are activated by the Caravel logic analyser
-* Partial support for [OpenRAM](docs/openram.png)
+* Partial support for [OpenRAM](docs/openram.md)
 
 Projects must conform to the [specification](docs/project_spec.md). 
 
