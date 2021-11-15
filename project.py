@@ -77,6 +77,9 @@ class Project(object):
         if self.args.test_all or self.args.test_tristate_z:
             self.test_tristate_z()
 
+        if self.args.test_all or self.args.test_git:
+            self.test_git_match()
+
     def clone_repo(self):
         clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
 
@@ -115,6 +118,15 @@ class Project(object):
             exit(1)
 
         logging.info("test pass")
+
+    def test_git_match(self):
+        self.gitsha = get_git_sha(self.directory)
+        if self.gitsha != self.commit:
+            logging.error("gitsha on disk doesn't match config")
+            exit(1) 
+        else:
+            logging.info("git pass")
+        
 
     def prove_wrapper(self):
         # TODO need to also check properties.sby - could have a few things to cksum and make wrapper_cksum able to check a few files

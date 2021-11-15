@@ -32,7 +32,7 @@ projects:
         commit: 'dd4050fceea5944e5dd72b6021d1e5f7794ca933'
     zube:
         repo:   'https://github.com/thejpster/zube_submission'
-        commit: 'v1.4.1'
+        commit: 'bc9b493ed900bd91b5296adfe1cae6b9e28c41d2'
     Hack Soc:
         repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
         commit: '009a903f28b54a620bedea825d59de13c468f51a'
