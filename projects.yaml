@@ -53,7 +53,7 @@ projects:
         commit: 'ed5fca687ae598f7ffa74c59872c585ec1a5511e'
     KeyValue:
         repo:   'https://github.com/giraypultar/wrapped_keyvalue'
-        commit: 'ad6e31697aa661e1383f01f9b03817681704cc5e'
+        commit: '5f14a5d0e95a07f7dee1b9fefd944493abbd860f'
     WB_demo:
         repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
         commit: '8c1784235533a486dd6c754bfd2c62fade0896f9'
