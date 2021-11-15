@@ -19,6 +19,7 @@ if __name__ == '__main__':
     parser.add_argument('--test-tristate-z', help="check outputs are z when not active", action='store_const', const=True)
     parser.add_argument('--test-ports', help="check ports defined in yaml match the verilog", action='store_const', const=True)
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
+    parser.add_argument('--test-from', help="run all the checks for all projects with id equal or more than the given id", type=int)
 
     parser.add_argument('--openram', help="use openram", action='store_const', const=True)
     parser.add_argument('--clone-repos', help="git clone the repo", action='store_const', const=True)

@@ -19,16 +19,25 @@ class Collection(object):
             logging.error("bad number of projects - must be > 0 and <= 16")
             exit(1)
 
-        # if --project is given, skip others
+        # build the list of projects
         for project_info in self.config['projects'].values():
             repo = project_info["repo"]
             commit = project_info["commit"]
             
             required_interfaces = list(self.config['interfaces']['required'].keys())
             project = Project(args, repo, commit, required_interfaces, self.config)
+
+            # if --project is given, skip others
             if self.args.project is not None:
                 if self.args.project != project.id:
                     continue
+
+            # start from a given project if --from is given
+            if self.args.test_from is not None:
+                if project.id < self.args.test_from:
+                    continue
+
+            # append
             self.projects.append(project)
    
         # fill space with duplicated projects
