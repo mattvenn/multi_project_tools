@@ -6,10 +6,11 @@ interfaces:
 
     optional:
         gpio: {io_in: 38, io_out: 38, io_oeb: 38}
+        la: {la_data_in: 32, la_data_out: 32, la_oenb: 32}
         la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
         la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
         la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
-        irq: {user_irq: 3}
+        irq: {irq: 3}
         clk2 : {user_clock2: 1}
         wishbone: {wb_rst_i: 1, wbs_stb_i: 1, wbs_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_adr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
         openram: { openram_clk0: 1, openram_csb0: 1, openram_web0: 1,  openram_wmask0: 4, openram_addr0: 8, openram_din0: 32, openram_dout0: 32}
@@ -23,7 +24,7 @@ projects:
 #        commit: '7bd1e65be1f68dfbb9cfdb7030cb6eaac4c918c9'
     A5/1 Wishbone:
         repo:   'https://github.com/jamieiles/a5-1-wb-macro'
-        commit: '0528740'
+        commit: '05287405349c8294893648006885c7c087bae29e'
 #    Fibonacci:
 #        repo:   'https://github.com/konradwilk/fibonacci'
 #        commit: '3dcdd1b'
@@ -66,10 +67,10 @@ configuration:
     user_area_height: 3520
 
 caravel:
-    root:           /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project
-    gl_dir:         /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/gl
-    test_dir:       /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/shuttle4/caravel_user_project
+    gl_dir:         /home/matt/work/asic-workshop/shuttle4/caravel_user_project/verilog/gl
+    test_dir:       /home/matt/work/asic-workshop/shuttle4/caravel_user_project/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle4/caravel_user_project/verilog/rtl/
     config:         config.tcl
 
 env: # used for simulation

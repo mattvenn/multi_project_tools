@@ -124,28 +124,11 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     ### generate enable wires ###
     verilog_snippets.append("    // generate active wires")
     verilog_snippets.append("    wire [31: 0] active;")
-    verilog_snippets.append("    assign active = la_data_in[31:0];")
+    verilog_snippets.append("    assign active = la_data_in[63:32];")
+    verilog_snippets.append("")
+    verilog_snippets.append("    wire [2:0] irq = user_irq;")
     verilog_snippets.append("")
 
-    ### split remaining 96 logic analizer wires into 3 chunks ###
-    verilog_snippets.append("    // split remaining 96 logic analizer wires into 3 chunks")
-    verilog_snippets.append("    wire [31: 0] la1_data_in, la1_data_out, la1_oenb;")
-    verilog_snippets.append("    assign la1_data_in = la_data_in[63:32];")
-    verilog_snippets.append("    assign la1_data_out = la_data_out[63:32];")
-    verilog_snippets.append("    assign la1_oenb = la_oenb[63:32];")
-    verilog_snippets.append("")
-
-    verilog_snippets.append("    wire [31: 0] la2_data_in, la2_data_out, la2_oenb;")
-    verilog_snippets.append("    assign la2_data_in = la_data_in[95:64];")
-    verilog_snippets.append("    assign la2_data_out = la_data_out[95:64];")
-    verilog_snippets.append("    assign la2_oenb = la_oenb[95:64];")
-    verilog_snippets.append("")
-
-    verilog_snippets.append("    wire [31: 0] la3_data_in, la3_data_out, la3_oenb;")
-    verilog_snippets.append("    assign la3_data_in = la_data_in[127:96];")
-    verilog_snippets.append("    assign la3_data_out = la_data_out[127:96];")
-    verilog_snippets.append("    assign la3_oenb = la_oenb[127:96];")
-    verilog_snippets.append("")
 
     ### openram
     if openram:
