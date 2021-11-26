@@ -33,7 +33,10 @@ class Project(object):
         self.id = int(self.config['caravel_test']['id'])
         self.module_name = self.config['caravel_test']['module_name']
 
-        self.interfaces = required_interfaces + self.config['interfaces'] 
+        if self.args.mpw2:
+            self.interfaces = required_interfaces + ['gpio', 'la1', 'irq', 'clk2', 'wishbone']
+        else:
+            self.interfaces = required_interfaces + self.config['interfaces'] 
         
         self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
         self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])

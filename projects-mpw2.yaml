@@ -1,0 +1,94 @@
+interfaces:
+    required:
+        power: {vccd1: 1, vssd1: 1}
+        clock: {wb_clk_i: 1}
+        active: {active: 1}
+
+    optional:
+        gpio: {io_in: 38, io_out: 38, io_oeb: 38}
+        la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
+        la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
+        la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
+        irq: {user_irq: 3}
+        clk2 : {user_clock2: 1}
+        wishbone: {wb_rst_i: 1, wbs_stb_i: 1, wbs_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_adr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+        openram: { openram_clk0: 1, openram_csb0: 1, openram_web0: 1,  openram_wmask0: 4, openram_addr0: 8, openram_din0: 32, openram_dout0: 32}
+
+projects:
+#    rgb mixer:
+#        repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
+#        commit: '1145686010fd944d47b275df29fd09becd4c9921'
+#    frequency counter:
+#        repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
+#        commit: '7bd1e65be1f68dfbb9cfdb7030cb6eaac4c918c9'
+    A5/1 Wishbone:
+        repo:   'https://github.com/jamieiles/a5-1-wb-macro'
+        commit: '0528740'
+#    Fibonacci:
+#        repo:   'https://github.com/konradwilk/fibonacci'
+#        commit: '3dcdd1b'
+#    Quad PWM FET Drivers:
+#        repo:   'https://github.com/ChrisDePalm/wrapped_quad_pwm_fet_drivers.git'
+#        commit: '547d9e1'
+#    memLCDdriver:
+#        repo:   'https://github.com/matt-beach/wrapped_memLCDdriver.git'
+#        commit: '07e07f9'
+#    QARMA-64 Accelerator:
+#        repo:   'https://github.com/vbrange/verilog_qarma'
+#        commit: '8a10211'
+#    ChaCha20 Accelerator:
+#        repo:   'https://github.com/rpls/wrapped_chacha_wb_accel'
+#        commit: 'a312d9d'
+#    Framebufferless Video Core:
+#        repo:   'https://github.com/tomgwozdz/fbless-graphics-core'
+#        commit: 'fdd7f04'
+#    Pong:
+#        repo:   'https://github.com/erikvanzijst/wrapped_pong.git'
+#        commit: '8506f61'
+#    gfxdemo:
+#        repo:   'https://github.com/kbeckmann/wrapped_gfxdemo'
+#        commit: '432874a'
+#    Newmot SoC:
+#        repo:   'https://github.com/chmousset/caravel_multi_newmot'
+#        commit: 'e34a612'
+#    hoggephase:
+#        repo:   'https://github.com/h1kari/wrapped_hoggephase_project'
+#        commit: '3dbdd48'
+#    bfloat16_fma:
+#        repo:   'https://github.com/etalian/mensa'
+#        commit: '2b61fe3'
+
+
+configuration:
+    project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
+    macro_snap: 0.23 # half of met2 pin/track space
+    user_area_width: 2920
+    user_area_height: 3520
+
+caravel:
+    root:           /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project
+    gl_dir:         /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/gl
+    test_dir:       /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/rtl/
+    config:         config.tcl
+
+env: # used for simulation
+    GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
+    GCC_PREFIX:     riscv64-unknown-elf
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A
+
+lvs:
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
+    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
+
+tests:
+    gds:
+        # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
+        metal5_id:  72 
+
+docs:
+    pic_dir:        pics
+    index:          index.md
+    px_per_um:      0.53 # for the image markup
+    macro_border:   25 # px
