@@ -32,8 +32,8 @@ set ::env(DESIGN_NAME) user_project_wrapper
 # save some time
 set ::env(RUN_KLAYOUT_XOR) 0
 set ::env(RUN_KLAYOUT_DRC) 0
-# no point in running DRC with magic once openram is in because it will find 3M issues
-set ::env(MAGIC_DRC_USE_GDS) 0
+
+set ::env(MAGIC_DRC_USE_GDS) 1
 
 
 ## Source Verilog Files
@@ -58,23 +58,17 @@ set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
 	$script_dir/../../caravel/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_project_includes.v \
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"
+	$script_dir/../../verilog/rtl/user_project_includes.v"
 
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
-lappend	::env(EXTRA_LEFS) $::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram_macros/lef/sky130_sram_1kbyte_1rw1r_32x256_8.lef
 
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
-lappend ::env(EXTRA_GDS_FILES) $::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram_macros/gds/sky130_sram_1kbyte_1rw1r_32x256_8.gds
 
 # routing adjustments
 # turn off li for any routing
 # and add workaround for routing issues with openram by adding
 # 480 wide x 400 tall obs (from openram 0,0) on met2,3,4
-set ::env(GLB_RT_OBS)  "li1  0    0   2920    3520,
-                        met4 344  464 824     864,
-                        met3 344  464 824     864,
-                        met2 344  464 824     864"
+set ::env(GLB_RT_OBS)  "li1  0    0   2920    3520"
 
 set ::env(GLB_RT_ALLOW_CONGESTION) "1"
 
