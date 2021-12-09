@@ -22,9 +22,9 @@ projects:
 #    frequency counter:
 #        repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
 #        commit: '7bd1e65be1f68dfbb9cfdb7030cb6eaac4c918c9'
-#    A5/1 Wishbone:
-#        repo:   'https://github.com/jamieiles/a5-1-wb-macro'
-#        commit: '05287405349c8294893648006885c7c087bae29e'
+    A5/1 Wishbone:
+        repo:   'https://github.com/jamieiles/a5-1-wb-macro'
+        commit: '05287405349c8294893648006885c7c087bae29e'
     Fibonacci:
         repo:   'https://github.com/konradwilk/fibonacci'
         commit: '3dcdd1b'
