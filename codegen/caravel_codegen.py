@@ -126,7 +126,8 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     verilog_snippets.append("    wire [31: 0] active;")
     verilog_snippets.append("    assign active = la_data_in[63:32];")
     verilog_snippets.append("")
-    verilog_snippets.append("    wire [2:0] irq = user_irq;")
+    verilog_snippets.append("    wire [2:0] irq;")
+    verilog_snippets.append("    assign user_irq = irq;")
     verilog_snippets.append("")
 
 
