@@ -80,8 +80,8 @@ class Project(object):
         if self.args.test_all or self.args.test_tristate_z:
             self.test_tristate_z()
 
-        if self.args.test_all or self.args.test_git:
-            self.test_git_match()
+       # if self.args.test_all or self.args.test_git:
+       #     self.test_git_match()
 
     def clone_repo(self):
         clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
@@ -156,6 +156,10 @@ class Project(object):
         shutil.copyfile(src, dst)
         
     def test_caravel(self, gl=False):
+        if 'waive_caravel' in self.config['project']:
+            logging.info("skipping caravel in this test due to %s" % self.config['project']['waive_caravel'])
+            return
+
         conf = self.config["caravel_test"]
 
         # copy src into caravel verilog dir
