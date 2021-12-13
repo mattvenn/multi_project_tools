@@ -17,6 +17,9 @@ interfaces:
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
+        commit: '922d9ab78d46d5d974d13e967a6686df0b0fddce'
+    rgb_mixer:
+        repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
         commit: ''
 
 configuration:
