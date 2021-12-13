@@ -150,6 +150,21 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     ### openram
     if openram:
         verilog_snippets.append("    // Signals connecting OpenRAM with its wrapper")
+        verilog_snippets.append("    // shared openram wishbone bus wires")
+        verilog_snippets.append("    wire         rambus_wb_clk_o;            // clock")
+        verilog_snippets.append("    wire         rambus_wb_rst_o;            // reset")
+        verilog_snippets.append("    wire         rambus_wb_stb_o;            // write strobe")
+        verilog_snippets.append("    wire         rambus_wb_cyc_o;            // cycle")
+        verilog_snippets.append("    wire         rambus_wb_we_o ;            // write enable")
+        verilog_snippets.append("    wire [3:0]   rambus_wb_sel_o;            // write word select")
+        verilog_snippets.append("    wire [31:0]  rambus_wb_dat_o;            // ram data out")
+        verilog_snippets.append("    wire [7:0]   rambus_wb_adr_o;            // 8bit address")
+        verilog_snippets.append("    wire         rambus_wb_ack_i;            // ack")
+        verilog_snippets.append("    wire [31:0]  rambus_wb_dat_i;            // ram data in")
+
+
+
+        """
         verilog_snippets.append("    wire openram_clk0;")
         verilog_snippets.append("    wire openram_csb0;")
         verilog_snippets.append("    wire openram_web0;")
@@ -174,6 +189,7 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
         verilog_snippets.append("        .din0 (openram_din0),")
         verilog_snippets.append("        .dout0 (openram_dout0)")
         verilog_snippets.append("    );")
+        """
 
     ### generate project includes ###
 
