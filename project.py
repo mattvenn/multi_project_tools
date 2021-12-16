@@ -107,6 +107,9 @@ class Project(object):
         return paths    
 
     def test_module(self):
+        if 'waive_module_test' in self.config['project']:
+            logging.info("skipping module test due to %s" % self.config['project']['waive_module_test'])
+            return
         conf = self.config["module_test"]
         cwd = os.path.join(self.directory, conf["directory"])
         cmd = ["make", "-f", conf["makefile"], conf["recipe"]]
@@ -153,6 +156,10 @@ class Project(object):
         shutil.copyfile(src, dst)
         
     def test_caravel(self, gl=False):
+        if 'waive_caravel' in self.config['project']:
+            logging.info("skipping caravel test due to %s" % self.config['project']['waive_caravel'])
+            return
+
         conf = self.config["caravel_test"]
 
         # copy src into caravel verilog dir
