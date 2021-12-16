@@ -21,6 +21,12 @@ projects:
     rgb_mixer:
         repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
         commit: ''
+    ppm_coder:
+        repo:   'https://github.com/mattvenn/wrapped_ppm_coder'
+        commit: '7e52ad3380c43a9fd767633a1fc3b7ee163b0fbb'
+    ppm_decoder:
+        repo:   'https://github.com/mattvenn/wrapped_ppm_decoder'
+        commit: '7b46b5aa2362b5c831d23e879720392ebed55212'
 
 configuration:
     project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
@@ -41,9 +47,9 @@ env: # used for simulation
     PDK_PATH:       /home/matt/work/asic-workshop/shuttle4/pdk/sky130A
 
 lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle4/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
-    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle4/pdk/
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle4/openlane    # only used to find the count_lvs.py script
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A 
+    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
 
 tests:
     gds:
