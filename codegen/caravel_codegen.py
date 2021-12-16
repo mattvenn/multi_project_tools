@@ -10,7 +10,8 @@ def generate_openlane_files(
     target_user_project_wrapper_path: Optional[str],
     target_user_project_includes_path: Optional[str],
     target_caravel_includes_path: Optional[str],
-    openram
+    openram,
+    gl
 ) -> None:
 
     ### user project wrapper ###
@@ -43,7 +44,7 @@ def generate_openlane_files(
     caravel_includes_filename = "uprj_netlists.v"
 
     logging.info(f"generating {caravel_includes_filename} locally")
-    generate_caravel_includes(projects, caravel_includes_filename, openram)
+    generate_caravel_includes(projects, caravel_includes_filename, openram, gl)
 
     if target_caravel_includes_path:
         logging.info(f"{caravel_includes_filename} to {target_caravel_includes_path}")
@@ -76,7 +77,7 @@ def generate_openlane_user_project_include(projects, outfile):
     with open(outfile, "w") as f:
         f.write("\n".join(include_snippets))
 
-def generate_caravel_includes(projects, outfile, openram):
+def generate_caravel_includes(projects, outfile, openram, gl):
     with open("codegen/uprj_netlists.txt", "r") as f:
         filedata = f.read()
 
@@ -88,21 +89,17 @@ def generate_caravel_includes(projects, outfile, openram):
             path = os.path.join(os.path.basename(project.directory), path)
             project_includes += ('	`include "%s"\n' % path)
 
-        gl_includes += ('`include "gl/%s"\n' % project.config['gds']['lvs_filename'])
+        gl_includes += ('`include "%s"\n' % project.config['gds']['lvs_filename'])
 
     if openram:
         project_includes += ('	// include openram model\n')
         project_includes += ('	`include "libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"\n')
 
-    # TODO
-    # GL is broken in caravel, so can't use this file the way it's meant to be used. 
-    # Setting GL in the Makefile will always die until the GL of Caravel is fixed
-    # So instead, put the GL includes in the RTL includes, and don't set GL
-    filedata = filedata.replace('GL_INCLUDES',  gl_includes)
-#    if gl == True:
-#        filedata = filedata.replace('RTL_INCLUDES', gl_includes)
-#    else:
-    filedata = filedata.replace('RTL_INCLUDES', project_includes)
+    # GL takes too long for all of Caravel, so just use the GL instead of all the normal RTL includes
+    if gl == True:
+        filedata = filedata.replace('RTL_INCLUDES', gl_includes)
+    else:
+        filedata = filedata.replace('RTL_INCLUDES', project_includes)
 
     with open(outfile, "w") as f:
         f.write(filedata)

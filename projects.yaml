@@ -15,9 +15,12 @@ interfaces:
         openram: { rambus_wb_clk_o: 1, rambus_wb_rst_o: 1, rambus_wb_stb_o: 1, rambus_wb_cyc_o: 1,  rambus_wb_we_o: 1, rambus_wb_sel_o: 4, rambus_wb_dat_o: 32, rambus_wb_adr_o: 8, rambus_wb_ack_i: 1, rambus_wb_dat_i: 32}
 
 projects:
-    function_generator:
-        repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '922d9ab78d46d5d974d13e967a6686df0b0fddce'
+#    function_generator:
+#        repo:   'https://github.com/mattvenn/wrapped_function_generator'
+#        commit: '922d9ab78d46d5d974d13e967a6686df0b0fddce'
+    spell:
+        repo:   'https://github.com/wokwi/wrapped_spell'
+        commit: 'mpw4'
     rgb_mixer:
         repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
         commit: ''

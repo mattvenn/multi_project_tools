@@ -160,7 +160,8 @@ class Collection(object):
             user_project_wrapper_path, 
             user_project_includes_path,
             None,
-            self.args.openram
+            self.args.openram,
+            False
         )
 
         ### copy out rtl ###
