@@ -23,7 +23,7 @@ projects:
         commit: 'mpw4'
     rgb_mixer:
         repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
-        commit: ''
+        commit: 'c29b8102d6b4e782006ae09182a6afe4e34a269f'
     ppm_coder:
         repo:   'https://github.com/mattvenn/wrapped_ppm_coder'
         commit: '7e52ad3380c43a9fd767633a1fc3b7ee163b0fbb'
