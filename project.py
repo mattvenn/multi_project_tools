@@ -201,8 +201,9 @@ class Project(object):
         cwd = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
         cmd = ["make", conf["recipe"]]
 
-        # if gl, use the gl_recipe
+        # if gl, make sure the gatelevel netlist is in the correct place, & use the gl_recipe
         if gl:
+            self.copy_gl()
             cmd = ["make", conf["gl_recipe"]]
 
         logging.info("attempting to run %s in %s" % (cmd, cwd))
