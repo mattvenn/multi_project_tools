@@ -183,7 +183,8 @@ class Project(object):
             user_project_includes_path,
             caravel_includes_path,
             self.args.openram,
-            gl
+            gl,
+            self.system_config
         )
 
         # copy test inside caravel

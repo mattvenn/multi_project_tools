@@ -161,7 +161,8 @@ class Collection(object):
             user_project_includes_path,
             None,
             self.args.openram,
-            False
+            False,
+            self.config
         )
 
         ### copy out rtl ###

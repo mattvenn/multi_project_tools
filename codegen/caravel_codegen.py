@@ -11,14 +11,15 @@ def generate_openlane_files(
     target_user_project_includes_path: Optional[str],
     target_caravel_includes_path: Optional[str],
     openram,
-    gl
+    gl,
+    config # this is getting silly now. These generators should be objects and get the config by default.
 ) -> None:
 
     ### user project wrapper ###
     user_project_wrapper_filename = "user_project_wrapper.v"
 
     logging.info(f"generating {user_project_wrapper_filename} locally")
-    generate_openlane_user_project_wrapper(projects, interface_definitions, user_project_wrapper_filename, openram)
+    generate_openlane_user_project_wrapper(projects, interface_definitions, user_project_wrapper_filename, openram, config)
 
     if target_user_project_wrapper_path:
         logging.info(f"{user_project_wrapper_filename} to {target_user_project_wrapper_path}")
@@ -94,6 +95,13 @@ def generate_caravel_includes(projects, outfile, openram, gl):
     if openram:
         project_includes += ('	// include openram model\n')
         project_includes += ('	`include "libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"\n')
+        project_includes += ('	// Wishbone bridge to split traffic into 2 streams: for user\n')
+        project_includes += ('	// project and OpenRAM\n')
+        project_includes += ('	`include "wb_bridge/src/wb_bridge_2way.v"\n')
+        project_includes += ('	// Wishbone dual port wrapper for OpenRAM\n')
+        project_includes += ('	`include "wb_openram_wrapper/src/wb_port_control.v"\n')
+        project_includes += ('	`include "wb_openram_wrapper/src/wb_openram_wrapper.v"\n')
+
 
     # GL takes too long for all of Caravel, so just use the GL instead of all the normal RTL includes
     if gl == True:
@@ -105,7 +113,7 @@ def generate_caravel_includes(projects, outfile, openram, gl):
         f.write(filedata)
 
 
-def generate_openlane_user_project_wrapper(projects, interface_definitions, outfile, openram):
+def generate_openlane_user_project_wrapper(projects, interface_definitions, outfile, openram, config):
     verilog_snippets: List[str] = []
 
     ### generate header ###
@@ -114,89 +122,24 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
             verilog_snippets.append(line)
     verilog_snippets.append("")
 
-    ### include caravel_interface.txt ###
-
-    ### generate boilerplate verilog ###
-
-    ### generate enable wires ###
-    verilog_snippets.append("    // generate active wires")
-    verilog_snippets.append("    wire [31: 0] active;")
-    verilog_snippets.append("    assign active = la_data_in[31:0];")
-    verilog_snippets.append("")
-
-    ### split remaining 96 logic analizer wires into 3 chunks ###
-    verilog_snippets.append("    // split remaining 96 logic analizer wires into 3 chunks")
-    verilog_snippets.append("    wire [31: 0] la1_data_in, la1_data_out, la1_oenb;")
-    verilog_snippets.append("    assign la1_data_in = la_data_in[63:32];")
-    verilog_snippets.append("    assign la1_data_out = la_data_out[63:32];")
-    verilog_snippets.append("    assign la1_oenb = la_oenb[63:32];")
-    verilog_snippets.append("")
-
-    verilog_snippets.append("    wire [31: 0] la2_data_in, la2_data_out, la2_oenb;")
-    verilog_snippets.append("    assign la2_data_in = la_data_in[95:64];")
-    verilog_snippets.append("    assign la2_data_out = la_data_out[95:64];")
-    verilog_snippets.append("    assign la2_oenb = la_oenb[95:64];")
-    verilog_snippets.append("")
-
-    verilog_snippets.append("    wire [31: 0] la3_data_in, la3_data_out, la3_oenb;")
-    verilog_snippets.append("    assign la3_data_in = la_data_in[127:96];")
-    verilog_snippets.append("    assign la3_data_out = la_data_out[127:96];")
-    verilog_snippets.append("    assign la3_oenb = la_oenb[127:96];")
-    verilog_snippets.append("")
-
-    ### openram
+    ### include openram stuff ###
     if openram:
-        verilog_snippets.append("    // Signals connecting OpenRAM with its wrapper")
-        verilog_snippets.append("    // shared openram wishbone bus wires")
-        verilog_snippets.append("    wire         rambus_wb_clk_o;            // clock")
-        verilog_snippets.append("    wire         rambus_wb_rst_o;            // reset")
-        verilog_snippets.append("    wire         rambus_wb_stb_o;            // write strobe")
-        verilog_snippets.append("    wire         rambus_wb_cyc_o;            // cycle")
-        verilog_snippets.append("    wire         rambus_wb_we_o ;            // write enable")
-        verilog_snippets.append("    wire [3:0]   rambus_wb_sel_o;            // write word select")
-        verilog_snippets.append("    wire [31:0]  rambus_wb_dat_o;            // ram data out")
-        verilog_snippets.append("    wire [7:0]   rambus_wb_adr_o;            // 8bit address")
-        verilog_snippets.append("    wire         rambus_wb_ack_i;            // ack")
-        verilog_snippets.append("    wire [31:0]  rambus_wb_dat_i;            // ram data in")
-
-
-
-        """
-        verilog_snippets.append("    wire openram_clk0;")
-        verilog_snippets.append("    wire openram_csb0;")
-        verilog_snippets.append("    wire openram_web0;")
-        verilog_snippets.append("    wire [3:0] openram_wmask0;")
-        verilog_snippets.append("    wire [7:0] openram_addr0;")
-        verilog_snippets.append("    wire [31:0] openram_din0;")
-        verilog_snippets.append("    wire [31:0] openram_dout0;")
-        verilog_snippets.append("    ")
-        verilog_snippets.append("    // OpenRAM instance")
-        verilog_snippets.append("    sky130_sram_1kbyte_1rw1r_32x256_8 openram_1kB")
-        verilog_snippets.append("    (")
-        verilog_snippets.append("    `ifdef USE_POWER_PINS")
-        verilog_snippets.append("        .vccd1 (vccd1),")
-        verilog_snippets.append("        .vssd1 (vssd1),")
-        verilog_snippets.append("    `endif")
-        verilog_snippets.append("    ")
-        verilog_snippets.append("        .clk0 (openram_clk0),")
-        verilog_snippets.append("        .csb0 (openram_csb0),")
-        verilog_snippets.append("        .web0 (openram_web0),")
-        verilog_snippets.append("        .wmask0 (openram_wmask0),")
-        verilog_snippets.append("        .addr0 (openram_addr0),")
-        verilog_snippets.append("        .din0 (openram_din0),")
-        verilog_snippets.append("        .dout0 (openram_dout0)")
-        verilog_snippets.append("    );")
-        """
+        with open("codegen/caravel_iface_openram.txt", "r") as f:
+            for line in f.read().split("\n"):
+                verilog_snippets.append(line)
 
     ### generate project includes ###
 
+    verilog_snippets.append("    // start of user project module instantiation")
     for project in projects:
         verilog_snippets.append(
             generate_openlane_user_project_wrapper_instance(
                 project.module_name,
                 project.id,
                 project.interfaces,
-                interface_definitions
+                interface_definitions,
+                config,
+                openram
             )
         )
     
@@ -213,24 +156,33 @@ def generate_openlane_user_project_wrapper_instance(
     macro_name: str,
     instance_name: str,    
     interfaces: List[str],
-    interface_defs: Dict[str, Dict[str, int]]
+    interface_defs: Dict[str, Dict[str, int]],
+    config,
+    openram
 ) -> str:
     verilog_name = macro_name
     
     verilog_snippet: List[str] = []
     verilog_snippet.append(f"    {verilog_name} {verilog_name}_{instance_name}(")
+
     
     for macro_interface in interfaces:
         if macro_interface == "power":
             verilog_snippet.append("        `ifdef USE_POWER_PINS")
 
         for wire_name, width in interface_defs[macro_interface].items():
+            dst_wire_name = wire_name
+            if openram:
+                # translate the signal names so the wb_bridge is used
+                if wire_name in config['openram_support']['wb_uprj_bus']:
+                    dst_wire_name = config['openram_support']['wb_uprj_bus'][wire_name]
+
             if wire_name == "active":
-                verilog_snippet.append(f"        .{wire_name} ({wire_name}[{instance_name}]),")
+                verilog_snippet.append(f"        .{wire_name} ({dst_wire_name}[{instance_name}]),")
             elif width == 1:
-                verilog_snippet.append(f"        .{wire_name} ({wire_name}),")
+                verilog_snippet.append(f"        .{wire_name} ({dst_wire_name}),")
             else:
-                verilog_snippet.append(f"        .{wire_name} ({wire_name}[{width - 1}:0]),")
+                verilog_snippet.append(f"        .{wire_name} ({dst_wire_name}[{width - 1}:0]),")
 
         if macro_interface == "power":
             verilog_snippet.append("        `endif")
