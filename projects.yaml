@@ -38,7 +38,7 @@ openram_support:
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '922d9ab78d46d5d974d13e967a6686df0b0fddce'
+        commit: 'b7da52a5a1fdfb728e571d04f26814dfbe8195fe'
 #    spell:
 #        repo:   'https://github.com/wokwi/wrapped_spell'
 #        commit: 'mpw4'
