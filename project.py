@@ -174,7 +174,7 @@ class Project(object):
         self.copy_project_to_caravel_rtl()
 
         # if using openram, will also need the openram support
-        if self.args.openram and args.clone_repos:
+        if self.args.openram and self.args.clone_repos:
             self.clone_openram_support_to_caravel_rtl()
 
         # generate includes & instantiate inside user project wrapper
