@@ -154,7 +154,15 @@ class Project(object):
         dst = os.path.join(self.system_config['caravel']['gl_dir'], self.config['gds']['lvs_filename'])
         src = os.path.join(self.directory, self.config['gds']['directory'], self.config['gds']['lvs_filename'])
         shutil.copyfile(src, dst)
-        
+
+    def clone_openram_support_to_caravel_rtl(self):
+        projects = self.system_config['openram_support']['projects']
+        for project in projects:
+            repo = projects[project]["repo"]
+            commit = projects[project]["commit"]
+            directory = os.path.join(self.system_config['caravel']['rtl_dir'], project)
+            clone_repo(repo, commit, directory, self.args.force_delete)
+
     def test_caravel(self, gl=False):
         if 'waive_caravel' in self.config['project']:
             logging.info("skipping caravel test due to %s" % self.config['project']['waive_caravel'])
@@ -164,6 +172,10 @@ class Project(object):
 
         # copy src into caravel verilog dir
         self.copy_project_to_caravel_rtl()
+
+        # if using openram, will also need the openram support
+        if self.args.openram:
+            self.clone_openram_support_to_caravel_rtl()
 
         # generate includes & instantiate inside user project wrapper
         # could this be removed and just do it in collect.py ?

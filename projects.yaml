@@ -25,14 +25,15 @@ openram_support:
                         wbs_ack_o   : wbs_uprj_ack_o,
                         wbs_dat_o   : wbs_uprj_dat_o,
                     }
+    projects:
 
-    wb_bridge:
-        repo:   'https://github.com/embelon/wb_bridge'
-        commit: 'aee82f47b25bd0821388a777d48e6e2818a68378'
+        wb_bridge:
+            repo:   'https://github.com/embelon/wb_bridge'
+            commit: 'aee82f47b25bd0821388a777d48e6e2818a68378'
 
-    wb_openram_wrapper:
-        repo:   'https://github.com/embelon/wb_openram_wrapper'
-        commit: '155e8ee5121e1551f6fa172bd7324e7f19ff8e7a'
+        wb_openram_wrapper:
+            repo:   'https://github.com/embelon/wb_openram_wrapper'
+            commit: '155e8ee5121e1551f6fa172bd7324e7f19ff8e7a'
 
 projects:
     function_generator:
@@ -41,9 +42,9 @@ projects:
 #    spell:
 #        repo:   'https://github.com/wokwi/wrapped_spell'
 #        commit: 'mpw4'
-#    rgb_mixer:
-#        repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
-#        commit: 'c29b8102d6b4e782006ae09182a6afe4e34a269f'
+    rgb_mixer:
+        repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
+        commit: 'c29b8102d6b4e782006ae09182a6afe4e34a269f'
 #    frequency_counter:
 #        repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
 #        commit: ''
