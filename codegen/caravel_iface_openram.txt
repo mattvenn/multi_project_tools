@@ -129,7 +129,7 @@
         .ram_wmask0 (oram_wmask0[3:0]),
         .ram_addr0 (oram_addr0[7:0]),
         .ram_din0 (oram_din0[31:0]),       
-        .ram_dout0 (oram_din0[31:0]),      
+        .ram_dout0 (oram_dout0[31:0]),      
         
         // Port 1: R
         .ram_clk1 (oram_clk1),
