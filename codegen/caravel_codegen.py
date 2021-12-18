@@ -92,16 +92,18 @@ def generate_caravel_includes(projects, outfile, openram, gl):
 
         gl_includes += ('`include "%s"\n' % project.config['gds']['lvs_filename'])
 
-    if openram:
-        project_includes += ('	// include openram model\n')
-        project_includes += ('	`include "libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"\n')
-        project_includes += ('	// Wishbone bridge to split traffic into 2 streams: for user\n')
-        project_includes += ('	// project and OpenRAM\n')
-        project_includes += ('	`include "wb_bridge/src/wb_bridge_2way.v"\n')
-        project_includes += ('	// Wishbone dual port wrapper for OpenRAM\n')
-        project_includes += ('	`include "wb_openram_wrapper/src/wb_port_control.v"\n')
-        project_includes += ('	`include "wb_openram_wrapper/src/wb_openram_wrapper.v"\n')
+    openram_includes =  ('	// include openram model\n')
+    openram_includes += ('	`include "libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"\n')
+    openram_includes += ('	// Wishbone bridge to split traffic into 2 streams: for user\n')
+    openram_includes += ('	// project and OpenRAM\n')
+    openram_includes += ('	`include "wb_bridge/src/wb_bridge_2way.v"\n')
+    openram_includes += ('	// Wishbone dual port wrapper for OpenRAM\n')
+    openram_includes += ('	`include "wb_openram_wrapper/src/wb_port_control.v"\n')
+    openram_includes += ('	`include "wb_openram_wrapper/src/wb_openram_wrapper.v"\n')
 
+    if openram:
+        gl_includes += openram_includes
+        project_includes += openram_includes
 
     # GL takes too long for all of Caravel, so just use the GL instead of all the normal RTL includes
     if gl == True:

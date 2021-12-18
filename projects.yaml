@@ -38,13 +38,13 @@ openram_support:
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: 'b7da52a5a1fdfb728e571d04f26814dfbe8195fe'
+        commit: '738e5e444756ed7481dec92471226546f3af03eb'
 #    spell:
 #        repo:   'https://github.com/wokwi/wrapped_spell'
 #        commit: 'mpw4'
-    rgb_mixer:
-        repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
-        commit: 'c29b8102d6b4e782006ae09182a6afe4e34a269f'
+#    rgb_mixer:
+ #       repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
+#        commit: 'c29b8102d6b4e782006ae09182a6afe4e34a269f'
 #    frequency_counter:
 #        repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
 #        commit: ''
