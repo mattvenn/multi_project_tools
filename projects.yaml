@@ -29,25 +29,19 @@ openram_support:
 
         wb_bridge:
             repo:   'https://github.com/embelon/wb_bridge'
-            commit: 'aee82f47b25bd0821388a777d48e6e2818a68378'
+            commit: '952bb1baa91e9a3fbe9a1a1703b451f370b78671'
 
         wb_openram_wrapper:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
-            commit: '155e8ee5121e1551f6fa172bd7324e7f19ff8e7a'
+            commit: '07cb4aeae3a4c293f6e0794aeb53bc91629d036b'
 
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '738e5e444756ed7481dec92471226546f3af03eb'
-#    spell:
-#        repo:   'https://github.com/wokwi/wrapped_spell'
-#        commit: 'mpw4'
-#    rgb_mixer:
- #       repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
-#        commit: 'c29b8102d6b4e782006ae09182a6afe4e34a269f'
-#    frequency_counter:
-#        repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
-#        commit: ''
+        commit: '8965b45be65f764d566a39116ff79d6ed171ab21'
+    spell:
+        repo:   'https://github.com/wokwi/wrapped_spell'
+        commit: 'mpw4'
     ppm_coder:
         repo:   'https://github.com/mattvenn/wrapped_ppm_coder'
         commit: '7e52ad3380c43a9fd767633a1fc3b7ee163b0fbb'
