@@ -33,7 +33,7 @@ openram_support:
 
         wb_openram_wrapper:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
-            commit: '07cb4aeae3a4c293f6e0794aeb53bc91629d036b'
+            commit: 'b6aa8817fceb8622548e522a1262c737886f2624'
 
 projects:
     function_generator:
@@ -56,10 +56,10 @@ configuration:
     user_area_height: 3520
 
 caravel:
-    root:           /home/matt/work/asic-workshop/shuttle4/caravel_user_project
-    gl_dir:         /home/matt/work/asic-workshop/shuttle4/caravel_user_project/verilog/gl
-    test_dir:       /home/matt/work/asic-workshop/shuttle4/caravel_user_project/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle4/caravel_user_project/verilog/rtl/
+    root:           /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4
+    gl_dir:         /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4/verilog/gl
+    test_dir:       /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4/verilog/rtl/
     config:         config.tcl
 
 env: # used for simulation
