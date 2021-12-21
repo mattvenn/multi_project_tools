@@ -35,7 +35,7 @@
     // Bridge splitting caravel wishbone traffic into two streams: user project and OpenRAM wrapper
     wb_bridge_2way #(
         .BUSB_ADDR_WIDTH(10)
-    ) wb_bridge(
+    ) wb_bridge_2way(
     `ifdef USE_POWER_PINS
         .vccd1 (vccd1),
         .vssd1 (vssd1),
@@ -89,7 +89,7 @@
     // Dual port OpenRAM wrapper for wishbone
     wb_openram_wrapper #(
         .ADDR_WIDTH(8)
-    ) openram_wrapper(
+    ) wb_openram_wrapper(
     `ifdef USE_POWER_PINS
         .vccd1 (vccd1),
         .vssd1 (vssd1),
