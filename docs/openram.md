@@ -10,7 +10,7 @@ Using OpenRAM isn't very straight forward yet.
 
 From caravel_user_project setup as usual, instead of running make pdk, I do this:
 
-    export SRAM_INSTALL=yes
+    export INSTALL_SRAM=yes
     make pdk
 
 ## What --openram does
