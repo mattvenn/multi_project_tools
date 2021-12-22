@@ -59,6 +59,9 @@ set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
 set ::env(VERILOG_FILES_BLACKBOX) "\
 	$script_dir/../../caravel/verilog/rtl/defines.v \
 	$script_dir/../../verilog/rtl/user_project_includes.v \
+	$script_dir/../../verilog/rtl/wb_bridge/src/wb_bridge_2way.v \
+	$script_dir/../../verilog/rtl/wb_openram_wrapper/src/wb_port_control.v \
+	$script_dir/../../verilog/rtl/wb_openram_wrapper/src/wb_openram_wrapper.v \
 	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"
 
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
@@ -91,6 +94,9 @@ set ::env(GLB_RT_L3_ADJUSTMENT) 0.7
 
 # use 8 cores
 set ::env(ROUTING_CORES) 8
+
+# bail early on problems
+set ::env(ROUTING_OPT_ITERS) 10
 
 set ::env(GLB_RT_MAXLAYER) 5
 
