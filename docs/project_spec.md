@@ -65,7 +65,6 @@ Update the info.yaml config:
       directory: "caravel_rgb_mixer"        # directory that contains the Makefile, firmware, testbench
       id: 0                                 # ID of your project - request this from Matt, 
       module_name: "wrapped_rgb_mixer"      # module name for instantiation inside user project wrapper
-      instance_name: "wrapped_rgb_mixer"    # instance name for instantiation inside user project wrapper
 
 ## Module test
 
