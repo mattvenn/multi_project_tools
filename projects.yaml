@@ -42,16 +42,16 @@ openram_support:
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '8965b45be65f764d566a39116ff79d6ed171ab21'
+        commit: '0d95d94d816685ab9eea70fbbfb2425a8b91c27e'
     spell:
         repo:   'https://github.com/wokwi/wrapped_spell'
-        commit: 'mpw4'
+        commit: 'f9c8517ab579fa8f0e76af7b6c7016c4c5181c50'
     ppm_coder:
         repo:   'https://github.com/mattvenn/wrapped_ppm_coder'
-        commit: '7e52ad3380c43a9fd767633a1fc3b7ee163b0fbb'
+        commit: 'bbcb465d5d149a501b1cc67cfe4b344383a15a7e'
     ppm_decoder:
         repo:   'https://github.com/mattvenn/wrapped_ppm_decoder'
-        commit: '7b46b5aa2362b5c831d23e879720392ebed55212'
+        commit: '8d21fed5cbce7c04cdc739226e6ea9167774f7c7'
 
 configuration:
     project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
