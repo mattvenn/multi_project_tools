@@ -107,7 +107,7 @@ class Collection(object):
     def copy_all_project_files_to_caravel(self):
         ### copy out rtl ###
         for project in self.projects + self.shared_projects:
-            project.copy_project_to_caravel_rtl()
+            project.copy_project_files_to_caravel()
 
     def annotate_image(self):
         final_gds_file = os.path.join(self.config['caravel']['root'], 'gds', 'user_project_wrapper.gds.gz')

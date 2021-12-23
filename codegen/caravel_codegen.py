@@ -138,6 +138,7 @@ def generate_caravel_includes(projects, shared_projects, outfile, openram, gl):
         gl_includes += shared_project_includes
         filedata = filedata.replace('RTL_INCLUDES', gl_includes)
     else:
+        project_includes += shared_project_includes
         filedata = filedata.replace('RTL_INCLUDES', project_includes)
 
     with open(outfile, "w") as f:

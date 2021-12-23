@@ -30,9 +30,10 @@ class BaseProject(object):
         try_copy_tree(src, dst, self.args.force_delete)
 
         # TEST
-        src = os.path.join(self.directory, conf["directory"])
-        dst = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
-        try_copy_tree(src, dst, self.args.force_delete)
+        if "caravel_test" in self.config and "waive_caravel" not in self.config['project']:
+            src = os.path.join(self.directory, self.config["caravel_test"]["directory"])
+            dst = os.path.join(self.system_config['caravel']['test_dir'], self.config["caravel_test"]["directory"])
+            try_copy_tree(src, dst, self.args.force_delete)
 
     # parse the macro.cfg file and find our entry, return x, y position
     def get_macro_pos_from_caravel(self):
@@ -179,6 +180,7 @@ class Project(BaseProject):
         if 'waive_module_test' in self.config['project']:
             logging.info("skipping module test due to %s" % self.config['project']['waive_module_test'])
             return
+
         conf = self.config["module_test"]
         cwd = os.path.join(self.directory, conf["directory"])
         cmd = ["make", "-f", conf["makefile"], conf["recipe"]]

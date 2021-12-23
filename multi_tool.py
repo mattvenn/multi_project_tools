@@ -63,7 +63,7 @@ if __name__ == '__main__':
         collection.copy_all_gds()
 
     if args.copy_project:
-        collection.copy_project_files_to_caravel()
+        collection.copy_all_project_files_to_caravel()
 
     # generate doc
     if args.generate_doc:
