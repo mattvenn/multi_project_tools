@@ -1,7 +1,7 @@
 from utils import *
 import subprocess
 import copy
-from project import Project
+from project import Project, SharedProject
 from codegen.caravel_codegen import generate_openlane_files
 from codegen.allocator import allocate_macros
 
@@ -40,6 +40,15 @@ class Collection(object):
             # append
             self.projects.append(project)
    
+
+        self.shared_projects = []
+        for project_info in self.config['openram_support']['projects'].values():
+            repo = project_info["repo"]
+            commit = project_info["commit"]
+            project = SharedProject(args, repo, commit, self.config)
+            self.shared_projects.append(project)
+            logging.info(project)
+            
         # fill space with duplicated projects
         if args.fill and args.fill > len(self.projects):
             num_real_projects = len(self.projects)
@@ -47,7 +56,8 @@ class Collection(object):
             for i in range(len(self.projects), args.fill):
                 dup_project = copy.deepcopy(self.projects[i % num_real_projects])
                 dup_project.id = i
-                dup_project.config['caravel_test']['instance_name'] += str(dup_project.id)
+                # instance names are generated now
+                #      dup_project.config['caravel_test']['instance_name'] += str(dup_project.id)
                 self.projects.append(dup_project)
 
         # assert ids are unique
@@ -79,7 +89,7 @@ class Collection(object):
         try_mkdir(lef_dir, self.args.force_delete)
         try_mkdir(gds_dir, self.args.force_delete)
 
-        for project in self.projects:
+        for project in self.projects + self.shared_projects:
             src = os.path.join(project.directory, project.gds_filename)
             dst = os.path.join(gds_dir, os.path.basename(project.gds_filename))
             logging.info("copying %s to %s" % (src, dst))
@@ -113,13 +123,13 @@ class Collection(object):
 
         x_offset = (2000 - user_width) / 2
         y_offset = (2000 - user_height) / 2
-        allocation = self.allocate_macros()
+
         logging.info("annotating image")
-        for project in self.projects:
-            alloc = allocation[project.id]
+        for project in self.projects + self.shared_projects:
             logging.info(project)
-            x = x_offset + alloc[0] * px_per_um - macro_border
-            y = 2000 - (y_offset + alloc[1] * px_per_um - macro_border) # flip, gds is bottom left 0,0, png is top left 0,0
+            macro_x, macro_y = project.get_macro_pos_from_caravel()
+            x = x_offset + macro_x * px_per_um - macro_border
+            y = 2000 - (y_offset + macro_y * px_per_um - macro_border) # flip, gds is bottom left 0,0, png is top left 0,0
             # takes a while
             macro_w, macro_h = project.get_gds_size()
             macro_w = macro_w * px_per_um + 2*macro_border
@@ -136,6 +146,7 @@ class Collection(object):
         annotated_image_file = os.path.join('pics', 'multi_macro_annotated.png')
         img.save(annotated_image_file)
 
+    """ totally broken
     def allocate_macros(self):
         # allocate macros and generate macro.cfg
         allocation = allocate_macros(
@@ -149,24 +160,43 @@ class Collection(object):
             openram = self.args.openram
         )
         return allocation
+    """
+
+    def get_macro_pos_from_caravel(self):
+        for project in self.projects + self.shared_projects:
+            print(project.get_macro_pos_from_caravel())
+
+    """
+    def clone_openram_support_to_caravel_rtl(self):
+        projects = self.config['openram_support']['projects']
+        for project in projects:
+            repo = projects[project]["repo"]
+            commit = projects[project]["commit"]
+            directory = os.path.join(self.config['caravel']['rtl_dir'], project)
+            clone_repo(repo, commit, directory, self.args.force_delete)
+    """
 
     def create_openlane_config(self):
         ### generate user wrapper and include ###
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         user_project_includes_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_includes.v")
+        caravel_includes_path =      os.path.join(self.config['caravel']['rtl_dir'], "uprj_netlists.v")
+        openlane_config_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "obstruction.tcl")
         generate_openlane_files(
             self.projects, 
+            self.shared_projects,
             self.interface_definitions, 
             user_project_wrapper_path, 
             user_project_includes_path,
-            None,
+            caravel_includes_path,
+            openlane_config_path,
             self.args.openram,
-            False,
+            False, #TODO this breaks GL test
             self.config
         )
 
         ### copy out rtl ###
-        for project in self.projects:
+        for project in self.projects + self.shared_projects:
             project.copy_project_to_caravel_rtl()
 
         # copy the local config.tcl file 
@@ -175,6 +205,7 @@ class Collection(object):
         logging.info(f"copying {src} to {dst}")
         shutil.copyfile(src, dst)
 
+        """ totally broken - do by hand instead
         allocation = self.allocate_macros()
 
         macro_inst_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
@@ -182,24 +213,14 @@ class Collection(object):
             for project in self.projects:
                 name = project.title
                 alloc = allocation[project.id]
-                # TODO fixme! this is also generated in caravel_codegen
-                verilog_name = project.module_name + "_" + str(project.id)
+                verilog_name = generate_macro_instance_name(project.module_name, project.id)
                 logging.info(f"placing {verilog_name} @ {alloc}")
                 f.write(f"{verilog_name} {alloc[0]} {alloc[1]} N\n")
 
             if self.args.openram:
                 # TODO
                 f.write(f"openram_1kB 344 464 N\n")
-    
-        """
-        with open("obs.txt", "w") as f:
-            for project in self.projects:
-                alloc = allocation[project.id]
-                macro_w, macro_h = project.get_gds_size()
-                f.write("met 4 %.2d %.2d %.2d %.2d,\n" % (alloc[0]+5, alloc[1]+5, alloc[0]+macro_w-5, alloc[1]+macro_h-5))
-                f.write("met 3 %.2d %.2d %.2d %.2d,\n" % (alloc[0]+5, alloc[1]+5, alloc[0]+macro_w-5, alloc[1]+macro_h-5))
-                f.write("met 2 %.2d %.2d %.2d %.2d,\n" % (alloc[0]+5, alloc[1]+5, alloc[0]+macro_w-5, alloc[1]+macro_h-5))
-        """
+        """ 
             
 
     """

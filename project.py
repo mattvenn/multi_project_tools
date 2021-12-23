@@ -7,9 +7,85 @@ from urllib.parse import urlparse
 import os, json
 
 REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds"]
+REQUIRED_KEYS_SHARED = ["project", "gds"]
 
+class BaseProject(object):
 
-class Project(object):
+    def clone_repo(self):
+        clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
+
+    def get_module_source_paths(self, absolute=True):
+        paths = []
+        for path in self.config['source']:
+            if absolute:
+                paths.append(os.path.abspath(os.path.join(self.directory, path)))
+            else:
+                paths.append(path)
+        return paths    
+
+    def copy_project_to_caravel_rtl(self):
+        src = self.directory
+        dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
+        try_copy_tree(src, dst, self.args.force_delete)
+
+    # parse the macro.cfg file and find our entry, return x, y position
+    def get_macro_pos_from_caravel(self):
+        macro_inst_file = os.path.join(self.system_config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
+        with open(macro_inst_file) as f:
+            for macro in f.readlines():
+                # name, x, y, orientation
+                instance_name, x, y, orientation = macro.split(' ')
+                if instance_name == self.instance_name:
+                    return(float(x), float(y))
+
+    def get_gds_size(self):
+        # openram size is cached to save time and because it won't change
+        if 'size' in self.config:
+            return self.config['size']['width'], self.config['size']['height']
+        
+        conf = self.config["gds"]
+        gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
+        gdsii = gdspy.GdsLibrary(infile=gds_file)
+        toplevel = gdsii.top_level()[0]
+        return toplevel.get_bounding_box()[1]
+
+class SharedProject(BaseProject):
+
+    def __init__(self, args, repo, commit, system_config):
+        self.args = args
+        self.system_config = system_config
+        self.repo = repo # the repo on github
+        self.commit = commit # not strictly a commit, could be a branch
+
+        parsed = urlparse(repo)
+        project_dir = self.system_config['configuration']['project_directory']
+        self.directory = os.path.join(project_dir, parsed.path.rpartition('/')[-1])
+
+        if args.clone_shared_repos:
+            self.clone_repo()
+
+        self.gitsha = get_git_sha(self.directory)
+
+        yaml_file = os.path.join(self.directory, 'info.yaml')
+        self.config = parse_config(yaml_file, REQUIRED_KEYS_SHARED)
+
+        self.module_name = self.config['project']['module_name']
+        self.author = self.config['project']['author']
+        self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
+        self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
+        self.title = self.config['project']['title']
+        self.instance_name = self.module_name
+
+    def get_top_module(self):
+        return self.module_name
+
+    def copy_gl(self):
+        pass
+
+    def __str__(self):
+        return "shared %-30s : %s" % (self.title, self.directory)
+
+class Project(BaseProject):
 
     def __init__(self, args, repo, commit, required_interfaces, system_config):
         self.args = args
@@ -32,6 +108,7 @@ class Project(object):
         self.config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE)
         self.id = int(self.config['caravel_test']['id'])
         self.module_name = self.config['caravel_test']['module_name']
+        self.instance_name = self.module_name + "_" + str(self.id)
 
         self.interfaces = required_interfaces + self.config['interfaces'] 
         
@@ -80,8 +157,6 @@ class Project(object):
         if self.args.test_all or self.args.test_git:
             self.test_git_match()
 
-    def clone_repo(self):
-        clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
 
     # hack - better to add this to the info.yaml but for now we do it by searching all the source files. not all are called wrapper.v
     def get_top_module(self):
@@ -97,14 +172,6 @@ class Project(object):
             logging.error("couldn't find top module for %s" % self)
             exit(1)
 
-    def get_module_source_paths(self, absolute=True):
-        paths = []
-        for path in self.config['source']:
-            if absolute:
-                paths.append(os.path.abspath(os.path.join(self.directory, path)))
-            else:
-                paths.append(path)
-        return paths    
 
     def test_module(self):
         if 'waive_module_test' in self.config['project']:
@@ -145,23 +212,10 @@ class Project(object):
 
         logging.info("proof pass")
 
-    def copy_project_to_caravel_rtl(self):
-        src = self.directory
-        dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
-        try_copy_tree(src, dst, self.args.force_delete)
-
     def copy_gl(self):
         dst = os.path.join(self.system_config['caravel']['gl_dir'], self.config['gds']['lvs_filename'])
         src = os.path.join(self.directory, self.config['gds']['directory'], self.config['gds']['lvs_filename'])
         shutil.copyfile(src, dst)
-
-    def clone_openram_support_to_caravel_rtl(self):
-        projects = self.system_config['openram_support']['projects']
-        for project in projects:
-            repo = projects[project]["repo"]
-            commit = projects[project]["commit"]
-            directory = os.path.join(self.system_config['caravel']['rtl_dir'], project)
-            clone_repo(repo, commit, directory, self.args.force_delete)
 
     def test_caravel(self, gl=False):
         if 'waive_caravel' in self.config['project']:
@@ -169,13 +223,13 @@ class Project(object):
             return
 
         conf = self.config["caravel_test"]
+        
+        """ this should already be done by collect.py for generating openlane config
+
+        BUT then how to do GL sim?
 
         # copy src into caravel verilog dir
         self.copy_project_to_caravel_rtl()
-
-        # if using openram, will also need the openram support
-        if self.args.openram and self.args.clone_repos:
-            self.clone_openram_support_to_caravel_rtl()
 
         # generate includes & instantiate inside user project wrapper
         # could this be removed and just do it in collect.py ?
@@ -198,6 +252,7 @@ class Project(object):
             gl,
             self.system_config
         )
+        """
 
         # copy test inside caravel
         src = os.path.join(self.directory, conf["directory"])
@@ -230,12 +285,6 @@ class Project(object):
 
         logging.info("caravel test pass")
 
-    def get_gds_size(self):
-        conf = self.config["gds"]
-        gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
-        gdsii = gdspy.GdsLibrary(infile=gds_file)
-        toplevel = gdsii.top_level()[0]
-        return toplevel.get_bounding_box()[1]
 
     def test_gds(self):
         if 'waive_gds' in self.config['project']:

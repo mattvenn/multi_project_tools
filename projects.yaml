@@ -35,6 +35,10 @@ openram_support:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
             commit: 'b6aa8817fceb8622548e522a1262c737886f2624'
 
+        openram:
+            repo:   'https://github.com/mattvenn/openram_z2a'
+            commit: '827b03e0191014b78018b8a7131ef6bdbceeb8e0'
+
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
@@ -76,6 +80,7 @@ tests:
     gds:
         # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
         metal5_id:  72 
+    layers: [ 'li', 'met1', 'met2', 'met3', 'met4', 'met5']
 
 docs:
     pic_dir:        pics

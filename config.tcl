@@ -58,26 +58,14 @@ set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
 	$script_dir/../../caravel/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_project_includes.v \
-	$script_dir/../../verilog/rtl/wb_bridge/src/wb_bridge_2way.v \
-	$script_dir/../../verilog/rtl/wb_openram_wrapper/src/wb_port_control.v \
-	$script_dir/../../verilog/rtl/wb_openram_wrapper/src/wb_openram_wrapper.v \
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"
+	$script_dir/../../verilog/rtl/user_project_includes.v"
 
 set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
-lappend	::env(EXTRA_LEFS) $::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram_macros/lef/sky130_sram_1kbyte_1rw1r_32x256_8.lef
 
 set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
-lappend ::env(EXTRA_GDS_FILES) $::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_sram_macros/gds/sky130_sram_1kbyte_1rw1r_32x256_8.gds
 
-# routing adjustments
-# turn off li for any routing
-# and add workaround for routing issues with openram by adding
-# 479 wide x 397 tall obs (from openram 0,0) on met2,3,4
-set ::env(GLB_RT_OBS)  "li1  0    0   2920    3520,
-                        met4 344 475.5 823.5 872.5,
-                        met3 344 475.5 823.5 872.5,
-                        met2 344 475.5 823.5 872.5"
+# these get generated - if a project specifies obstruction in the info.yaml
+source user_project_wrapper/obstruction.tcl
 
 set ::env(GLB_RT_ALLOW_CONGESTION) "1"
 
@@ -90,7 +78,6 @@ set ::env(GLB_RT_ADJUSTMENT) 0.70
 # l2 is met1                                                                                 
 set ::env(GLB_RT_L2_ADJUSTMENT) 0.9
 set ::env(GLB_RT_L3_ADJUSTMENT) 0.7
- 
 
 # use 8 cores
 set ::env(ROUTING_CORES) 8

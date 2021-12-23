@@ -6,10 +6,12 @@ import logging
 
 def generate_openlane_files(
     projects, 
+    shared_projects,
     interface_definitions: Dict[str, Dict[str, int]],
     target_user_project_wrapper_path: Optional[str],
     target_user_project_includes_path: Optional[str],
     target_caravel_includes_path: Optional[str],
+    target_caravel_obstructions_path: Optional[str],
     openram,
     gl,
     config # this is getting silly now. These generators should be objects and get the config by default.
@@ -32,7 +34,7 @@ def generate_openlane_files(
     user_project_includes_filename = "user_project_includes.v"
 
     logging.info(f"generating {user_project_includes_filename} locally")
-    generate_openlane_user_project_include(projects, user_project_includes_filename)
+    generate_openlane_user_project_include(projects, shared_projects, user_project_includes_filename)
 
     if target_user_project_includes_path:
         logging.info(f"{user_project_includes_filename} to {target_user_project_includes_path}")
@@ -45,16 +47,39 @@ def generate_openlane_files(
     caravel_includes_filename = "uprj_netlists.v"
 
     logging.info(f"generating {caravel_includes_filename} locally")
-    generate_caravel_includes(projects, caravel_includes_filename, openram, gl)
+    generate_caravel_includes(projects, shared_projects, caravel_includes_filename, openram, gl)
 
     if target_caravel_includes_path:
         logging.info(f"{caravel_includes_filename} to {target_caravel_includes_path}")
         shutil.move(caravel_includes_filename, target_caravel_includes_path)
     else:
         logging.info(f"leaving {caravel_includes_filename} here")
-    
 
-def generate_openlane_user_project_include(projects, outfile):
+    
+    logging.info(f"generating obstructions")
+    caravel_obstructions_path = "obstruction.tcl"
+    generate_caravel_obstructions(config, projects, shared_projects, caravel_obstructions_path)
+    if target_caravel_obstructions_path:
+        logging.info(f"{caravel_obstructions_path} to {target_caravel_obstructions_path}")
+        shutil.move(caravel_obstructions_path, target_caravel_obstructions_path)
+    else:
+        logging.info(f"leaving {caravel_obstructions_path} here")
+
+def generate_caravel_obstructions(config, projects, shared_projects, caravel_obstructions_path):
+    with open(caravel_obstructions_path, "w") as f:
+        f.write('set ::env(GLB_RT_OBS)  "li1  0    0   2920    3520')
+        for project in projects + shared_projects:
+            if 'obstruction' in project.config:
+                for layer in config['tests']['layers']:
+                    if layer in project.config['obstruction']:
+                        x1, y1 = project.get_macro_pos_from_caravel()
+                        x2, y2 = project.get_gds_size()
+                        x2 += x1
+                        y2 += y1
+                        f.write(f",\n       {layer} {x1} {y1} {x2} {y2}")
+        f.write('"\n') 
+ 
+def generate_openlane_user_project_include(projects, shared_projects, outfile):
     include_snippets: List[str] = []
 
     headers = ["project id", "title", "author", "repo", "commit"]
@@ -75,10 +100,16 @@ def generate_openlane_user_project_include(projects, outfile):
         top_path = os.path.join(os.path.basename(project.directory), top_module)
         include_snippets.append(f"`include \"{top_path}\" // {project.id}")
 
+    include_snippets.append(f"// shared projects")
+    for project in shared_projects:
+        for path in project.get_module_source_paths(absolute=False):
+            path = os.path.join(os.path.basename(project.directory), path)
+            include_snippets.append('`include "%s"' % path)
+
     with open(outfile, "w") as f:
         f.write("\n".join(include_snippets))
 
-def generate_caravel_includes(projects, outfile, openram, gl):
+def generate_caravel_includes(projects, shared_projects, outfile, openram, gl):
     with open("codegen/uprj_netlists.txt", "r") as f:
         filedata = f.read()
 
@@ -88,10 +119,18 @@ def generate_caravel_includes(projects, outfile, openram, gl):
         project_includes += ("// %s\n" % project)
         for path in project.get_module_source_paths(absolute=False):
             path = os.path.join(os.path.basename(project.directory), path)
-            project_includes += ('	`include "%s"\n' % path)
+            project_includes += ('`include "%s"\n' % path)
 
         gl_includes += ('`include "%s"\n' % project.config['gds']['lvs_filename'])
 
+    for project in shared_projects:
+        print(project)
+        project_includes += ("// %s\n" % project)
+        for path in project.get_module_source_paths(absolute=False):
+            path = os.path.join(os.path.basename(project.directory), path)
+            project_includes += ('`include "%s"\n' % path)
+
+    """
     openram_includes =  ('	// include openram model\n')
     openram_includes += ('	`include "libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"\n')
     openram_includes += ('	// Wishbone bridge to split traffic into 2 streams: for user\n')
@@ -100,10 +139,11 @@ def generate_caravel_includes(projects, outfile, openram, gl):
     openram_includes += ('	// Wishbone dual port wrapper for OpenRAM\n')
     openram_includes += ('	`include "wb_openram_wrapper/src/wb_port_control.v"\n')
     openram_includes += ('	`include "wb_openram_wrapper/src/wb_openram_wrapper.v"\n')
+    """
 
-    if openram:
-        gl_includes += openram_includes
-        project_includes += openram_includes
+    #if openram:
+    #    gl_includes += openram_includes
+    #    project_includes += openram_includes
 
     # GL takes too long for all of Caravel, so just use the GL instead of all the normal RTL includes
     if gl == True:
@@ -138,6 +178,7 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
             generate_openlane_user_project_wrapper_instance(
                 project.module_name,
                 project.id,
+                project.instance_name,
                 project.interfaces,
                 interface_definitions,
                 config,
@@ -156,7 +197,8 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
 
 def generate_openlane_user_project_wrapper_instance(
     macro_name: str,
-    instance_name: str,    
+    macro_id: str,    
+    macro_instance_name: str,
     interfaces: List[str],
     interface_defs: Dict[str, Dict[str, int]],
     config,
@@ -165,7 +207,7 @@ def generate_openlane_user_project_wrapper_instance(
     verilog_name = macro_name
     
     verilog_snippet: List[str] = []
-    verilog_snippet.append(f"    {verilog_name} {verilog_name}_{instance_name}(")
+    verilog_snippet.append(f"    {verilog_name} {macro_instance_name}(")
 
     
     for macro_interface in interfaces:
@@ -180,7 +222,7 @@ def generate_openlane_user_project_wrapper_instance(
                     dst_wire_name = config['openram_support']['wb_uprj_bus'][wire_name]
 
             if wire_name == "active":
-                verilog_snippet.append(f"        .{wire_name} ({dst_wire_name}[{instance_name}]),")
+                verilog_snippet.append(f"        .{wire_name} ({dst_wire_name}[{macro_id}]),")
             elif width == 1:
                 verilog_snippet.append(f"        .{wire_name} ({dst_wire_name}),")
             else:
