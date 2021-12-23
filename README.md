@@ -110,6 +110,7 @@ This command will run all the tests against all projects:
 * Checks GDS nothing on layer metal 5
 * Run LVS against powered Verilog and GDS - requires new netgen
 * Checks powered Verilog has Z outputs if not active
+* Check repos match the given commit
 
 This functionality is contained within the [Project class](project.py)
 
@@ -129,6 +130,11 @@ working and the Verilog is used.
 ## Generate documentation
 
     ./multi_tool.py --generate-doc --annotate-image
+
+* Generates a project index (index.md) with details of all the projects
+* copies the project images to ./pics
+* uses klayout to grab a screenshot of the final layout
+* annotate the layout with titles and authors, saves as ./pics/multi_macro_annotated.png
 
 ## Done by hand
 
