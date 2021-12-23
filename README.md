@@ -18,17 +18,29 @@ See this repo you can use as a template: https://github.com/mattvenn/wrapped_pro
 
 The shared bus contains the following signals:
 
-    // Wishbone
-    input wire wb_clk_i,
-    input wire wb_rst_i,
-    input wire wbs_stb_i,
-    input wire wbs_cyc_i,
-    input wire wbs_we_i,
-    input wire [3:0] wbs_sel_i,
-    input wire [31:0] wbs_dat_i,
-    input wire [31:0] wbs_adr_i,
-    output wire wbs_ack_o,
-    output wire [31:0] wbs_dat_o,
+    // Caravel Bus
+    input wire          wb_clk_i,                   // main clock
+    input wire          wb_rst_i,                   // main system reset
+    input wire          wbs_stb_i,                  // wishbone write strobe
+    input wire          wbs_cyc_i,                  // wishbone cycle
+    input wire          wbs_we_i,                   // wishbone write enable
+    input wire  [3:0]   wbs_sel_i,                  // wishbone write word select
+    input wire  [31:0]  wbs_dat_i,                  // wishbone data in
+    input wire  [31:0]  wbs_adr_i,                  // wishbone address
+    output wire         wbs_ack_o,                  // wishbone ack
+    output wire [31:0]  wbs_dat_o,                  // wishbone data out
+
+    // RAMBus
+    output wire         rambus_wb_clk_o,            // clock
+    output wire         rambus_wb_rst_o,            // reset
+    output wire         rambus_wb_stb_o,            // write strobe
+    output wire         rambus_wb_cyc_o,            // cycle
+    output wire         rambus_wb_we_o,             // write enable
+    output wire [3:0]   rambus_wb_sel_o,            // write word select
+    output wire [31:0]  rambus_wb_dat_o,            // ram data out
+    output wire [9:0]   rambus_wb_adr_o,            // 10bit address
+    input  wire         rambus_wb_ack_i,            // ack
+    input  wire [31:0]  rambus_wb_dat_i,            // ram data in
 
     // Logic Analyzer Signals
     input  wire [31:0] la1_data_in,
@@ -55,7 +67,7 @@ When the active wire goes high, the wrapper's outputs are switched from high-z t
 
 ## Optional interfaces
 
-Wishbone, LA1, GPIO, IRQ, Clock2 are all optional. You can turn them off if you don't need them.
+Wishbone, LA1, GPIO, IRQ, Clock2, RAMBus, CaravelBus are all optional. You can turn them off if you don't need them.
 
 ## Dependencies
 
@@ -71,9 +83,22 @@ See the requirements.txt file for Python reqs.
 
 LVS tests now require a tool inside OpenLANE to parse the output of netgen.
 
+## Setup
+
+    # includes OpenRAM
+    ./multi_tool.py --clone-repos --clone-shared-repos --create-openlane-config --copy-gds --copy-project --openram
+
+This command will get everything ready for a complete system test and hardening of user_project_wrapper:
+
+* Copy each project's GDS/LEF/RTL/tests to the correct place in Caravel
+* Generate OpenLANE configuration for user_project_wrapper (macro placement and obstructions)
+* Instantiate all the projects inside user_project_wrapper.v
+
+This functionality is contained within the [Collection class](collect.py)
+
 ## Test everything
 
-     ./multi_tool.py --config projects.yaml  --test-all --force-delete
+     ./multi_tool.py --test-all --force-delete
 
 This command will run all the tests against all projects: 
 
@@ -87,24 +112,15 @@ This command will run all the tests against all projects:
 
 This functionality is contained within the [Project class](project.py)
 
-To choose a single project, provide the --directory argument.
+To choose a single project, provide the --project argument.
 
-## Generate OpenLANE config
+## Generate documentation
 
-    ./multi_tool.py --config projects.yaml  --copy-gds --create-openlane-config --generate-doc
-
-This command will get everything ready for a complete system test and hardening of user_project_wrapper:
-
-* Copy each project's GDS/LEF to the correct place in Caravel
-* Generate OpenLANE configuration for user_project_wrapper (macro placement and obstructions)
-* Instantiate all the projects inside user_project_wrapper.v
-* Generate documentation in index.md
-
-This functionality is contained within the [Collection class](collect.py)
+    ./multi_tool.py --generate-doc --annotate-image
 
 ## Done by hand
 
-run OpenLANE to harden user_project_wrapper:
+run OpenLane to harden user_project_wrapper:
 
     cd $CARAVEL_ROOT; make user_project_wrapper
 
@@ -123,7 +139,5 @@ The above was generated with config created by this command that fills all 16 sl
 ## TODO
 
 * put tool command that generated config into the readme
-* put gds image into the readme
-* test with vga_clock - as it uses .hex files. will probably break the include system
 * check license in projects
 * one of the tests make a results.xml in local directory
