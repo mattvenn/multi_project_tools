@@ -127,7 +127,6 @@ def generate_caravel_includes(projects, shared_projects, outfile, openram, gl):
         gl_includes += ('`include "%s"\n' % project.config['gds']['lvs_filename'])
 
     for project in shared_projects:
-        print(project)
         project_includes += ("// %s\n" % project)
         for path in project.get_module_source_paths(absolute=False):
             path = os.path.join(os.path.basename(project.directory), path)

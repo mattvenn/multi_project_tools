@@ -37,7 +37,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # setup log
-    log_format = logging.Formatter('%(asctime)s - %(module)-10s - %(levelname)-8s - %(message)s')
+    log_format = logging.Formatter('%(asctime)s - %(module)-15s - %(levelname)-8s - %(message)s')
     # configure the client logging
     log = logging.getLogger('')
     # has to be set to debug as is the root logger
