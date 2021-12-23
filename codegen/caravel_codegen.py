@@ -70,7 +70,7 @@ def generate_caravel_obstructions(config, projects, shared_projects, caravel_obs
         f.write('set ::env(GLB_RT_OBS)  "li1  0    0   2920    3520')
         for project in projects + shared_projects:
             if 'obstruction' in project.config:
-                for layer in config['tests']['layers']:
+                for layer in config['configuration']['gds']['layers']:
                     if layer in project.config['obstruction']:
                         x1, y1 = project.get_macro_pos_from_caravel()
                         x2, y2 = project.get_gds_size()

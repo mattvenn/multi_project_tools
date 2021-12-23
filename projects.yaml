@@ -37,7 +37,7 @@ openram_support:
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
-            commit: '827b03e0191014b78018b8a7131ef6bdbceeb8e0'
+            commit: '50fcbcf8c06ed2fb20e04e0fd913e7dff3b1b137'
 
 projects:
     function_generator:
@@ -58,6 +58,10 @@ configuration:
     macro_snap: 0.23 # half of met2 pin/track space
     user_area_width: 2920
     user_area_height: 3520
+    gds:
+        # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
+        metal5_id:  72 
+        layers: [ 'li', 'met1', 'met2', 'met3', 'met4', 'met5']
 
 caravel:
     root:           /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4
@@ -76,11 +80,6 @@ lvs:
     PDK_ROOT:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/
     OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
 
-tests:
-    gds:
-        # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
-        metal5_id:  72 
-    layers: [ 'li', 'met1', 'met2', 'met3', 'met4', 'met5']
 
 docs:
     pic_dir:        pics

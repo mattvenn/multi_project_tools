@@ -298,7 +298,7 @@ class Project(BaseProject):
 
 
         # nothing on metal 5
-        if self.system_config["tests"]["gds"]["metal5_id"] in toplevel.get_layers():
+        if self.system_config["configuration"]["gds"]["metal5_id"] in toplevel.get_layers():
             logging.error("%s has layers on metal5" % gds_file)
             exit(1)
 
