@@ -143,10 +143,6 @@ class Project(BaseProject):
         if self.args.test_all or self.args.test_caravel:
             self.test_caravel()
 
-        # don't run this as part of test-all
-        if self.args.test_caravel_gl:
-            self.test_caravel(gl=True)
-
         if self.args.test_all or self.args.test_gds:
             self.test_gds()
 
@@ -223,43 +219,12 @@ class Project(BaseProject):
         src = os.path.join(self.directory, self.config['gds']['directory'], self.config['gds']['lvs_filename'])
         shutil.copyfile(src, dst)
 
-    def test_caravel(self, gl=False):
+    def test_caravel(self):
         if 'waive_caravel' in self.config['project']:
             logging.info("skipping caravel test due to %s" % self.config['project']['waive_caravel'])
             return
 
         conf = self.config["caravel_test"]
-        
-        """ this should already be done by collect.py for generating openlane config
-
-        BUT then how to do GL sim?
-
-        # copy src into caravel verilog dir
-        self.copy_project_to_caravel_rtl()
-
-        # generate includes & instantiate inside user project wrapper
-        # could this be removed and just do it in collect.py ?
-        user_project_wrapper_path =  os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
-        caravel_includes_path =      os.path.join(self.system_config['caravel']['rtl_dir'], "uprj_netlists.v")
-        user_project_includes_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_includes.v")
-
-        interface_definitions = {
-            **self.system_config['interfaces']['required'], 
-            **self.system_config['interfaces']['optional']
-        }
-
-        generate_openlane_files(
-            [self], 
-            interface_definitions,
-            user_project_wrapper_path, 
-            user_project_includes_path,
-            caravel_includes_path,
-            self.args.openram,
-            gl,
-            self.system_config
-        )
-        """
-
 
         # set up env
         test_env = os.environ.copy()
@@ -272,8 +237,7 @@ class Project(BaseProject):
         cmd = ["make", conf["recipe"]]
 
         # if gl, make sure the gatelevel netlist is in the correct place, & use the gl_recipe
-        if gl:
-            self.copy_gl()
+        if self.args.gate_level:
             cmd = ["make", conf["gl_recipe"]]
 
         logging.info("attempting to run %s in %s" % (cmd, cwd))

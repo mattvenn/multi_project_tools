@@ -96,6 +96,7 @@ This command will get everything ready for a complete system test and hardening 
 
 This functionality is contained within the [Collection class](collect.py)
 
+
 ## Test everything
 
      ./multi_tool.py --test-all --force-delete
@@ -113,6 +114,17 @@ This command will run all the tests against all projects:
 This functionality is contained within the [Project class](project.py)
 
 To choose a single project, provide the --project argument.
+
+## Gate level testing
+
+This isn't full system GL testing as it takes too long. Instead, only the GL version of the projects are used. The rest of Caravel is assumed to be 
+working and the Verilog is used.
+
+    # rebuild include files for gatelevel so that the files in verilog/gl are included instead
+    ./multi_tool.py --create-openlane-config --gatelevel
+
+    # run all the caravel tests with gl
+    ./mutli_tool.py --test-caravel
 
 ## Generate documentation
 

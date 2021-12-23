@@ -43,7 +43,7 @@ def generate_openlane_files(
         logging.info(f"leaving {user_project_includes_filename} here")
     
     ### caravel includes ###
-    ### for simulation
+    ### for simulation - this needs to be altered for gate level sims
     caravel_includes_filename = "uprj_netlists.v"
 
     logging.info(f"generating {caravel_includes_filename} locally")
@@ -55,6 +55,8 @@ def generate_openlane_files(
     else:
         logging.info(f"leaving {caravel_includes_filename} here")
 
+    ### obstructions ###
+    ### for openlane
     
     logging.info(f"generating obstructions")
     caravel_obstructions_path = "obstruction.tcl"
@@ -115,6 +117,7 @@ def generate_caravel_includes(projects, shared_projects, outfile, openram, gl):
 
     gl_includes = ""
     project_includes = ""
+    shared_project_includes = ""
     for project in projects:
         project_includes += ("// %s\n" % project)
         for path in project.get_module_source_paths(absolute=False):
@@ -128,25 +131,12 @@ def generate_caravel_includes(projects, shared_projects, outfile, openram, gl):
         project_includes += ("// %s\n" % project)
         for path in project.get_module_source_paths(absolute=False):
             path = os.path.join(os.path.basename(project.directory), path)
-            project_includes += ('`include "%s"\n' % path)
-
-    """
-    openram_includes =  ('	// include openram model\n')
-    openram_includes += ('	`include "libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"\n')
-    openram_includes += ('	// Wishbone bridge to split traffic into 2 streams: for user\n')
-    openram_includes += ('	// project and OpenRAM\n')
-    openram_includes += ('	`include "wb_bridge/src/wb_bridge_2way.v"\n')
-    openram_includes += ('	// Wishbone dual port wrapper for OpenRAM\n')
-    openram_includes += ('	`include "wb_openram_wrapper/src/wb_port_control.v"\n')
-    openram_includes += ('	`include "wb_openram_wrapper/src/wb_openram_wrapper.v"\n')
-    """
-
-    #if openram:
-    #    gl_includes += openram_includes
-    #    project_includes += openram_includes
+            shared_project_includes += ('`include "%s"\n' % path)
 
     # GL takes too long for all of Caravel, so just use the GL instead of all the normal RTL includes
+    # also, don't use GL files for shared projects yet
     if gl == True:
+        gl_includes += shared_project_includes
         filedata = filedata.replace('RTL_INCLUDES', gl_includes)
     else:
         filedata = filedata.replace('RTL_INCLUDES', project_includes)

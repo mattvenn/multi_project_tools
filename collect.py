@@ -79,6 +79,7 @@ class Collection(object):
         for project in self.projects:
             project.run_tests()
 
+    # TODO refactor so project konws how to copy gds and lef, then do the same as rtl, gl, test etc.
     def copy_all_gds(self):
         macros_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
         lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
@@ -102,6 +103,11 @@ class Collection(object):
 
             # gl
             project.copy_gl()
+
+    def copy_all_project_files_to_caravel(self):
+        ### copy out rtl ###
+        for project in self.projects + self.shared_projects:
+            project.copy_project_to_caravel_rtl()
 
     def annotate_image(self):
         final_gds_file = os.path.join(self.config['caravel']['root'], 'gds', 'user_project_wrapper.gds.gz')
@@ -146,35 +152,10 @@ class Collection(object):
         annotated_image_file = os.path.join('pics', 'multi_macro_annotated.png')
         img.save(annotated_image_file)
 
-    """ totally broken
-    def allocate_macros(self):
-        # allocate macros and generate macro.cfg
-        allocation = allocate_macros(
-            design_size_x = self.width,
-            design_size_y = self.height,
-            h_edge = 344,
-            v_edge = 464,
-            macro_snap = self.config['configuration']['macro_snap'],
-            projects = self.projects,
-            allocation_policy = "legacy",
-            openram = self.args.openram
-        )
-        return allocation
-    """
 
     def get_macro_pos_from_caravel(self):
         for project in self.projects + self.shared_projects:
             print(project.get_macro_pos_from_caravel())
-
-    """
-    def clone_openram_support_to_caravel_rtl(self):
-        projects = self.config['openram_support']['projects']
-        for project in projects:
-            repo = projects[project]["repo"]
-            commit = projects[project]["commit"]
-            directory = os.path.join(self.config['caravel']['rtl_dir'], project)
-            clone_repo(repo, commit, directory, self.args.force_delete)
-    """
 
     def create_openlane_config(self):
         ### generate user wrapper and include ###
@@ -191,7 +172,7 @@ class Collection(object):
             caravel_includes_path,
             openlane_config_path,
             self.args.openram,
-            False, #TODO this breaks GL test
+            self.args.gate_level,
             self.config
         )
 
@@ -201,6 +182,8 @@ class Collection(object):
         dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.tcl')
         logging.info(f"copying {src} to {dst}")
         shutil.copyfile(src, dst)
+
+        logging.warning("macros.cfg is not currently being automatically generated - please make sure this file is up to date")
 
         """ totally broken - do by hand instead
         allocation = self.allocate_macros()
@@ -219,10 +202,21 @@ class Collection(object):
                 f.write(f"openram_1kB 344 464 N\n")
         """ 
             
-    def copy_all_project_files_to_caravel(self):
-        ### copy out rtl ###
-        for project in self.projects + self.shared_projects:
-            project.copy_project_to_caravel_rtl()
+    """ totally broken
+    def allocate_macros(self):
+        # allocate macros and generate macro.cfg
+        allocation = allocate_macros(
+            design_size_x = self.width,
+            design_size_y = self.height,
+            h_edge = 344,
+            v_edge = 464,
+            macro_snap = self.config['configuration']['macro_snap'],
+            projects = self.projects,
+            allocation_policy = "legacy",
+            openram = self.args.openram
+        )
+        return allocation
+    """
 
     """
     * generate an index.md with a section for each project
