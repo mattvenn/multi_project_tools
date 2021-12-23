@@ -23,9 +23,15 @@ class BaseProject(object):
                 paths.append(path)
         return paths    
 
-    def copy_project_to_caravel_rtl(self):
+    def copy_project_files_to_caravel(self):
+        # RTL
         src = self.directory
         dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
+        try_copy_tree(src, dst, self.args.force_delete)
+
+        # TEST
+        src = os.path.join(self.directory, conf["directory"])
+        dst = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
         try_copy_tree(src, dst, self.args.force_delete)
 
     # parse the macro.cfg file and find our entry, return x, y position
@@ -254,10 +260,6 @@ class Project(BaseProject):
         )
         """
 
-        # copy test inside caravel
-        src = os.path.join(self.directory, conf["directory"])
-        dst = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
-        try_copy_tree(src, dst, self.args.force_delete)
 
         # set up env
         test_env = os.environ.copy()

@@ -79,7 +79,7 @@ class Collection(object):
         for project in self.projects:
             project.run_tests()
 
-    def copy_gds(self):
+    def copy_all_gds(self):
         macros_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
         lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
         gds_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds')
@@ -195,9 +195,6 @@ class Collection(object):
             self.config
         )
 
-        ### copy out rtl ###
-        for project in self.projects + self.shared_projects:
-            project.copy_project_to_caravel_rtl()
 
         # copy the local config.tcl file 
         src = 'config.tcl'
@@ -222,6 +219,10 @@ class Collection(object):
                 f.write(f"openram_1kB 344 464 N\n")
         """ 
             
+    def copy_all_project_files_to_caravel(self):
+        ### copy out rtl ###
+        for project in self.projects + self.shared_projects:
+            project.copy_project_to_caravel_rtl()
 
     """
     * generate an index.md with a section for each project

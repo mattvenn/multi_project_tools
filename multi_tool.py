@@ -22,10 +22,11 @@ if __name__ == '__main__':
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
     parser.add_argument('--test-from', help="run all the checks for all projects with id equal or more than the given id", type=int)
 
-    parser.add_argument('--openram', help="use openram", action='store_const', const=True)
-    parser.add_argument('--clone-shared-repos', help="clone shared repos", action='store_const', const=True)
+    parser.add_argument('--openram', help="use OpenRAM - instantiate the bridge, wrapper and do the wiring", action='store_const', const=True)
+    parser.add_argument('--clone-shared-repos', help="clone shared repos defined in projects.yaml", action='store_const', const=True)
     parser.add_argument('--clone-repos', help="git clone the repo", action='store_const', const=True)
-    parser.add_argument('--create-openlane-config', help="create the OpenLANE configs for user project wrapper", action='store_const', const=True)
+    parser.add_argument('--create-openlane-config', help="create the OpenLane configs", action='store_const', const=True)
+    parser.add_argument('--copy-project', help="copy project's RTL and tests to correct locations in caravel_user_project", action='store_const', const=True)
     parser.add_argument('--copy-gds', help="copy the projects GDS and LEF files", action='store_const', const=True)
     parser.add_argument('--generate-doc', help="generate a index.md file with information about each project", action='store_const', const=True)
     parser.add_argument('--dump-hash', help="print current commit hash of each project along with author and title", action='store_const', const=True)
@@ -53,13 +54,16 @@ if __name__ == '__main__':
     # run any tests specified by arguments
     collection.run_tests()
 
-    # create all the OpenLANE config for the user collection wrapper
+    # create all the OpenLane config for the user collection wrapper
     if args.create_openlane_config:
         collection.create_openlane_config()
 
     # copy gds to correct place
     if args.copy_gds:
-        collection.copy_gds()
+        collection.copy_all_gds()
+
+    if args.copy_project:
+        collection.copy_project_files_to_caravel()
 
     # generate doc
     if args.generate_doc:
@@ -69,5 +73,6 @@ if __name__ == '__main__':
     if args.annotate_image:
         collection.annotate_image()
 
+    # dump macro pos - wip for assisted macro placement
     if args.dump_macro_position:
         collection.get_macro_pos_from_caravel()
