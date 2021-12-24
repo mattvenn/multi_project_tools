@@ -28,12 +28,17 @@ openram_support:
     projects:
 
         wb_bridge:
-            repo:   'https://github.com/embelon/wb_bridge'
-            commit: '952bb1baa91e9a3fbe9a1a1703b451f370b78671'
+#            repo:   'https://github.com/embelon/wb_bridge'
+#            commit: '952bb1baa91e9a3fbe9a1a1703b451f370b78671'
+            repo:   'https://github.com/mattvenn/wb_bridge'
+            commit: '4e5231bf37cdb441409971f19b208a9a7932d03c'
+            
 
         wb_openram_wrapper:
-            repo:   'https://github.com/embelon/wb_openram_wrapper'
-            commit: 'b6aa8817fceb8622548e522a1262c737886f2624'
+#            repo:   'https://github.com/embelon/wb_openram_wrapper'
+#            commit: 'b6aa8817fceb8622548e522a1262c737886f2624'
+            repo:   'https://github.com/mattvenn/wb_openram_wrapper'
+            commit: '6e14318dbc89f6359377581cb9055efd1b7bb626'
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
@@ -45,13 +50,16 @@ projects:
         commit: '0d95d94d816685ab9eea70fbbfb2425a8b91c27e'
     spell:
         repo:   'https://github.com/wokwi/wrapped_spell'
-        commit: 'f9c8517ab579fa8f0e76af7b6c7016c4c5181c50'
+        commit: '4db5165ac2e450a62a249285c1a7374a836b5167'
     ppm_coder:
         repo:   'https://github.com/mattvenn/wrapped_ppm_coder'
         commit: 'bbcb465d5d149a501b1cc67cfe4b344383a15a7e'
     ppm_decoder:
         repo:   'https://github.com/mattvenn/wrapped_ppm_decoder'
         commit: '8d21fed5cbce7c04cdc739226e6ea9167774f7c7'
+    silife:
+        repo:   'https://github.com/wokwi/wrapped_silife'
+        commit: '0548f0c33b8b92e78c4169ca8b23af5151831c72'
 
 configuration:
     project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
