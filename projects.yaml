@@ -28,21 +28,31 @@ openram_support:
     projects:
 
         wb_bridge:
-#            repo:   'https://github.com/embelon/wb_bridge'
-#            commit: '952bb1baa91e9a3fbe9a1a1703b451f370b78671'
-            repo:   'https://github.com/mattvenn/wb_bridge'
-            commit: '4e5231bf37cdb441409971f19b208a9a7932d03c'
+            repo:   'https://github.com/embelon/wb_bridge'
+            commit: '07968d3c07d8aa2b658ae10f1dc6aa6f04ed07c1'
             
-
         wb_openram_wrapper:
-#            repo:   'https://github.com/embelon/wb_openram_wrapper'
-#            commit: 'b6aa8817fceb8622548e522a1262c737886f2624'
-            repo:   'https://github.com/mattvenn/wb_openram_wrapper'
-            commit: '6e14318dbc89f6359377581cb9055efd1b7bb626'
+            repo:   'https://github.com/embelon/wb_openram_wrapper'
+            commit: '314fb8552ed3910033a8bcc8c28aeae85acc5510'
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
             commit: '50fcbcf8c06ed2fb20e04e0fd913e7dff3b1b137'
+
+configuration:
+    macro_snap: 0.23 # half of met2 pin/track space
+    user_area_width: 2920
+    user_area_height: 3520
+    gds:
+        # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
+        metal5_id:  72 
+        layers: [ 'li', 'met1', 'met2', 'met3', 'met4', 'met5']
+
+docs:
+    pic_dir:        pics
+    index:          index.md
+    px_per_um:      0.53 # for the image markup
+    macro_border:   25 # px
 
 projects:
     function_generator:
@@ -61,36 +71,3 @@ projects:
         repo:   'https://github.com/wokwi/wrapped_silife'
         commit: '0548f0c33b8b92e78c4169ca8b23af5151831c72'
 
-configuration:
-    project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
-    macro_snap: 0.23 # half of met2 pin/track space
-    user_area_width: 2920
-    user_area_height: 3520
-    gds:
-        # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
-        metal5_id:  72 
-        layers: [ 'li', 'met1', 'met2', 'met3', 'met4', 'met5']
-
-caravel:
-    root:           /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4
-    gl_dir:         /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4/verilog/gl
-    test_dir:       /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle4/zero_to_asic_mpw4/verilog/rtl/
-    config:         config.tcl
-
-env: # used for simulation
-    GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
-    GCC_PREFIX:     riscv64-unknown-elf
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle4/pdk/sky130A
-
-lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A 
-    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
-
-
-docs:
-    pic_dir:        pics
-    index:          index.md
-    px_per_um:      0.53 # for the image markup
-    macro_border:   25 # px

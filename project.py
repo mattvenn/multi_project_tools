@@ -65,7 +65,7 @@ class SharedProject(BaseProject):
         self.commit = commit # not strictly a commit, could be a branch
 
         parsed = urlparse(repo)
-        project_dir = self.system_config['configuration']['project_directory']
+        project_dir = self.system_config['project_directory']
         self.directory = os.path.join(project_dir, parsed.path.rpartition('/')[-1])
 
         if args.clone_shared_repos:
@@ -100,7 +100,7 @@ class Project(BaseProject):
         self.repo = repo # the repo on github
         self.commit = commit # not strictly a commit, could be a branch
 
-        project_dir = self.system_config['configuration']['project_directory']
+        project_dir = self.system_config['project_directory']
 
         # the project's directory is made by joining project dir to last part of the repo url 
         parsed = urlparse(repo)

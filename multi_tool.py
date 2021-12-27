@@ -8,6 +8,7 @@ if __name__ == '__main__':
     subparsers = parser.add_subparsers(help='help for subcommand', dest="command")
 
     parser.add_argument('--config', help="the config file listing all project directories", default='projects.yaml')
+    parser.add_argument('--local-config', help="the local environment config file", default='local.yaml')
     parser.add_argument('--project', help="just run for a single project, supply project ID", type=int)
 
     parser.add_argument('--test-module', help="run the module's test", action='store_const', const=True)

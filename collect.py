@@ -5,14 +5,21 @@ from project import Project, SharedProject
 from codegen.caravel_codegen import generate_openlane_files
 from codegen.allocator import allocate_macros
 
-REQUIRED_KEYS_GROUP = ["projects", "caravel", "lvs"]
+REQUIRED_KEYS_GROUP = ["interfaces", "openram_support", "configuration", "docs", "projects"]
+REQUIRED_KEYS_LOCAL = ["project_directory", "caravel", "env", "lvs"]
 
+def merge_two_dicts(x, y):
+    z = x.copy()   # start with keys and values of x
+    z.update(y)    # modifies z with keys and values of y
+    return z
 
 class Collection(object):
 
     def __init__(self, args):
         self.args = args
-        self.config = parse_config(args.config, REQUIRED_KEYS_GROUP)
+        project_config = parse_config(args.config, REQUIRED_KEYS_GROUP)
+        local_config = parse_config(args.local_config, REQUIRED_KEYS_LOCAL)
+        self.config = merge_two_dicts(project_config, local_config)
         self.projects = []
 
         if not (0 < len(self.config['projects']) <= 16):
