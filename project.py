@@ -90,7 +90,7 @@ class SharedProject(BaseProject):
         pass
 
     def __str__(self):
-        return "shared %-30s : %s" % (self.title, self.directory)
+        return "shared %-26s : %s" % (self.title, self.directory)
 
 class Project(BaseProject):
 
@@ -108,6 +108,10 @@ class Project(BaseProject):
 
         if args.clone_repos:
             self.clone_repo()
+
+        if not os.path.exists(self.directory):
+            logging.error("project directory %s doesn't exist. Use --clone-repos to clone it" % self.directory)
+            exit(1)
 
         self.gitsha = get_git_sha(self.directory)
 
