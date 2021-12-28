@@ -124,7 +124,7 @@ class Collection(object):
     def annotate_image(self):
         final_gds_file = os.path.join(self.config['caravel']['root'], 'gds', 'user_project_wrapper.gds.gz')
         # dump a 2000x2000 image with klayout to pics/multi_macro.png, check the dump_pic.rb file
-        cmd = "klayout -l caravel.lyp %s -r dump_pic.rb" % final_gds_file
+        cmd = "klayout -l caravel.lyp %s -r dump_pic.rb -c klayoutrc" % final_gds_file
         logging.info(cmd)
         os.system(cmd)
         image_file = os.path.join('pics', 'multi_macro.png')
