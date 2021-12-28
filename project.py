@@ -376,6 +376,9 @@ class Project(BaseProject):
         test_env["TOPLEVEL"]           = self.config["caravel_test"]["module_name"]
         test_env["PDK_ROOT"]           = self.system_config["lvs"]["PDK_ROOT"]
 
+        if "custom_cells_file" in self.config:
+            test_env["CUSTOM_CELLS_FILE"] = os.path.abspath(os.path.join(self.directory, self.config["custom_cells_file"]))
+
         cmd = ["make", "clean", "test"]
         cwd = "buffertest"
 

@@ -13,7 +13,7 @@ test: wrapped_design.v results.xml
 	! grep failure results.xml
 
 wrapped_design.v:
-	cat header.v $(POWERED_VERILOG) > wrapped_design.v
+	cat header.v $(CUSTOM_CELLS_FILE) $(POWERED_VERILOG) > wrapped_design.v
 
 clean::
 	rm -rf wrapped_design.v results.xml __pycache__ sim_build
