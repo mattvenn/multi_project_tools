@@ -18,7 +18,12 @@ class Collection(object):
     def __init__(self, args):
         self.args = args
         project_config = parse_config(args.config, REQUIRED_KEYS_GROUP)
-        local_config = parse_config(args.local_config, REQUIRED_KEYS_LOCAL)
+        try:
+            local_config = parse_config(args.local_config, REQUIRED_KEYS_LOCAL)
+        except FileNotFoundError:
+            logging.error("%s local config not found. Copy matt_local.yaml to local.yaml and adjust as necessary" % args.local_config)
+            exit(1)
+
         self.config = merge_two_dicts(project_config, local_config)
         self.projects = []
 
