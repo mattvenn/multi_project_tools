@@ -70,4 +70,7 @@ projects:
     silife:
         repo:   'https://github.com/wokwi/wrapped_silife'
         commit: '0548f0c33b8b92e78c4169ca8b23af5151831c72'
+    skullfet:
+        repo:   'https://github.com/wokwi/wrapped_skullfet'
+        commit: 'c5622d59bab9ab60f2dbe3777d7575214860167c'
 
