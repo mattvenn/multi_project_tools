@@ -73,4 +73,7 @@ projects:
     skullfet:
         repo:   'https://github.com/wokwi/wrapped_skullfet'
         commit: 'c583f431e0b6f280f91520725f313aebbab86fdd'
+    spraid:
+        repo:   'https://github.com/bit0fun/spraid_mpw4'
+        commit: 'main'
 
