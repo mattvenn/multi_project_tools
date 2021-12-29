@@ -72,5 +72,5 @@ projects:
         commit: '0548f0c33b8b92e78c4169ca8b23af5151831c72'
     skullfet:
         repo:   'https://github.com/wokwi/wrapped_skullfet'
-        commit: '14d55b9ad11a14f2b32911058b08c0eaaa80a2d8'
+        commit: 'c583f431e0b6f280f91520725f313aebbab86fdd'
 
