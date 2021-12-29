@@ -88,10 +88,13 @@ LVS tests now require a tool inside OpenLANE to parse the output of netgen.
     # includes OpenRAM
     ./multi_tool.py --clone-repos --clone-shared-repos --create-openlane-config --copy-gds --copy-project --openram
 
+    # after setup, if a project changes
+    ./multi_tool.py --create-openlane-config --copy-gds --copy-project --openram --force
+
 This command will get everything ready for a complete system test and hardening of user_project_wrapper:
 
 * Copy each project's GDS/LEF/RTL/tests to the correct place in Caravel
-* Generate OpenLANE configuration for user_project_wrapper (macro placement and obstructions)
+* Generate OpenLANE configuration for user_project_wrapper (currently macro placement is done manually)
 * Instantiate all the projects inside user_project_wrapper.v
 
 This functionality is contained within the [Collection class](collect.py)
