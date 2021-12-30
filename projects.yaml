@@ -33,7 +33,7 @@ openram_support:
             
         wb_openram_wrapper:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
-            commit: 'b6aa8817fceb8622548e522a1262c737886f2624'
+            commit: '0ff3fe07de30b455ed8de6f0c4567b2a4606446a'
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
