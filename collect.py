@@ -170,6 +170,8 @@ class Collection(object):
             print(project.get_macro_pos_from_caravel())
 
     def create_openlane_config(self):
+        logging.warning("macro.cfg is not currently being automatically generated - please make sure this file is up to date")
+
         ### generate user wrapper and include ###
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         user_project_includes_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_includes.v")
@@ -195,8 +197,7 @@ class Collection(object):
         logging.info(f"copying {src} to {dst}")
         shutil.copyfile(src, dst)
 
-        logging.warning("macros.cfg is not currently being automatically generated - please make sure this file is up to date")
-
+        
         """ totally broken - do by hand instead
         allocation = self.allocate_macros()
 
