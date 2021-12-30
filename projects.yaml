@@ -33,7 +33,7 @@ openram_support:
             
         wb_openram_wrapper:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
-            commit: '314fb8552ed3910033a8bcc8c28aeae85acc5510'
+            commit: 'b6aa8817fceb8622548e522a1262c737886f2624'
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
@@ -69,11 +69,17 @@ projects:
         commit: '8d21fed5cbce7c04cdc739226e6ea9167774f7c7'
     silife:
         repo:   'https://github.com/wokwi/wrapped_silife'
-        commit: '0548f0c33b8b92e78c4169ca8b23af5151831c72'
+        commit: '28c2fc901365444c992c94660594b946216ad1ec'
     skullfet:
         repo:   'https://github.com/wokwi/wrapped_skullfet'
         commit: 'c583f431e0b6f280f91520725f313aebbab86fdd'
     spraid:
         repo:   'https://github.com/bit0fun/spraid_mpw4'
-        commit: 'main'
+        commit: '69aa8a41cdbf87ca65c8793ba47a924204e8cb88'
+    asic_watch:
+        repo:   'https://github.com/Bynaryman/wrapped_asic_watch'
+        commit: 'd19b10006c3247f6a11fd3e14d854422d85ab37d'
+    hack_soc:
+        repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
+        commit: '048ca9374c0a7984064827bf1d547191a7e5b50d'
 
