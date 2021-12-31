@@ -37,7 +37,7 @@ openram_support:
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
-            commit: '50fcbcf8c06ed2fb20e04e0fd913e7dff3b1b137'
+            commit: 'e038259088a8ccdbb4c2e8923eaf58d2da00f0e9'
 
 configuration:
     macro_snap: 0.23 # half of met2 pin/track space
@@ -79,9 +79,9 @@ projects:
     asic_watch:
         repo:   'https://github.com/Bynaryman/wrapped_asic_watch'
         commit: 'd19b10006c3247f6a11fd3e14d854422d85ab37d'
-#    hack_soc:
-#        repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
-#        commit: '048ca9374c0a7984064827bf1d547191a7e5b50d'
+    hack_soc:
+        repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
+        commit: '048ca9374c0a7984064827bf1d547191a7e5b50d'
     key_value:
         repo:   'https://github.com/giraypultar/wrapped_keyvalue'
         commit: '76cd2077ca5f684f8ccdda93b79bef78c675a149'
