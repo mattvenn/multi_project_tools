@@ -208,6 +208,9 @@ class Project(BaseProject):
 
     def prove_wrapper(self):
         # TODO need to also check properties.sby - could have a few things to cksum and make wrapper_cksum able to check a few files
+        if 'waive_formal' in self.config['project']:
+            logging.info("skipping formal test due to %s" % self.config['project']['waive_formal'])
+            return
         conf = self.config["wrapper_proof"]
         cwd = os.path.join(self.directory, conf["directory"])
         cmd = ["sby", "-f", conf["sby"]]
