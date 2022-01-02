@@ -247,6 +247,10 @@ class Project(BaseProject):
 
         # if gl, make sure the gatelevel netlist is in the correct place, & use the gl_recipe
         if self.args.gate_level:
+            if 'gl_recipe' not in conf:
+                logging.info("skipping gate level caravel test - no gl_receipe in project conf")
+                return
+                
             cmd = ["make", conf["gl_recipe"]]
 
         logging.info("attempting to run %s in %s" % (cmd, cwd))
