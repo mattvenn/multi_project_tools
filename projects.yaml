@@ -5,92 +5,90 @@ interfaces:
         active: {active: 1}
 
     optional:
-        gpio: {io_in: 38, io_out: 38, io_oeb: 38}
-        la1: {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
-        la2: {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
-        la3: {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
-        irq: {user_irq: 3}
-        clk2 : {user_clock2: 1}
-        wishbone: {wb_rst_i: 1, wbs_stb_i: 1, wbs_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_adr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
-        openram: { openram_clk0: 1, openram_csb0: 1, openram_web0: 1,  openram_wmask0: 4, openram_addr0: 8, openram_din0: 32, openram_dout0: 32}
+        gpio:       {io_in: 38, io_out: 38, io_oeb: 38}
+        la1:        {la1_data_in: 32, la1_data_out: 32, la1_oenb: 32}
+        la2:        {la2_data_in: 32, la2_data_out: 32, la2_oenb: 32}
+        la3:        {la3_data_in: 32, la3_data_out: 32, la3_oenb: 32}
+        irq:        {user_irq: 3}
+        clk2 :      {user_clock2: 1}
+        wishbone:   {wb_rst_i: 1, wbs_stb_i: 1, wbs_cyc_i: 1, wbs_we_i: 1, wbs_sel_i: 4, wbs_dat_i: 32, wbs_adr_i: 32, wbs_ack_o: 1, wbs_dat_o: 32}
+        openram:    {rambus_wb_clk_o: 1, rambus_wb_rst_o: 1, rambus_wb_stb_o: 1, rambus_wb_cyc_o: 1,  rambus_wb_we_o: 1, rambus_wb_sel_o: 4, rambus_wb_dat_o: 32, rambus_wb_adr_o: 10, rambus_wb_ack_i: 1, rambus_wb_dat_i: 32}
 
-projects:
-    rgb mixer:
-        repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
-        commit: '1145686010fd944d47b275df29fd09becd4c9921'
-    frequency counter:
-        repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
-        commit: '7bd1e65be1f68dfbb9cfdb7030cb6eaac4c918c9'
-    vga clock:
-        repo:   'https://github.com/mattvenn/wrapped_vga_clock'
-        commit: 'f6e76f1a54949ea69df79d3587c910b4d9d50965'
-    TPM2137:
-        repo:   'https://github.com/mattvenn/wrapped_tpm2137'
-        commit: '9edfe316ae8f9d618a3dd9cee5bc10c1bead0c9b'
-    WS2812:
-        repo:   'https://github.com/mattvenn/wrapped_ws2812'
-        commit: 'dd4050fceea5944e5dd72b6021d1e5f7794ca933'
-    zube:
-        repo:   'https://github.com/thejpster/zube_submission'
-        commit: 'bc9b493ed900bd91b5296adfe1cae6b9e28c41d2'
-    Hack Soc:
-        repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
-        commit: '009a903f28b54a620bedea825d59de13c468f51a'
-    NCO:
-        repo:   'https://github.com/ameetgohil/mpw3-nco'
-        commit: '6050985fcc44fba61af68cbc01c7a8e40f0a61dc'
-    WB_HyperRAM:
-        repo:   'https://github.com/embelon/wrapped_wb_hyperram'
-        commit: '123a4492dcc7f34b48f3dc15fce74d976ac33181'
-    Parallax:
-        repo:   'https://github.com/rejunity/zero-to-asic-wrapped-parallax'
-        commit: '6a1771bbd54b0b929915f121982e533b3b1df68c'
-    WB_OpenRAM:
-        repo:   'https://github.com/embelon/wrapped_wb_openram_shim'
-        commit: 'a01934627c1a6ee9288ff7b47ffe1e4e97b0554f'
-    Wiggly:
-        repo:   'https://github.com/osnr/wrapped_wiggly_ic_1'
-        commit: 'ed5fca687ae598f7ffa74c59872c585ec1a5511e'
-    KeyValue:
-        repo:   'https://github.com/giraypultar/wrapped_keyvalue'
-        commit: '5f14a5d0e95a07f7dee1b9fefd944493abbd860f'
-    WB_demo:
-        repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
-        commit: '8c1784235533a486dd6c754bfd2c62fade0896f9'
-    OpenPUF:
-        repo:   'https://github.com/pedrorivera/wrapped_OpenPUF'
-        commit: 'eec589a456a3f603e97aa1647ae8dca453f612d8'
+openram_support:
+    wb_uprj_bus:    {
+                        wbs_stb_i   : wbs_uprj_stb_i,
+                        wbs_cyc_i   : wbs_uprj_cyc_i,
+                        wbs_we_i    : wbs_uprj_we_i,
+                        wbs_sel_i   : wbs_uprj_sel_i,
+                        wbs_dat_i   : wbs_uprj_dat_i,
+                        wbs_adr_i   : wbs_uprj_adr_i,
+                        wbs_ack_o   : wbs_uprj_ack_o,
+                        wbs_dat_o   : wbs_uprj_dat_o,
+                    }
+    projects:
+
+        wb_bridge:
+            repo:   'https://github.com/embelon/wb_bridge'
+            commit: '006f96d5df99ce31a02ef31a0d82abcef64496e9'
+            
+        wb_openram_wrapper:
+            repo:   'https://github.com/embelon/wb_openram_wrapper'
+            commit: '0ff3fe07de30b455ed8de6f0c4567b2a4606446a'
+
+        openram:
+            repo:   'https://github.com/mattvenn/openram_z2a'
+            commit: 'e038259088a8ccdbb4c2e8923eaf58d2da00f0e9'
 
 configuration:
-    project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
     macro_snap: 0.23 # half of met2 pin/track space
     user_area_width: 2920
     user_area_height: 3520
-
-caravel:
-    root:           /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project
-    gl_dir:         /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/gl
-    test_dir:       /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/rtl/
-    config:         config.tcl
-
-env: # used for simulation
-    GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
-    GCC_PREFIX:     riscv64-unknown-elf
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A
-
-lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/sky130A # can't get LVS to work on rc6 PDK: always fails on tap cells
-    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle3-mpw-3/pdk/
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle3-mpw-3/openlane    # only used to find the count_lvs.py script
-
-tests:
     gds:
         # https://skywater-pdk.readthedocs.io/en/latest/rules/layers.html?highlight=72#gds-layers-information
         metal5_id:  72 
+        layers: [ 'li', 'met1', 'met2', 'met3', 'met4', 'met5']
 
 docs:
     pic_dir:        pics
     index:          index.md
     px_per_um:      0.53 # for the image markup
     macro_border:   25 # px
+
+projects:
+    function_generator:
+        repo:   'https://github.com/mattvenn/wrapped_function_generator'
+        commit: '0d95d94d816685ab9eea70fbbfb2425a8b91c27e'
+    spell:
+        repo:   'https://github.com/wokwi/wrapped_spell'
+        commit: '4db5165ac2e450a62a249285c1a7374a836b5167'
+    ppm_coder:
+        repo:   'https://github.com/mattvenn/wrapped_ppm_coder'
+        commit: 'bbcb465d5d149a501b1cc67cfe4b344383a15a7e'
+    ppm_decoder:
+        repo:   'https://github.com/mattvenn/wrapped_ppm_decoder'
+        commit: '8d21fed5cbce7c04cdc739226e6ea9167774f7c7'
+    silife:
+        repo:   'https://github.com/wokwi/wrapped_silife'
+        commit: 'c3eb7d8bdaa1953ecf13adc21d33dd4326a559c9'
+    skullfet:
+        repo:   'https://github.com/wokwi/wrapped_skullfet'
+        commit: 'c583f431e0b6f280f91520725f313aebbab86fdd'
+    spraid:
+        repo:   'https://github.com/bit0fun/spraid_mpw4'
+        commit: '75870977bbc0779da699e9f7df11fb4247ec9b6a'
+    asic_watch:
+        repo:   'https://github.com/Bynaryman/wrapped_asic_watch'
+        commit: 'd19b10006c3247f6a11fd3e14d854422d85ab37d'
+    hack_soc:
+        repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
+        commit: '048ca9374c0a7984064827bf1d547191a7e5b50d'
+    key_value:
+        repo:   'https://github.com/giraypultar/wrapped_keyvalue'
+        commit: '76cd2077ca5f684f8ccdda93b79bef78c675a149'
+    bin_mult:
+        repo:   'https://github.com/tucanae47/wrapped_bin_mult'
+        commit: '0764fe1bf1ffcbca5dfb86d68c8e37c3319b6266'
+#    mensa:
+#        repo:   'https://github.com/etalian/mensa'
+#        commit: '48326a946c1300b65a639a3b6f3b42a0a0659124'
+

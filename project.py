@@ -7,9 +7,92 @@ from urllib.parse import urlparse
 import os, json
 
 REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds"]
+REQUIRED_KEYS_SHARED = ["project", "gds"]
 
+class BaseProject(object):
 
-class Project(object):
+    def clone_repo(self):
+        clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
+
+    def get_module_source_paths(self, absolute=True):
+        paths = []
+        for path in self.config['source']:
+            if absolute:
+                paths.append(os.path.abspath(os.path.join(self.directory, path)))
+            else:
+                paths.append(path)
+        return paths    
+
+    def copy_project_files_to_caravel(self):
+        # RTL
+        src = self.directory
+        dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
+        try_copy_tree(src, dst, self.args.force_delete)
+
+        # TEST
+        if "caravel_test" in self.config and "waive_caravel" not in self.config['project']:
+            src = os.path.join(self.directory, self.config["caravel_test"]["directory"])
+            dst = os.path.join(self.system_config['caravel']['test_dir'], self.config["caravel_test"]["directory"])
+            try_copy_tree(src, dst, self.args.force_delete)
+
+    # parse the macro.cfg file and find our entry, return x, y position
+    def get_macro_pos_from_caravel(self):
+        macro_inst_file = os.path.join(self.system_config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
+        with open(macro_inst_file) as f:
+            for macro in f.readlines():
+                # name, x, y, orientation
+                instance_name, x, y, orientation = macro.split(' ')
+                if instance_name == self.instance_name:
+                    return(float(x), float(y))
+
+    def get_gds_size(self):
+        # openram size is cached to save time and because it won't change
+        if 'size' in self.config:
+            return self.config['size']['width'], self.config['size']['height']
+        
+        conf = self.config["gds"]
+        gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
+        gdsii = gdspy.GdsLibrary(infile=gds_file)
+        toplevel = gdsii.top_level()[0]
+        return toplevel.get_bounding_box()[1]
+
+class SharedProject(BaseProject):
+
+    def __init__(self, args, repo, commit, system_config):
+        self.args = args
+        self.system_config = system_config
+        self.repo = repo # the repo on github
+        self.commit = commit # not strictly a commit, could be a branch
+
+        parsed = urlparse(repo)
+        project_dir = self.system_config['project_directory']
+        self.directory = os.path.join(project_dir, parsed.path.rpartition('/')[-1])
+
+        if args.clone_shared_repos:
+            self.clone_repo()
+
+        self.gitsha = get_git_sha(self.directory)
+
+        yaml_file = os.path.join(self.directory, 'info.yaml')
+        self.config = parse_config(yaml_file, REQUIRED_KEYS_SHARED)
+
+        self.module_name = self.config['project']['module_name']
+        self.author = self.config['project']['author']
+        self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
+        self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
+        self.title = self.config['project']['title']
+        self.instance_name = self.module_name
+
+    def get_top_module(self):
+        return self.module_name
+
+    def copy_gl(self):
+        pass
+
+    def __str__(self):
+        return "shared %-26s : %s" % (self.title, self.directory)
+
+class Project(BaseProject):
 
     def __init__(self, args, repo, commit, required_interfaces, system_config):
         self.args = args
@@ -17,7 +100,7 @@ class Project(object):
         self.repo = repo # the repo on github
         self.commit = commit # not strictly a commit, could be a branch
 
-        project_dir = self.system_config['configuration']['project_directory']
+        project_dir = self.system_config['project_directory']
 
         # the project's directory is made by joining project dir to last part of the repo url 
         parsed = urlparse(repo)
@@ -26,12 +109,17 @@ class Project(object):
         if args.clone_repos:
             self.clone_repo()
 
+        if not os.path.exists(self.directory):
+            logging.error("project directory %s doesn't exist. Use --clone-repos to clone it" % self.directory)
+            exit(1)
+
         self.gitsha = get_git_sha(self.directory)
 
         yaml_file = os.path.join(self.directory, 'info.yaml')
         self.config = parse_config(yaml_file, REQUIRED_KEYS_SINGLE)
         self.id = int(self.config['caravel_test']['id'])
         self.module_name = self.config['caravel_test']['module_name']
+        self.instance_name = self.module_name + "_" + str(self.id)
 
         self.interfaces = required_interfaces + self.config['interfaces'] 
         
@@ -60,10 +148,6 @@ class Project(object):
         if self.args.test_all or self.args.test_caravel:
             self.test_caravel()
 
-        # don't run this as part of test-all
-        if self.args.test_caravel_gl:
-            self.test_caravel(gl=True)
-
         if self.args.test_all or self.args.test_gds:
             self.test_gds()
 
@@ -80,8 +164,6 @@ class Project(object):
         if self.args.test_all or self.args.test_git:
             self.test_git_match()
 
-    def clone_repo(self):
-        clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
 
     # hack - better to add this to the info.yaml but for now we do it by searching all the source files. not all are called wrapper.v
     def get_top_module(self):
@@ -97,16 +179,12 @@ class Project(object):
             logging.error("couldn't find top module for %s" % self)
             exit(1)
 
-    def get_module_source_paths(self, absolute=True):
-        paths = []
-        for path in self.config['source']:
-            if absolute:
-                paths.append(os.path.abspath(os.path.join(self.directory, path)))
-            else:
-                paths.append(path)
-        return paths    
 
     def test_module(self):
+        if 'waive_module_test' in self.config['project']:
+            logging.info("skipping module test due to %s" % self.config['project']['waive_module_test'])
+            return
+
         conf = self.config["module_test"]
         cwd = os.path.join(self.directory, conf["directory"])
         cmd = ["make", "-f", conf["makefile"], conf["recipe"]]
@@ -130,6 +208,9 @@ class Project(object):
 
     def prove_wrapper(self):
         # TODO need to also check properties.sby - could have a few things to cksum and make wrapper_cksum able to check a few files
+        if 'waive_formal' in self.config['project']:
+            logging.info("skipping formal test due to %s" % self.config['project']['waive_formal'])
+            return
         conf = self.config["wrapper_proof"]
         cwd = os.path.join(self.directory, conf["directory"])
         cmd = ["sby", "-f", conf["sby"]]
@@ -142,46 +223,17 @@ class Project(object):
 
         logging.info("proof pass")
 
-    def copy_project_to_caravel_rtl(self):
-        src = self.directory
-        dst = os.path.join(self.system_config['caravel']['rtl_dir'], os.path.basename(self.directory))
-        try_copy_tree(src, dst, self.args.force_delete)
-
     def copy_gl(self):
         dst = os.path.join(self.system_config['caravel']['gl_dir'], self.config['gds']['lvs_filename'])
         src = os.path.join(self.directory, self.config['gds']['directory'], self.config['gds']['lvs_filename'])
         shutil.copyfile(src, dst)
-        
-    def test_caravel(self, gl=False):
+
+    def test_caravel(self):
+        if 'waive_caravel' in self.config['project']:
+            logging.info("skipping caravel test due to %s" % self.config['project']['waive_caravel'])
+            return
+
         conf = self.config["caravel_test"]
-
-        # copy src into caravel verilog dir
-        self.copy_project_to_caravel_rtl()
-
-        # generate includes & instantiate inside user project wrapper
-        # could this be removed and just do it in collect.py ?
-        user_project_wrapper_path =  os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_wrapper.v")
-        caravel_includes_path =      os.path.join(self.system_config['caravel']['rtl_dir'], "uprj_netlists.v")
-        user_project_includes_path = os.path.join(self.system_config['caravel']['rtl_dir'], "user_project_includes.v")
-
-        interface_definitions = {
-            **self.system_config['interfaces']['required'], 
-            **self.system_config['interfaces']['optional']
-        }
-
-        generate_openlane_files(
-            [self], 
-            interface_definitions,
-            user_project_wrapper_path, 
-            user_project_includes_path,
-            caravel_includes_path,
-            self.args.openram
-        )
-
-        # copy test inside caravel
-        src = os.path.join(self.directory, conf["directory"])
-        dst = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
-        try_copy_tree(src, dst, self.args.force_delete)
 
         # set up env
         test_env = os.environ.copy()
@@ -193,8 +245,8 @@ class Project(object):
         cwd = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
         cmd = ["make", conf["recipe"]]
 
-        # if gl, use the gl_recipe
-        if gl:
+        # if gl, make sure the gatelevel netlist is in the correct place, & use the gl_recipe
+        if self.args.gate_level:
             cmd = ["make", conf["gl_recipe"]]
 
         logging.info("attempting to run %s in %s" % (cmd, cwd))
@@ -208,12 +260,6 @@ class Project(object):
 
         logging.info("caravel test pass")
 
-    def get_gds_size(self):
-        conf = self.config["gds"]
-        gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
-        gdsii = gdspy.GdsLibrary(infile=gds_file)
-        toplevel = gdsii.top_level()[0]
-        return toplevel.get_bounding_box()[1]
 
     def test_gds(self):
         if 'waive_gds' in self.config['project']:
@@ -227,7 +273,7 @@ class Project(object):
 
 
         # nothing on metal 5
-        if self.system_config["tests"]["gds"]["metal5_id"] in toplevel.get_layers():
+        if self.system_config["configuration"]["gds"]["metal5_id"] in toplevel.get_layers():
             logging.error("%s has layers on metal5" % gds_file)
             exit(1)
 
@@ -322,8 +368,6 @@ class Project(object):
         # so search for string in output
         if 'Total errors = 0' in str(result.stdout):
             logging.info("LVS passed")
-        elif 'Total errors = 6' in str(result.stdout) and 'unmatched pins = 6' in str(result.stdout):
-            logging.info("LVS passed (waived 6 unconnected power pins)")
         else:
             logging.error(result.stdout)
             exit(1)
@@ -334,6 +378,9 @@ class Project(object):
         test_env["POWERED_VERILOG"]    = powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["gds"]["directory"], self.config["gds"]["lvs_filename"]))
         test_env["TOPLEVEL"]           = self.config["caravel_test"]["module_name"]
         test_env["PDK_ROOT"]           = self.system_config["lvs"]["PDK_ROOT"]
+
+        if "custom_cells_file" in self.config:
+            test_env["CUSTOM_CELLS_FILE"] = os.path.abspath(os.path.join(self.directory, self.config["custom_cells_file"]))
 
         cmd = ["make", "clean", "test"]
         cwd = "buffertest"
