@@ -37,7 +37,8 @@ openram_support:
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
-            commit: 'e038259088a8ccdbb4c2e8923eaf58d2da00f0e9'
+            # replace with empty version till the macro gets DRC fixed
+            commit: '40da470ff6056145996c94317d370389fbf36921'
 
 configuration:
     macro_snap: 0.23 # half of met2 pin/track space
@@ -58,37 +59,4 @@ projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
         commit: '0d95d94d816685ab9eea70fbbfb2425a8b91c27e'
-    spell:
-        repo:   'https://github.com/wokwi/wrapped_spell'
-        commit: '4db5165ac2e450a62a249285c1a7374a836b5167'
-    ppm_coder:
-        repo:   'https://github.com/mattvenn/wrapped_ppm_coder'
-        commit: 'bbcb465d5d149a501b1cc67cfe4b344383a15a7e'
-    ppm_decoder:
-        repo:   'https://github.com/mattvenn/wrapped_ppm_decoder'
-        commit: '8d21fed5cbce7c04cdc739226e6ea9167774f7c7'
-    silife:
-        repo:   'https://github.com/wokwi/wrapped_silife'
-        commit: 'c3eb7d8bdaa1953ecf13adc21d33dd4326a559c9'
-    skullfet:
-        repo:   'https://github.com/wokwi/wrapped_skullfet'
-        commit: 'c583f431e0b6f280f91520725f313aebbab86fdd'
-    spraid:
-        repo:   'https://github.com/bit0fun/spraid_mpw4'
-        commit: '75870977bbc0779da699e9f7df11fb4247ec9b6a'
-    asic_watch:
-        repo:   'https://github.com/Bynaryman/wrapped_asic_watch'
-        commit: 'd19b10006c3247f6a11fd3e14d854422d85ab37d'
-    hack_soc:
-        repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
-        commit: '048ca9374c0a7984064827bf1d547191a7e5b50d'
-    key_value:
-        repo:   'https://github.com/giraypultar/wrapped_keyvalue'
-        commit: '76cd2077ca5f684f8ccdda93b79bef78c675a149'
-    bin_mult:
-        repo:   'https://github.com/tucanae47/wrapped_bin_mult'
-        commit: '0764fe1bf1ffcbca5dfb86d68c8e37c3319b6266'
-#    mensa:
-#        repo:   'https://github.com/etalian/mensa'
-#        commit: '48326a946c1300b65a639a3b6f3b42a0a0659124'
 
