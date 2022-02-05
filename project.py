@@ -44,6 +44,8 @@ class BaseProject(object):
                 instance_name, x, y, orientation = macro.split(' ')
                 if instance_name == self.instance_name:
                     return(float(x), float(y))
+        logging.error("couldn't find position for %s in %s" % (self.instance_name, macro_inst_file))
+        exit(1)
 
     def get_gds_size(self):
         # openram size is cached to save time and because it won't change

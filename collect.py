@@ -54,12 +54,13 @@ class Collection(object):
    
 
         self.shared_projects = []
-        for project_info in self.config['openram_support']['projects'].values():
-            repo = project_info["repo"]
-            commit = project_info["commit"]
-            project = SharedProject(args, repo, commit, self.config)
-            self.shared_projects.append(project)
-            logging.info(project)
+        if self.args.openram:
+            for project_info in self.config['openram_support']['projects'].values():
+                repo = project_info["repo"]
+                commit = project_info["commit"]
+                project = SharedProject(args, repo, commit, self.config)
+                self.shared_projects.append(project)
+                logging.info(project)
             
         # fill space with duplicated projects
         if args.fill and args.fill > len(self.projects):
