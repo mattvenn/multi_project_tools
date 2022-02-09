@@ -88,7 +88,7 @@ class Collection(object):
         }
 
     def run_tests(self):
-        for project in self.projects:
+        for project in self.projects + self.shared_projects:
             project.run_tests()
 
     # TODO refactor so project konws how to copy gds and lef, then do the same as rtl, gl, test etc.

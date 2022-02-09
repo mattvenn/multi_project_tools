@@ -56,6 +56,67 @@ class BaseProject(object):
         toplevel = gdsii.top_level()[0]
         return toplevel.get_bounding_box()[1]
 
+    def test_module(self):
+        pass
+
+    def prove_wrapper(self):
+        pass
+
+    def test_caravel(self):
+        pass
+
+    def test_gds(self):
+        pass
+
+    def test_lvs(self):
+        pass
+
+    def test_ports(self):
+        pass
+
+    def test_tristate_z(self):
+        pass
+
+    def test_git_match(self):
+        self.gitsha = get_git_sha(self.directory)
+        if self.gitsha != self.commit:
+            logging.error("gitsha on disk doesn't match config")
+            exit(1) 
+        else:
+            logging.info("git pass")
+
+    def run_tests(self):
+        # print out info about the project
+        if self.args.dump_hash:
+            logging.info("%-30s %-20s %s %s" % (self.author, self.title, self.gitsha, self.repo))
+        else:
+            logging.info(self)
+
+        if self.args.test_all or self.args.test_module:
+            self.test_module()
+
+        if self.args.test_all or self.args.prove_wrapper:
+            self.prove_wrapper()
+
+        if self.args.test_all or self.args.test_caravel:
+            self.test_caravel()
+
+        if self.args.test_all or self.args.test_gds:
+            self.test_gds()
+
+        # currently broken, waiting on testing a new netgen
+        if self.args.test_all or self.args.test_lvs:
+            self.test_lvs()
+
+        if self.args.test_all or self.args.test_ports:
+            self.validate_ports()
+
+        if self.args.test_all or self.args.test_tristate_z:
+            self.test_tristate_z()
+
+        if self.args.test_all or self.args.test_git:
+            self.test_git_match()
+
 class SharedProject(BaseProject):
 
     def __init__(self, args, repo, commit, system_config):
@@ -88,6 +149,22 @@ class SharedProject(BaseProject):
 
     def copy_gl(self):
         pass
+
+    def run_tests(self):
+        # print out info about the project
+        if self.args.dump_hash:
+            logging.info("%-30s %-20s %s %s" % (self.author, self.title, self.gitsha, self.repo))
+        else:
+            logging.info(self)
+
+        if self.args.test_all or self.args.test_module:
+            self.test_module()
+
+        if self.args.test_all or self.args.test_lvs:
+            self.test_lvs()
+
+        if self.args.test_all or self.args.test_git:
+            self.test_git_match()
 
     def __str__(self):
         return "shared %-26s : %s" % (self.title, self.directory)
@@ -132,37 +209,6 @@ class Project(BaseProject):
     def __str__(self):
         return "%2d %-30s : %s" % (self.id, self.title, self.directory)
 
-    def run_tests(self):
-        # print out info about the project
-        if self.args.dump_hash:
-            logging.info("%-30s %-20s %s %s" % (self.author, self.title, self.gitsha, self.repo))
-        else:
-            logging.info(self)
-
-        if self.args.test_all or self.args.test_module:
-            self.test_module()
-
-        if self.args.test_all or self.args.prove_wrapper:
-            self.prove_wrapper()
-
-        if self.args.test_all or self.args.test_caravel:
-            self.test_caravel()
-
-        if self.args.test_all or self.args.test_gds:
-            self.test_gds()
-
-        # currently broken, waiting on testing a new netgen
-        if self.args.test_all or self.args.test_lvs:
-            self.test_lvs()
-
-        if self.args.test_all or self.args.test_ports:
-            self.validate_ports()
-
-        if self.args.test_all or self.args.test_tristate_z:
-            self.test_tristate_z()
-
-        if self.args.test_all or self.args.test_git:
-            self.test_git_match()
 
 
     # hack - better to add this to the info.yaml but for now we do it by searching all the source files. not all are called wrapper.v
@@ -197,13 +243,6 @@ class Project(BaseProject):
 
         logging.info("test pass")
 
-    def test_git_match(self):
-        self.gitsha = get_git_sha(self.directory)
-        if self.gitsha != self.commit:
-            logging.error("gitsha on disk doesn't match config")
-            exit(1) 
-        else:
-            logging.info("git pass")
         
 
     def prove_wrapper(self):
