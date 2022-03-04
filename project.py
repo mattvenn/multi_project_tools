@@ -425,7 +425,7 @@ class Project(BaseProject):
         test_env                       = os.environ.copy()
         test_env["POWERED_VERILOG"]    = powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["gds"]["directory"], self.config["gds"]["lvs_filename"]))
         test_env["TOPLEVEL"]           = self.config["caravel_test"]["module_name"]
-        test_env["PDK_ROOT"]           = self.system_config["lvs"]["PDK_ROOT"]
+        test_env["PDK_ROOT"]           = self.system_config["env"]["PDK_ROOT"]
 
         if "custom_cells_file" in self.config:
             test_env["CUSTOM_CELLS_FILE"] = os.path.abspath(os.path.join(self.directory, self.config["custom_cells_file"]))
