@@ -6,7 +6,7 @@ from codegen.caravel_codegen import generate_openlane_files
 from codegen.allocator import allocate_macros
 
 REQUIRED_KEYS_GROUP = ["interfaces", "openram_support", "configuration", "docs", "projects"]
-REQUIRED_KEYS_LOCAL = ["project_directory", "caravel", "env", "lvs"]
+REQUIRED_KEYS_LOCAL = ["project_directory", "caravel", "env"]
 
 def merge_two_dicts(x, y):
     z = x.copy()   # start with keys and values of x

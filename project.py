@@ -281,7 +281,14 @@ class Project(BaseProject):
         test_env["GCC_PATH"]    = self.system_config['env']['GCC_PATH']
         test_env["GCC_PREFIX"]  = self.system_config['env']['GCC_PREFIX']
         test_env["PDK_PATH"]    = self.system_config['env']['PDK_PATH']
+        test_env["PDK_ROOT"]    = self.system_config['env']['PDK_ROOT']
         test_env["CARAVEL_ROOT"]    = os.path.join(self.system_config['caravel']['root'], 'caravel')
+
+        test_env["DESIGNS"] =         self.system_config['caravel']['root']
+        test_env["TARGET_PATH"] =     self.system_config['caravel']['root']
+        test_env["MCW_ROOT"] =        self.system_config['caravel']['mgmt_root']
+        test_env["CORE_VERILOG_PATH"] = os.path.join(self.system_config['caravel']['mgmt_root'], 'verilog')
+
 
         cwd = os.path.join(self.system_config['caravel']['test_dir'], conf["directory"])
         cmd = ["make", conf["recipe"]]
@@ -348,8 +355,8 @@ class Project(BaseProject):
         extract_tcl     = 'extract.tcl'
 
         # config files
-        pdk_path        = self.system_config['lvs']['PDK_PATH']
-        openlane_root   = self.system_config['lvs']['OPENLANE']
+        pdk_path        = self.system_config['env']['PDK_PATH']
+        openlane_root   = self.system_config['env']['OPENLANE']
         logging.info("using PDK %s and OpenLANE %s" % (pdk_path, openlane_root))
 
         # env

@@ -4,17 +4,14 @@ caravel:
     root:           /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5
     gl_dir:         /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/gl
     test_dir:       /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/rtl/
-    includes_dir:   /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/includes/
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/rtl
+    includes_dir:   /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/includes
+    mgmt_root:      /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/mgmt_core_wrapper
     config:         config.tcl
 
-env: # used for simulation
+env: # used for simulation, lvs
     GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
     GCC_PREFIX:     riscv64-unknown-elf
     PDK_PATH:       /home/matt/work/asic-workshop/shuttle5/pdk/sky130A
-
-lvs:
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle5/pdk/sky130A 
-    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle5/pdk/
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle5/openlane    # only used to find the count_lvs.py script
-
+    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle5/pdk
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle5/openlane
