@@ -44,10 +44,10 @@ def generate_openlane_files(
     
     ### caravel includes ###
     ### for simulation - this needs to be altered for gate level sims
-    caravel_includes_filename = "uprj_netlists.v"
+    caravel_includes_filename = "includes.rtl.caravel_user_project"
 
     logging.info(f"generating {caravel_includes_filename} locally")
-    generate_caravel_includes(projects, shared_projects, caravel_includes_filename, openram, gl)
+    generate_caravel_includes(projects, shared_projects, caravel_includes_filename, openram)
 
     if target_caravel_includes_path:
         logging.info(f"{caravel_includes_filename} to {target_caravel_includes_path}")
@@ -111,35 +111,26 @@ def generate_openlane_user_project_include(projects, shared_projects, outfile):
     with open(outfile, "w") as f:
         f.write("\n".join(include_snippets))
 
-def generate_caravel_includes(projects, shared_projects, outfile, openram, gl):
-    with open("codegen/uprj_netlists.txt", "r") as f:
+def generate_caravel_includes(projects, shared_projects, outfile, openram):
+    with open("codegen/includes.rtl.caravel_user_project", "r") as f:
         filedata = f.read()
 
-    gl_includes = ""
     project_includes = ""
     shared_project_includes = ""
     for project in projects:
         project_includes += ("// %s\n" % project)
         for path in project.get_module_source_paths(absolute=False):
             path = os.path.join(os.path.basename(project.directory), path)
-            project_includes += ('`include "%s"\n' % path)
-
-        gl_includes += ('`include "%s"\n' % project.config['gds']['lvs_filename'])
+            project_includes += ('-v $(USER_PROJECT_VERILOG)/rtl//%s\n' % path)
 
     for project in shared_projects:
         project_includes += ("// %s\n" % project)
         for path in project.get_module_source_paths(absolute=False):
             path = os.path.join(os.path.basename(project.directory), path)
-            shared_project_includes += ('`include "%s"\n' % path)
+            shared_project_includes += ('-v $(USER_PROJECT_VERILOG)/rtl/%s\n' % path)
 
-    # GL takes too long for all of Caravel, so just use the GL instead of all the normal RTL includes
-    # also, don't use GL files for shared projects yet
-    if gl == True:
-        gl_includes += shared_project_includes
-        filedata = filedata.replace('RTL_INCLUDES', gl_includes)
-    else:
-        project_includes += shared_project_includes
-        filedata = filedata.replace('RTL_INCLUDES', project_includes)
+    project_includes += shared_project_includes
+    filedata = filedata.replace('RTL_INCLUDES', project_includes)
 
     with open(outfile, "w") as f:
         f.write(filedata)

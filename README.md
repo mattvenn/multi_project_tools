@@ -162,3 +162,11 @@ The above was generated with config created by this command that fills all 16 sl
 * put tool command that generated config into the readme
 * check license in projects
 * one of the tests make a results.xml in local directory
+
+# Changelog
+
+## From MPW4 to MPW5
+
+* need to add includes dir to local.yaml
+    includes_dir:   /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/includes/
+

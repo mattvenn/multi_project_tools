@@ -186,7 +186,7 @@ class Collection(object):
         ### generate user wrapper and include ###
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         user_project_includes_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_includes.v")
-        caravel_includes_path =      os.path.join(self.config['caravel']['rtl_dir'], "uprj_netlists.v")
+        caravel_includes_path =      os.path.join(self.config['caravel']['includes_dir'], "includes.rtl.caravel_user_project")
         openlane_config_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "obstruction.tcl")
         generate_openlane_files(
             self.projects, 
