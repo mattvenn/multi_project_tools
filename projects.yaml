@@ -58,7 +58,7 @@ docs:
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '0d95d94d816685ab9eea70fbbfb2425a8b91c27e'
+        commit: '3fa37ad4622c129ee5c455aad2038b1894ea97df'
 
 #    wishbone_demo:
 #        repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
