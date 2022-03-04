@@ -169,4 +169,4 @@ The above was generated with config created by this command that fills all 16 sl
 
 * need to add includes dir to local.yaml
     includes_dir:   /home/matt/work/asic-workshop/shuttle5/zero_to_asic_mpw5/verilog/includes/
-
+* for local lvs tests, Magic needs updating to 8.3.273
