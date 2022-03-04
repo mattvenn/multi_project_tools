@@ -60,3 +60,7 @@ projects:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
         commit: '0d95d94d816685ab9eea70fbbfb2425a8b91c27e'
 
+#    wishbone_demo:
+#        repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
+#        commit: 'xxxxx'
+
