@@ -1,7 +1,11 @@
-# Multi project specification - updated for MPW3
+# Multi project specification - updated for MPW5
 
 Project provides an info.yaml file at the top level directory.
 See example specs in the [project index](https://github.com/mattvenn/zero_to_asic_mpw3/blob/mpw3/README.md)
+
+# Updates for MPW5
+
+* Use entire final directory from OpenLane, so 'gds' key is renamed to 'final'
 
 # Updates for MPW3
 
@@ -106,9 +110,9 @@ A list of all the source files. These are used in 2 contexts: simulation inside 
 
 GDS, LEF and post synth netlist files. These are used to layers and LVS. With LVS correct, module interface can be verified.
 
-    gds:
-      directory: "gds"          # directory containing the following files:
-      gds_filename: "wrapped_rgb_mixer.gds"
-      lef_filename: "wrapped_rgb_mixer.lef"
-      lvs_filename: "wrapped_rgb_mixer.lvs.powered.v"
+    final:
+      directory: "final"          # directory containing the following files:
+      gds_filename: "gds/wrapped_rgb_mixer.gds"
+      lef_filename: "lef/wrapped_rgb_mixer.lef"
+      lvs_filename: "verilog/gl/wrapped_rgb_mixer.v"
 

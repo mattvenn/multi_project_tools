@@ -6,8 +6,8 @@ from codegen.caravel_codegen import generate_openlane_files
 from urllib.parse import urlparse
 import os, json
 
-REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "gds"]
-REQUIRED_KEYS_SHARED = ["project", "gds"]
+REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "final"]
+REQUIRED_KEYS_SHARED = ["project", "final"]
 
 class BaseProject(object):
 
@@ -52,7 +52,7 @@ class BaseProject(object):
         if 'size' in self.config:
             return self.config['size']['width'], self.config['size']['height']
         
-        conf = self.config["gds"]
+        conf = self.config["final"]
         gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
         gdsii = gdspy.GdsLibrary(infile=gds_file)
         toplevel = gdsii.top_level()[0]
@@ -141,8 +141,8 @@ class SharedProject(BaseProject):
 
         self.module_name = self.config['project']['module_name']
         self.author = self.config['project']['author']
-        self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
-        self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
+        self.gds_filename = os.path.join(self.config['final']['directory'], self.config['final']['gds_filename'])
+        self.lef_filename = os.path.join(self.config['final']['directory'], self.config['final']['lef_filename'])
         self.title = self.config['project']['title']
         self.instance_name = self.module_name
 
@@ -202,9 +202,9 @@ class Project(BaseProject):
 
         self.interfaces = required_interfaces + self.config['interfaces'] 
         
-        self.gds_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['gds_filename'])
-        self.lef_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lef_filename'])
-        self.lvs_filename = os.path.join(self.config['gds']['directory'], self.config['gds']['lvs_filename'])
+        self.gds_filename = os.path.join(self.config['final']['directory'], self.config['final']['gds_filename'])
+        self.lef_filename = os.path.join(self.config['final']['directory'], self.config['final']['lef_filename'])
+        self.lvs_filename = os.path.join(self.config['final']['directory'], self.config['final']['lvs_filename'])
         self.title = self.config['project']['title']
         self.author = self.config['project']['author']
 
@@ -265,8 +265,8 @@ class Project(BaseProject):
         logging.info("proof pass")
 
     def copy_gl(self):
-        dst = os.path.join(self.system_config['caravel']['gl_dir'], self.config['gds']['lvs_filename'])
-        src = os.path.join(self.directory, self.config['gds']['directory'], self.config['gds']['lvs_filename'])
+        src = os.path.join(self.directory, self.config['final']['directory'], self.config['final']['lvs_filename'])
+        dst = os.path.join(self.system_config['caravel']['gl_dir'], os.path.basename(self.config['final']['lvs_filename']))
         shutil.copyfile(src, dst)
 
     def test_caravel(self):
@@ -314,7 +314,7 @@ class Project(BaseProject):
             logging.info("skipping GDS in this test due to %s" % self.config['project']['waive_gds'])
             return
 
-        conf = self.config["gds"]
+        conf = self.config["final"]
         gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
         gdsii = gdspy.GdsLibrary(infile=gds_file)
         toplevel = gdsii.top_level()[0]
@@ -333,7 +333,7 @@ class Project(BaseProject):
             return
 
         module_name = self.config['caravel_test']['module_name']
-        conf = self.config["gds"]
+        conf = self.config["final"]
         # given
         lvs_test_dir    = 'lvstest'
         try_mkdir(lvs_test_dir, self.args.force_delete)
@@ -423,7 +423,7 @@ class Project(BaseProject):
     def test_tristate_z(self):
         # env
         test_env                       = os.environ.copy()
-        test_env["POWERED_VERILOG"]    = powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["gds"]["directory"], self.config["gds"]["lvs_filename"]))
+        test_env["POWERED_VERILOG"]    = powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["final"]["directory"], self.config["final"]["lvs_filename"]))
         test_env["TOPLEVEL"]           = self.config["caravel_test"]["module_name"]
         test_env["PDK_ROOT"]           = self.system_config["env"]["PDK_ROOT"]
 
