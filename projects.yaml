@@ -57,9 +57,18 @@ docs:
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '3fa37ad4622c129ee5c455aad2038b1894ea97df'
+        commit: 'd191bae27a4560e589c3dff7d524cf5e9425be3c'
+    
+    vga_clock:
+        repo:   'https://github.com/mattvenn/wrapped_vga_clock'
+        commit: '0cf0b585b5a3ead1f92534af9158e9726fd6acc1'
 
-#    wishbone_demo:
-#        repo:   'https://github.com/mattvenn/wrapped_wishbone_demo'
-#        commit: 'xxxxx'
+    freq_counter:
+        repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
+        commit: '94cd6e626492dc2f623bf06163e90a84bde553cb'
+
+    rgb_mixer:
+        repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
+        commit: '318546f7505f890a2f9f809cb6d8950c91dcd77e'
+
 
