@@ -341,10 +341,10 @@ class Project(BaseProject):
         # copy the gds and verilog to local directory
         gds_file        = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["gds_filename"]))
         powered_verilog = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["lvs_filename"]))
-        shutil.copyfile(gds_file, os.path.join(lvs_test_dir, conf["gds_filename"]))
-        shutil.copyfile(powered_verilog, os.path.join(lvs_test_dir, conf["lvs_filename"]))
-        gds_file = conf["gds_filename"]
-        powered_verilog = conf["lvs_filename"]
+        shutil.copyfile(gds_file, os.path.join(lvs_test_dir, os.path.basename(conf["gds_filename"])))
+        shutil.copyfile(powered_verilog, os.path.join(lvs_test_dir, os.path.basename(conf["lvs_filename"])))
+        gds_file = os.path.basename(conf["gds_filename"])
+        powered_verilog = os.path.basename(conf["lvs_filename"])
 
         # generated files
         ext_file        = module_name + ".ext"
