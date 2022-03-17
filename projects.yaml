@@ -29,12 +29,12 @@ openram_support:
 
         wb_bridge:
             repo:   'https://github.com/embelon/wb_bridge'
-            commit: '67c80db407d7a13c104c7a3a9f643fee340d929a'
+            commit: '4a766fceed9bc52a1ab11621afade3cba1e44eeb'
             pos:    '1340 480 N'
             
         wb_openram_wrapper:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
-            commit: '14adb156d88f274170eaf773c6efb397c1cc5dee'
+            commit: '9b6c79a6015c46b923d6aed2d5cf9306003d4b3b'
             pos:    '1085 480 N'
 
         openram:
@@ -60,7 +60,7 @@ docs:
 projects:
     function_generator:
         repo:   'https://github.com/embelon/wrapped_function_generator'
-        commit: '4d49decbc06317661f1c7a93c3b7ffe51d554bc2'
+        commit: '3f11dd984465ea9d709ae9b1bb264197675ac5d3'
         pos:    '350 1200 N'
     
     vga_clock:
