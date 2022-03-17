@@ -36,7 +36,6 @@ class BaseProject(object):
             try_copy_tree(src, dst, self.args.force_delete)
 
     def get_macro_pos(self):
-        print(self.pos)
         x, y, orient = self.pos.split(' ')
         return(float(x), float(y), orient)
 

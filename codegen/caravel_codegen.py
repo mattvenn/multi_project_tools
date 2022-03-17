@@ -74,7 +74,7 @@ def generate_caravel_obstructions(config, projects, shared_projects, caravel_obs
             if 'obstruction' in project.config:
                 for layer in config['configuration']['gds']['layers']:
                     if layer in project.config['obstruction']:
-                        x1, y1 = project.get_macro_pos_from_caravel()
+                        x1, y1, orient = project.get_macro_pos()
                         x2, y2 = project.get_gds_size()
                         x2 += x1
                         y2 += y1
