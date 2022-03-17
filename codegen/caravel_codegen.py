@@ -67,6 +67,7 @@ def generate_openlane_files(
     else:
         logging.info(f"leaving {caravel_obstructions_path} here")
 
+# this adds an obstruction covering the whole macro if that layer is present in a list in info.yaml
 def generate_caravel_obstructions(config, projects, shared_projects, caravel_obstructions_path):
     with open(caravel_obstructions_path, "w") as f:
         f.write('set ::env(GLB_RT_OBS)  "li1  0    0   2920    3520')
