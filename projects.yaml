@@ -29,12 +29,12 @@ openram_support:
 
         wb_bridge:
             repo:   'https://github.com/embelon/wb_bridge'
-            commit: '006f96d5df99ce31a02ef31a0d82abcef64496e9'
+            commit: '54709404f16066cc79ed552b0a8f8b8b9535f34b'
             pos:    '1340 480 N'
             
         wb_openram_wrapper:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
-            commit: '0ff3fe07de30b455ed8de6f0c4567b2a4606446a'
+            commit: 'a0bda4fea4745b227a6b89845d28c20b2da49fe3'
             pos:    '1085 480 N'
 
         openram:
@@ -65,7 +65,7 @@ projects:
     
     vga_clock:
         repo:   'https://github.com/mattvenn/wrapped_vga_clock'
-        commit: '0cf0b585b5a3ead1f92534af9158e9726fd6acc1'
+        commit: '6c7f12b8be62d34d4f4221e18b9408b3c5ac8fcd'
         pos:    '350 1700 N'
 
     freq_counter:
@@ -75,7 +75,7 @@ projects:
 
     rgb_mixer:
         repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
-        commit: '318546f7505f890a2f9f809cb6d8950c91dcd77e'
+        commit: '2676a8904591e92613fbfadf8c7f57fdfd79b1a4'
         pos:    '350 2700 N'
 
 
