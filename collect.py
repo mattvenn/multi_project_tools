@@ -60,7 +60,6 @@ class Collection(object):
                 repo = project_info["repo"]
                 commit = project_info["commit"]
                 pos = project_info["pos"]
-                print(pos)
                 project = SharedProject(args, repo, commit, pos, self.config)
                 self.shared_projects.append(project)
                 logging.info(project)
@@ -102,11 +101,13 @@ class Collection(object):
         gds_dir = os.path.join(self.config['caravel']['root'], 'gds')
 
         for project in self.projects + self.shared_projects:
+            # gds
             src = os.path.join(project.directory, project.gds_filename)
             dst = os.path.join(gds_dir, os.path.basename(project.gds_filename))
             logging.info("copying %s to %s" % (src, dst))
             shutil.copyfile(src, dst)
 
+            # lef
             src = os.path.join(project.directory, project.lef_filename)
             dst = os.path.join(lef_dir, os.path.basename(project.lef_filename))
             logging.info("copying %s to %s" % (src, dst))
@@ -114,6 +115,16 @@ class Collection(object):
 
             # gl
             project.copy_gl()
+
+            # spef, sdc, sdc files
+            for optional_file_type in ["spef", "sdc", "sdf"]:
+                filename = project.get_optional_file(optional_file_type)
+                if filename is not None:
+                    src = filename
+                    dst = os.path.join(self.config['caravel']['root'], optional_file_type, os.path.basename(filename))
+                    logging.info("copying optional file to %s" % dst)
+                    shutil.copyfile(src, dst)
+
 
     def copy_all_project_files_to_caravel(self):
         ### copy out rtl ###
@@ -165,11 +176,11 @@ class Collection(object):
 
     def get_macro_pos(self):
         for project in self.projects + self.shared_projects:
-            print(project.get_macro_pos())
+            logging.info(project.get_macro_pos())
         
     def get_macro_pos_from_caravel(self):
         for project in self.projects + self.shared_projects:
-            print(project.get_macro_pos_from_caravel())
+            logging.info(project.get_macro_pos_from_caravel())
 
     def create_openlane_config(self):
         self.generate_macro_cfg()
@@ -230,9 +241,30 @@ class Collection(object):
     * tile all images for final image
     """
     def generate_docs(self):
+        git_sha = get_git_sha(".")
         fh = open("index.md", 'w')
-        fh.write("# Multi Project Index\n\n")
-        fh.write("This index was made with [multi project tools](https://github.com/mattvenn/multi_project_tools)\n\n")
+        fh.write("""
+# Zero to ASIC Group submission MPW5
+
+This ASIC was designed by members of the [Zero to ASIC course](https://zerotoasiccourse.com).
+
+This submission was configured and built by the [multi project tools](https://github.com/mattvenn/multi_project_tools) at commit [%s](https://github.com/mattvenn/multi_project_tools/commit/%s).
+
+    # clone all repos, and include support for shared OpenRAM
+    ./multi_tool.py --clone-repos --clone-shared-repos --create-openlane-config --copy-gds --copy-project --openram
+
+    # run all the tests
+    ./multi_tool.py --test-all --force-delete
+
+    # build user project wrapper submission
+    cd $CARAVEL_ROOT; make user_project_wrapper
+
+    # create docs
+    ./multi_tool.py --generate-doc --annotate-image
+
+![multi macro](pics/multi_macro_annotated.png)
+
+# Project Index\n\n""" % (git_sha, git_sha))
         try_mkdir(self.config["docs"]["pic_dir"], self.args.force_delete)
         for project in self.projects:
             conf = project.config["project"]

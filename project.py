@@ -65,6 +65,15 @@ class BaseProject(object):
         toplevel = gdsii.top_level()[0]
         return toplevel.get_bounding_box()[1]
 
+    # some project won't have these yet, and they aren't specced in the yaml, so test to see if they are there
+    # for example sdc/ sdf/ spef/
+    def get_optional_file(self, filetype):
+        conf = self.config["final"]
+        filename = os.path.abspath(os.path.join(self.directory, conf["directory"], filetype, "%s.%s" % (self.module_name, filetype)))
+        if os.path.exists(filename):
+            return filename
+        return None
+            
     def test_module(self):
         pass
 
