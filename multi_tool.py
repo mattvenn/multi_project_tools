@@ -76,4 +76,4 @@ if __name__ == '__main__':
 
     # dump macro pos - wip for assisted macro placement
     if args.dump_macro_position:
-        collection.get_macro_pos_from_caravel()
+        collection.get_macro_pos()

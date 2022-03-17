@@ -35,8 +35,16 @@ class BaseProject(object):
             dst = os.path.join(self.system_config['caravel']['test_dir'], self.config["caravel_test"]["directory"])
             try_copy_tree(src, dst, self.args.force_delete)
 
+    def get_macro_pos(self):
+        print(self.pos)
+        x, y, orient = self.pos.split(' ')
+        return(float(x), float(y), orient)
+
     # parse the macro.cfg file and find our entry, return x, y position
     def get_macro_pos_from_caravel(self):
+        logging.error("out of date")
+        exit(1)
+
         macro_inst_file = os.path.join(self.system_config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
         with open(macro_inst_file) as f:
             for macro in f.readlines():
@@ -121,11 +129,12 @@ class BaseProject(object):
 
 class SharedProject(BaseProject):
 
-    def __init__(self, args, repo, commit, system_config):
+    def __init__(self, args, repo, commit, pos, system_config):
         self.args = args
         self.system_config = system_config
         self.repo = repo # the repo on github
         self.commit = commit # not strictly a commit, could be a branch
+        self.pos = pos
 
         parsed = urlparse(repo)
         project_dir = self.system_config['project_directory']
@@ -173,11 +182,12 @@ class SharedProject(BaseProject):
 
 class Project(BaseProject):
 
-    def __init__(self, args, repo, commit, required_interfaces, system_config):
+    def __init__(self, args, repo, commit, pos, required_interfaces, system_config):
         self.args = args
         self.system_config = system_config
         self.repo = repo # the repo on github
         self.commit = commit # not strictly a commit, could be a branch
+        self.pos = pos
 
         project_dir = self.system_config['project_directory']
 

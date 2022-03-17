@@ -35,9 +35,10 @@ class Collection(object):
         for project_info in self.config['projects'].values():
             repo = project_info["repo"]
             commit = project_info["commit"]
+            pos = project_info["pos"]
             
             required_interfaces = list(self.config['interfaces']['required'].keys())
-            project = Project(args, repo, commit, required_interfaces, self.config)
+            project = Project(args, repo, commit, pos, required_interfaces, self.config)
 
             # if --project is given, skip others
             if self.args.project is not None:
@@ -58,7 +59,9 @@ class Collection(object):
             for project_info in self.config['openram_support']['projects'].values():
                 repo = project_info["repo"]
                 commit = project_info["commit"]
-                project = SharedProject(args, repo, commit, self.config)
+                pos = project_info["pos"]
+                print(pos)
+                project = SharedProject(args, repo, commit, pos, self.config)
                 self.shared_projects.append(project)
                 logging.info(project)
             
@@ -146,7 +149,7 @@ class Collection(object):
         logging.info("annotating image")
         for project in self.projects + self.shared_projects:
             logging.info(project)
-            macro_x, macro_y = project.get_macro_pos_from_caravel()
+            macro_x, macro_y, orient = project.get_macro_pos()
             x = x_offset + macro_x * px_per_um - macro_border
             y = 2000 - (y_offset + macro_y * px_per_um - macro_border) # flip, gds is bottom left 0,0, png is top left 0,0
             # takes a while
@@ -165,23 +168,21 @@ class Collection(object):
         annotated_image_file = os.path.join('pics', 'multi_macro_annotated.png')
         img.save(annotated_image_file)
 
-
+    def get_macro_pos(self):
+        for project in self.projects + self.shared_projects:
+            print(project.get_macro_pos())
+        
     def get_macro_pos_from_caravel(self):
         for project in self.projects + self.shared_projects:
             print(project.get_macro_pos_from_caravel())
 
     def create_openlane_config(self):
-        logging.warning("macros.cfg is not currently being automatically generated - please make sure this file is up to date")
-
         macro_inst_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
-        # macro placement is broken. For now, if there is no file just put the openram stuff in place
-        if not os.path.exists(macro_inst_file):
-            if self.args.openram:
-                logging.warning("creating basic macros.cfg with openram support")
-                with open(macro_inst_file, "w") as f:
-                    f.write(f"openram_1kB 344 475.5 N\n")
-                    f.write(f"wb_openram_wrapper 1085 480 N\n")
-                    f.write(f"wb_bridge_2way 1340 480 N\n")
+        logging.info("overwriting macros.cfg: %s" % macro_inst_file)
+        with open(macro_inst_file, "w") as f:
+            for project in self.projects + self.shared_projects:
+                x, y, orient = project.get_macro_pos()
+                f.write("%s %.2f %.2f %s\n" % (project.instance_name, x, y, orient))
 
         ### generate user wrapper and include ###
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")

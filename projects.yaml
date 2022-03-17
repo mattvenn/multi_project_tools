@@ -30,14 +30,17 @@ openram_support:
         wb_bridge:
             repo:   'https://github.com/embelon/wb_bridge'
             commit: '006f96d5df99ce31a02ef31a0d82abcef64496e9'
+            pos:    '1340 480 N'
             
         wb_openram_wrapper:
             repo:   'https://github.com/embelon/wb_openram_wrapper'
             commit: '0ff3fe07de30b455ed8de6f0c4567b2a4606446a'
+            pos:    '1085 480 N'
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
             commit: '66dc5d3751869964d14819976aee96f3a312689a'
+            pos:    '344 475.5 N'
 
 configuration:
     macro_snap: 0.23 # half of met2 pin/track space
@@ -58,17 +61,21 @@ projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
         commit: 'd191bae27a4560e589c3dff7d524cf5e9425be3c'
+        pos:    '350 1200 N'
     
     vga_clock:
         repo:   'https://github.com/mattvenn/wrapped_vga_clock'
         commit: '0cf0b585b5a3ead1f92534af9158e9726fd6acc1'
+        pos:    '350 1600 N'
 
     freq_counter:
         repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
         commit: '94cd6e626492dc2f623bf06163e90a84bde553cb'
+        pos:    '350 2000 N'
 
     rgb_mixer:
         repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
         commit: '318546f7505f890a2f9f809cb6d8950c91dcd77e'
+        pos:    '350 2450 N'
 
 
