@@ -66,16 +66,16 @@ projects:
     vga_clock:
         repo:   'https://github.com/mattvenn/wrapped_vga_clock'
         commit: '0cf0b585b5a3ead1f92534af9158e9726fd6acc1'
-        pos:    '350 1600 N'
+        pos:    '350 1700 N'
 
     freq_counter:
         repo:   'https://github.com/mattvenn/wrapped_frequency_counter'
         commit: '94cd6e626492dc2f623bf06163e90a84bde553cb'
-        pos:    '350 2000 N'
+        pos:    '350 2200 N'
 
     rgb_mixer:
         repo:   'https://github.com/mattvenn/wrapped_rgb_mixer'
         commit: '318546f7505f890a2f9f809cb6d8950c91dcd77e'
-        pos:    '350 2450 N'
+        pos:    '350 2700 N'
 
 
