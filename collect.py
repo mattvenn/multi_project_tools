@@ -98,13 +98,8 @@ class Collection(object):
     # TODO refactor so project konws how to copy gds and lef, then do the same as rtl, gl, test etc.
     def copy_all_gds(self):
         macros_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
-        lef_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
-        gds_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'gds')
-        # macros directory might not exist
-        os.makedirs(macros_dir, exist_ok=True)
-
-        try_mkdir(lef_dir, self.args.force_delete)
-        try_mkdir(gds_dir, self.args.force_delete)
+        lef_dir = os.path.join(self.config['caravel']['root'], 'lef')
+        gds_dir = os.path.join(self.config['caravel']['root'], 'gds')
 
         for project in self.projects + self.shared_projects:
             src = os.path.join(project.directory, project.gds_filename)
@@ -177,14 +172,10 @@ class Collection(object):
             print(project.get_macro_pos_from_caravel())
 
     def create_openlane_config(self):
-        macro_inst_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
-        logging.info("overwriting macros.cfg: %s" % macro_inst_file)
-        with open(macro_inst_file, "w") as f:
-            for project in self.projects + self.shared_projects:
-                x, y, orient = project.get_macro_pos()
-                f.write("%s %.2f %.2f %s\n" % (project.instance_name, x, y, orient))
+        self.generate_macro_cfg()
+        self.generate_extra_lef_gds_tcl()
 
-        ### generate user wrapper and include ###
+        ### generate user wrapper verilog and include files ###
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         user_project_includes_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_includes.v")
         caravel_includes_path =      os.path.join(self.config['caravel']['includes_dir'], "includes.rtl.caravel_user_project")
@@ -202,29 +193,35 @@ class Collection(object):
             self.config
         )
 
-
         # copy the local config.tcl file 
         src = 'config.tcl'
         dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.tcl')
         logging.info(f"copying {src} to {dst}")
         shutil.copyfile(src, dst)
 
+    def generate_macro_cfg(self):
+        macro_inst_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
+        logging.info("overwriting macros.cfg: %s" % macro_inst_file)
+        with open(macro_inst_file, "w") as f:
+            for project in self.projects + self.shared_projects:
+                x, y, orient = project.get_macro_pos()
+                f.write("%s %.2f %.2f %s\n" % (project.instance_name, x, y, orient))
             
-    """ totally broken
-    def allocate_macros(self):
-        # allocate macros and generate macro.cfg
-        allocation = allocate_macros(
-            design_size_x = self.width,
-            design_size_y = self.height,
-            h_edge = 344,
-            v_edge = 464,
-            macro_snap = self.config['configuration']['macro_snap'],
-            projects = self.projects,
-            allocation_policy = "legacy",
-            openram = self.args.openram
-        )
-        return allocation
-    """
+    # want to put macros in top level dirs, so now need to generate a bit of tcl that adds the extra lef/def
+    def generate_extra_lef_gds_tcl(self):
+        extra_lef_gds_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'extra_lef_gds.tcl')
+        logging.info("creating extra_lef_gds tcl: %s" % extra_lef_gds_file)
+        with open(extra_lef_gds_file, "w") as f:
+            f.write('set ::env(EXTRA_LEFS) "')
+            for project in self.projects + self.shared_projects:
+                f.write("\\\n	$script_dir/../../lef/%s " % os.path.basename(project.lef_filename))
+            f.write('"\n')
+
+            f.write('set ::env(EXTRA_GDS_FILES) "')
+            for project in self.projects + self.shared_projects:
+                f.write("\\\n	$script_dir/../../gds/%s " % os.path.basename(project.gds_filename))
+            f.write('"\n')
+
 
     """
     * generate an index.md with a section for each project

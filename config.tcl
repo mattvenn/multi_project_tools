@@ -63,8 +63,8 @@ set ::env(VERILOG_FILES_BLACKBOX) "\
 	$script_dir/../../verilog/rtl/user_project_includes.v"
 
 ### user projects gds and lef files
-set ::env(EXTRA_LEFS) [glob $::env(DESIGN_DIR)/macros/lef/*.lef]
-set ::env(EXTRA_GDS_FILES) [glob $::env(DESIGN_DIR)/macros/gds/*.gds]
+source user_project_wrapper/extra_lef_gds.tcl
+
 
 # these get generated - if a project specifies obstruction in the info.yaml
 source user_project_wrapper/obstruction.tcl
