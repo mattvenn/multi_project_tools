@@ -28,13 +28,13 @@
     wire        wbs_oram_we_i;
     wire [3:0]  wbs_oram_sel_i;
     wire [31:0] wbs_oram_dat_i;
-    wire [9:0]  wbs_oram_adr_i;
+    wire [10:0] wbs_oram_adr_i;		// 11bit address (latencies CSR + 1kB OpenRAM)
     wire        wbs_oram_ack_o;
     wire [31:0] wbs_oram_dat_o;
 
     // Bridge splitting caravel wishbone traffic into two streams: user project and OpenRAM wrapper
     wb_bridge_2way #(
-        .BUSB_ADDR_WIDTH(10)
+        .BUSB_ADDR_WIDTH(11)
     ) wb_bridge_2way(
     `ifdef USE_POWER_PINS
         .vccd1 (vccd1),
@@ -68,7 +68,7 @@
         .wbm_b_we_o (wbs_oram_we_i),
         .wbm_b_sel_o (wbs_oram_sel_i[3:0]),
         .wbm_b_dat_i (wbs_oram_dat_o[31:0]),
-        .wbm_b_adr_o (wbs_oram_adr_i[9:0]),	
+        .wbm_b_adr_o (wbs_oram_adr_i[10:0]),	
         .wbm_b_ack_i (wbs_oram_ack_o),
         .wbm_b_dat_o (wbs_oram_dat_i[31:0])               
     );
@@ -88,7 +88,7 @@
 
     // Dual port OpenRAM wrapper for wishbone
     wb_openram_wrapper #(
-        .ADDR_WIDTH(8)
+        .RAM_ADDR_WIDTH(8)
     ) wb_openram_wrapper(
     `ifdef USE_POWER_PINS
         .vccd1 (vccd1),
@@ -105,7 +105,7 @@
         .wbs_a_we_i (wbs_oram_we_i),
         .wbs_a_sel_i (wbs_oram_sel_i[3:0]),
         .wbs_a_dat_i (wbs_oram_dat_i[31:0]),
-        .wbs_a_adr_i (wbs_oram_adr_i[9:0]),
+        .wbs_a_adr_i (wbs_oram_adr_i[10:0]),
         .wbs_a_ack_o (wbs_oram_ack_o),
         .wbs_a_dat_o (wbs_oram_dat_o[31:0]),
 
