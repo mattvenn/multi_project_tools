@@ -83,3 +83,7 @@ projects:
         repo:   'https://github.com/mbalestrini/wrapped_hack_soc'
         pos:    '2100 500 N'
 
+    teras:
+        commit: 'c119cb48d76e8a4a62c80f98323efb114553c417'
+        repo:   'https://github.com/Bynaryman/wrapped_teras'
+        pos:    '1000 1200 N'
