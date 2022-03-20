@@ -87,3 +87,8 @@ projects:
         commit: 'c119cb48d76e8a4a62c80f98323efb114553c417'
         repo:   'https://github.com/Bynaryman/wrapped_teras'
         pos:    '1000 1200 N'
+
+    alu:
+        commit: 'bc8a907bc96236928a7810874becdaf1e136e233'
+        repo:   'https://github.com/ThorKn/wrapped_alu74181'
+        pos:    '350 3200 N'
