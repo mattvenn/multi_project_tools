@@ -89,6 +89,26 @@ projects:
         pos:    '1000 1200 N'
 
     alu:
-        commit: 'bc8a907bc96236928a7810874becdaf1e136e233'
+        commit: '6e935d2d32acdcc66ab18c5894cb628b6c6b9048'
         repo:   'https://github.com/ThorKn/wrapped_alu74181'
         pos:    '350 3200 N'
+
+    vga_demo:
+        commit: '7fb9353f1a9f5120a0bd7907963a1c65919f33c0'
+        repo:   'https://github.com/zbigos/wrapped-vgademo-on-fpga'
+        pos:    '2150 1200 N'
+
+    silife:
+        commit: 'ccaf2765c0daeea0847a21b62f4513f818c536a7'
+        repo:   'https://github.com/wokwi/wrapped_silife'
+        pos:    '950 2350 N'
+
+    acorn:
+        commit: '5f7d3e5d0fcc9ffc3845dd7e97f55219ebd112ec'
+        repo:   'https://github.com/ZhenleC/wrapped_acorn_prng'
+        pos:    '2250 1850 N'
+
+    hsv:
+        repo:   'https://github.com/proppy/wrapped_hsv_mixer'
+        commit: 'f1b55914359d9798f52a24adc6276593965d034c'
+        pos:    '2300 2700 N'
