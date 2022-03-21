@@ -96,6 +96,10 @@ class BaseProject(object):
         pass
 
     def test_git_match(self):
+        if 'waive_git' in self.config['project']:
+            logging.info("skipping git test due to %s" % self.config['project']['waive_git'])
+            return
+
         self.gitsha = get_git_sha(self.directory)
         if self.gitsha != self.commit:
             logging.error("gitsha on disk doesn't match config")

@@ -99,7 +99,7 @@ projects:
         pos:    '2150 1200 N'
 
     silife:
-        commit: 'ccaf2765c0daeea0847a21b62f4513f818c536a7'
+        commit: '53c45898bd6fc04530bf6e9d17153418db5dd175'
         repo:   'https://github.com/wokwi/wrapped_silife'
         pos:    '950 2350 N'
 
@@ -111,4 +111,10 @@ projects:
     hsv:
         repo:   'https://github.com/proppy/wrapped_hsv_mixer'
         commit: 'f1b55914359d9798f52a24adc6276593965d034c'
-        pos:    '2300 2700 N'
+        pos:    '2300 2850 N'
+
+    skullfet:
+        repo:   'https://github.com/wokwi/wrapped_skullfet'
+        commit: '927e7275e6ba42f02fec99f5928941eeb985ee29'
+        pos:    '2300 2350 N'
+
