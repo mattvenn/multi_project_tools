@@ -98,11 +98,6 @@ projects:
         repo:   'https://github.com/zbigos/wrapped-vgademo-on-fpga'
         pos:    '2150 1200 N'
 
-    silife:
-        commit: '53c45898bd6fc04530bf6e9d17153418db5dd175'
-        repo:   'https://github.com/wokwi/wrapped_silife'
-        pos:    '950 2350 N'
-
     acorn:
         commit: '5f7d3e5d0fcc9ffc3845dd7e97f55219ebd112ec'
         repo:   'https://github.com/ZhenleC/wrapped_acorn_prng'
