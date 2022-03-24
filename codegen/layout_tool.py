@@ -145,7 +145,7 @@ class LayoutTool():
 
         self.loffsets = {}
         for li, lt in enumerate(self.line_colors.keys()):
-            self.loffsets[lt] = np.array([10, 10]) * li
+            self.loffsets[lt] = np.array([5, 5]) * li
 
         self.lines = []
         self.image_handle = np.ones((self.area_height, self.area_width, 3)) * self.background_color
@@ -171,7 +171,6 @@ class LayoutTool():
         }
 
         self.buttons.append(self.save_button)
-
         for p in collection.projects:
             caravel_data = p.get_gds_size().tolist()
             # caravel_data = [256, 256]
