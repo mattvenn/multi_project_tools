@@ -65,6 +65,8 @@ def callback(class_ref, event,x,y,flags,param):
 
     elif event == cv2.EVENT_MOUSEMOVE:
         if class_ref.pointerbound:
+            layout_state = "good"
+
             class_ref.layout_info[class_ref.pointerbound]["design_location"] = (int(x), int(y))
             class_ref.layout_info[class_ref.pointerbound + "__border"]["design_location"] = (
                 int(x - class_ref.border_offsets // class_ref.scalar), 
@@ -87,19 +89,32 @@ def callback(class_ref, event,x,y,flags,param):
                 if "__border" in ent_name:
                     if collision_map[ent_name]:
                         class_ref.layout_info[ent_name]["design_color"] = class_ref.bad_color
+                        if layout_state != "bad":
+                            layout_state = "warning"
                         # if there is a bad color on border, we want to add warning to main
                         e = ent_name.replace("__border", "")
                         # but only if the color isn't already bad
                         if (class_ref.layout_info[e]["design_color"] == class_ref.good_color).all():
                             class_ref.layout_info[e]["design_color"] = class_ref.warning_color
+                            if layout_state != "bad":
+                                layout_state = "warning"
                     else:
                         class_ref.layout_info[ent_name]["design_color"] = class_ref.warning_color
                 else:
                     if collision_map[ent_name]:
                         class_ref.layout_info[ent_name]["design_color"] = class_ref.bad_color
+                        layout_state = "bad"
                     else:
                         class_ref.layout_info[ent_name]["design_color"] = class_ref.good_color
 
+            if layout_state == "good":
+                class_ref.save_button['color'] = class_ref.good_color
+            if layout_state == "warning":
+                class_ref.save_button['color'] = class_ref.warning_color
+            if layout_state == "bad":
+                class_ref.save_button['color'] = class_ref.bad_color
+                 
+            class_ref.update_menu()    
             class_ref.update_image()
     pass
 
@@ -121,9 +136,42 @@ class LayoutTool():
         self.warning_color = np.array([0.0, 1.0, 1.0])
         self.border_offsets = 25
 
+        self.line_colors = {
+            "la1": np.array([0.0, 1.0, 0.0]),
+            "gpio": np.array([1.0, 1.0, 0.0]),
+            "wishbone": np.array([0.0, 1.0, 1.0]),
+            "openram": np.array([1.0, 0.0, 1.0])
+        }
+
+        self.loffsets = {}
+        for li, lt in enumerate(self.line_colors.keys()):
+            self.loffsets[lt] = np.array([10, 10]) * li
+
         self.lines = []
         self.image_handle = np.ones((self.area_height, self.area_width, 3)) * self.background_color
-        print(self.image_handle.shape)
+        self.menu_handle = np.ones((self.area_height, 500, 3)) * self.background_color        
+        self.buttons = []
+        
+        self.buttons.append({
+            "color": self.good_color,
+            "type": "toggle",
+            "text": "Show closest cells"
+        })
+
+        self.buttons.append({
+            "color": self.good_color,
+            "type": "toggle",
+            "text": "Show nets"
+        })
+
+        self.save_button = {
+            "color": self.good_color,
+            "type": "toggle",
+            "text": "Save layout"
+        }
+
+        self.buttons.append(self.save_button)
+
         for p in collection.projects:
             caravel_data = p.get_gds_size().tolist()
             # caravel_data = [256, 256]
@@ -171,7 +219,57 @@ class LayoutTool():
     def set_callback(self, fun):
         self.callback = fun
 
+    def update_netmap(self):
+        nets = set()
+        self.lines = []
+        for macro in self.layout_info.values():
+            nets |= macro["interfaces"]
+
+        for net in nets:
+            users = {}
+            unionfind = {}
+
+            for macro in self.layout_info.keys():
+                if "__border" not in macro:
+                    unionfind[macro] = macro
+
+            for macro_name, macro in self.layout_info.items():
+                if net in macro["interfaces"]:
+                    users[macro_name] = macro["design_location"]
+
+            distances = []
+            for name_a, position_a in users.items():
+                for name_b, position_b in users.items():
+                    if name_a != name_b:
+                        distance = (position_a[0] - position_b[0])**2 + (position_a[1] - position_b[1])**2
+                        distances.append((distance, name_a, name_b))
+
+            picked = []
+            for (d, a_name, b_name) in sorted(distances):
+                if unionfind[a_name] != unionfind[b_name]:
+                    # exchange a_name
+                    picked.append((a_name, b_name))
+                    prev_a = unionfind[a_name]
+                    unionfind[a_name] = unionfind[b_name]
+                    for own, ptr in unionfind.items():
+                        if ptr == prev_a:
+                            unionfind[own] = unionfind[b_name]
+
+            for p in picked:
+                self.lines.append((
+                    (
+                        int(self.layout_info[p[0]]['design_location'][0] + self.layout_info[p[0]]['design_area'][0]/2),
+                        int(self.layout_info[p[0]]['design_location'][1] + self.layout_info[p[0]]['design_area'][1]/2)
+                    ),
+                    (
+                        int(self.layout_info[p[1]]['design_location'][0] + self.layout_info[p[1]]['design_area'][0]/2),
+                        int(self.layout_info[p[1]]['design_location'][1] + self.layout_info[p[1]]['design_area'][1]/2)
+                    ),
+                    net                
+                ))
+
     def update_image(self):
+        self.update_netmap()
         self.image_handle = np.ones((self.area_height, self.area_width, 3)) * self.background_color
         __imnames = self.layout_info.keys()
         imnames = []
@@ -214,7 +312,37 @@ class LayoutTool():
             if "__border" not in imname:
                 cv2.putText(self.image_handle, imname, text_position, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA)
 
+        for lstart, lend, ltype in self.lines:
+            offsets = self.loffsets[ltype]
+            cv2.line(self.image_handle, np.array(lstart) + offsets, np.array(lend) + offsets, self.line_colors[ltype], thickness=2)
+
+
         cv2.imshow("layout tool", self.image_handle)
+
+    def update_menu(self):
+        self.menu_handle = np.ones((self.area_height, 500, 3)) * self.background_color
+        for ben, b in enumerate(self.buttons):
+            color = b['color']
+            button_dx = 60
+            button_dy = 460
+            button_x = 20 + ben * 80
+            button_y = 20
+            
+            sub_img = self.menu_handle[button_x: button_x+button_dx, button_y: button_y+button_dy]
+
+            rect = np.ones(sub_img.shape) * color
+
+            cv2.addWeighted(sub_img, 0.55, rect, 0.45, 0, rect)
+            self.menu_handle[button_x: button_x+button_dx, button_y: button_y+button_dy] = rect
+
+            text_position = (
+                button_y + 10,
+                button_x + 40
+            )
+
+            cv2.putText(self.menu_handle, b["text"], text_position, cv2.FONT_HERSHEY_SIMPLEX, 1.5, color, 2, cv2.LINE_AA)
+
+        cv2.imshow("menu window", self.menu_handle)
 
     def run(self):
         self.update_image()
@@ -222,5 +350,9 @@ class LayoutTool():
         cv2.setMouseCallback("layout tool", self.callback)
         cv2.imshow("layout tool", self.image_handle)
 
+        self.update_menu()
+        cv2.namedWindow("menu window")
+        cv2.imshow("menu window", self.menu_handle)
+ 
         while True:
             cv2.waitKey(10)
