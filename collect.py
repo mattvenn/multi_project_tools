@@ -4,7 +4,7 @@ import copy
 from project import Project, SharedProject
 from codegen.caravel_codegen import generate_openlane_files
 from codegen.allocator import allocate_macros
-from layout_tool import LayoutTool, callback
+from codegen.layout_tool import LayoutTool, callback
 from functools import partial
 
 REQUIRED_KEYS_GROUP = ["interfaces", "openram_support", "configuration", "docs", "projects"]
