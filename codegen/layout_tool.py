@@ -48,6 +48,7 @@ def check_collision(ent1, ent2):
 def callback(class_ref, event,x,y,flags,param): 
     if event == cv2.EVENT_LBUTTONDOWN:
         if class_ref.pointerbound:
+            logging.info(f"dropped cell {class_ref.pointerbound}")
             class_ref.pointerbound = None
             class_ref.update_image()
         else:
@@ -62,6 +63,7 @@ def callback(class_ref, event,x,y,flags,param):
                     if y > start[1] and y < end[1]:
                         if data["grabbable"]:
                             class_ref.pointerbound = name
+                            logging.info(f"picked cell {class_ref.pointerbound}")
 
     elif event == cv2.EVENT_MOUSEMOVE:
         if class_ref.pointerbound:
@@ -107,14 +109,6 @@ def callback(class_ref, event,x,y,flags,param):
                     else:
                         class_ref.layout_info[ent_name]["design_color"] = class_ref.good_color
 
-            if layout_state == "good":
-                class_ref.save_button['color'] = class_ref.good_color
-            if layout_state == "warning":
-                class_ref.save_button['color'] = class_ref.warning_color
-            if layout_state == "bad":
-                class_ref.save_button['color'] = class_ref.bad_color
-                 
-            class_ref.update_menu()    
             class_ref.update_image()
     pass
 
@@ -122,20 +116,23 @@ def callback(class_ref, event,x,y,flags,param):
 class LayoutTool():
     def __init__(self, collection, downscale):
         logging.info(f"launching layout tool. Found {len(collection.projects)} designs in collection")
-        self.layout_info = {}
         self.callback = None
         self.scalar = downscale
         self.area_width = int(collection.config['configuration']['user_area_width'] // self.scalar)
         self.area_height = int(collection.config['configuration']['user_area_height'] // self.scalar)
         logging.info(f"layout tool canvas = {self.area_width}x{self.area_height}, using downscale = {self.scalar}")
         logging.info(f"pass --layout-tool-downscale=x if this does not fit on your screen")
+ 
+        self.pointerbound = None
 
+        # values for the color scheme, these should probably be in config?
         self.background_color = np.array([20, 18, 17]) / 255.0
         self.good_color = np.array([0.0, 1.0, 0.0])
         self.bad_color = np.array([0.0, 0.0, 1.0])
         self.warning_color = np.array([0.0, 1.0, 1.0])
         self.border_offsets = 25
 
+        # this needs to change asap, will throw if a net isn't in this dict.
         self.line_colors = {
             "la1": np.array([0.0, 1.0, 0.0]),
             "gpio": np.array([1.0, 1.0, 0.0]),
@@ -143,37 +140,20 @@ class LayoutTool():
             "openram": np.array([1.0, 0.0, 1.0])
         }
 
+        # line offsets, if two cells have same nets, they would get drawn on top of each other.
+        # this prevents that.
         self.loffsets = {}
         for li, lt in enumerate(self.line_colors.keys()):
             self.loffsets[lt] = np.array([5, 5]) * li
 
         self.lines = []
         self.image_handle = np.ones((self.area_height, self.area_width, 3)) * self.background_color
-        self.menu_handle = np.ones((self.area_height, 500, 3)) * self.background_color        
-        self.buttons = []
-        
-        self.buttons.append({
-            "color": self.good_color,
-            "type": "toggle",
-            "text": "Show closest cells"
-        })
 
-        self.buttons.append({
-            "color": self.good_color,
-            "type": "toggle",
-            "text": "Show nets"
-        })
-
-        self.save_button = {
-            "color": self.good_color,
-            "type": "toggle",
-            "text": "Save layout"
-        }
-
-        self.buttons.append(self.save_button)
+        self.layout_info = {}
         for p in collection.projects:
-            caravel_data = p.get_gds_size().tolist()
-            # caravel_data = [256, 256]
+            # caravel_data = p.get_gds_size().tolist()
+            # this should stay, as it is used for debugging. get_gds_size() is _slow_
+            caravel_data = [256, 256]
             caravel_data = (
                 int(caravel_data[0] // self.scalar),
                 int(caravel_data[1] // self.scalar),
@@ -194,6 +174,7 @@ class LayoutTool():
                 "design_color": (0.0, 1.0, 0.0)
             }
 
+            # we also append <name> + __border to show the border.
             caravel_data = (
                 int(caravel_data[0] + ((2 * self.border_offsets) // self.scalar)),
                 int(caravel_data[1] + ((2 * self.border_offsets) // self.scalar))
@@ -212,9 +193,6 @@ class LayoutTool():
                 "design_color": (0.0, 1.0, 0.0)
             }
 
-            self.pointerbound = instance_name
-
-
     def set_callback(self, fun):
         self.callback = fun
 
@@ -224,6 +202,10 @@ class LayoutTool():
         for macro in self.layout_info.values():
             nets |= macro["interfaces"]
 
+        # this runs union-find based minimal spanning tree over all nets.
+        # possibly this shouldn't calculate the center-center distance, but minimum distance
+        # between cells. Also this is only a rough estimate on how openlane will layout the connecting
+        # wires, so it might get axed anyways
         for net in nets:
             users = {}
             unionfind = {}
@@ -246,7 +228,6 @@ class LayoutTool():
             picked = []
             for (d, a_name, b_name) in sorted(distances):
                 if unionfind[a_name] != unionfind[b_name]:
-                    # exchange a_name
                     picked.append((a_name, b_name))
                     prev_a = unionfind[a_name]
                     unionfind[a_name] = unionfind[b_name]
@@ -272,7 +253,8 @@ class LayoutTool():
         self.image_handle = np.ones((self.area_height, self.area_width, 3)) * self.background_color
         __imnames = self.layout_info.keys()
         imnames = []
-
+        
+        # since color mixing is weird, we make sure that borders are drawn before cells.
         for i in __imnames:
             if "__border" in i:
                 imnames.append(i)
@@ -280,13 +262,16 @@ class LayoutTool():
         for i in __imnames:
             if "__border" not in i:
                 imnames.append(i)
-
-
         
         for imname in imnames:
             data = self.layout_info[imname]
-            color = data["design_color"]
+            color = np.copy(data["design_color"])
+            if not self.pointerbound:
+                color *= 0.5
+            elif not imname.startswith(self.pointerbound):
+                color *= 0.5
             
+            # draw outline with 100% opacity
             cv2.rectangle(
                 self.image_handle, 
                 data["design_location"],
@@ -298,6 +283,7 @@ class LayoutTool():
                 2
             )
             
+            # since opaqueness is weird we do this stackoverflow licensed hack
             sub_img = self.image_handle[data["design_location"][1]:data["design_location"][1] + data["design_area"][1], data["design_location"][0]:data["design_location"][0] + data["design_area"][0]]
             rect = np.ones(sub_img.shape) * color
             cv2.addWeighted(sub_img, 0.55, rect, 0.45, 0, rect)
@@ -318,40 +304,11 @@ class LayoutTool():
 
         cv2.imshow("layout tool", self.image_handle)
 
-    def update_menu(self):
-        self.menu_handle = np.ones((self.area_height, 500, 3)) * self.background_color
-        for ben, b in enumerate(self.buttons):
-            color = b['color']
-            button_dx = 60
-            button_dy = 460
-            button_x = 20 + ben * 80
-            button_y = 20
-            
-            sub_img = self.menu_handle[button_x: button_x+button_dx, button_y: button_y+button_dy]
-
-            rect = np.ones(sub_img.shape) * color
-
-            cv2.addWeighted(sub_img, 0.55, rect, 0.45, 0, rect)
-            self.menu_handle[button_x: button_x+button_dx, button_y: button_y+button_dy] = rect
-
-            text_position = (
-                button_y + 10,
-                button_x + 40
-            )
-
-            cv2.putText(self.menu_handle, b["text"], text_position, cv2.FONT_HERSHEY_SIMPLEX, 1.5, color, 2, cv2.LINE_AA)
-
-        cv2.imshow("menu window", self.menu_handle)
-
     def run(self):
         self.update_image()
         cv2.namedWindow("layout tool")
         cv2.setMouseCallback("layout tool", self.callback)
         cv2.imshow("layout tool", self.image_handle)
-
-        self.update_menu()
-        cv2.namedWindow("menu window")
-        cv2.imshow("menu window", self.menu_handle)
  
         while True:
             cv2.waitKey(10)
