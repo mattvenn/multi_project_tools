@@ -4,6 +4,8 @@ import copy
 from project import Project, SharedProject
 from codegen.caravel_codegen import generate_openlane_files
 from codegen.allocator import allocate_macros
+from codegen.layout_tool import LayoutTool, callback
+from functools import partial
 
 REQUIRED_KEYS_GROUP = ["interfaces", "openram_support", "configuration", "docs", "projects"]
 REQUIRED_KEYS_LOCAL = ["project_directory", "caravel", "env"]
@@ -233,6 +235,12 @@ class Collection(object):
                 f.write("\\\n	$script_dir/../../gds/%s " % os.path.basename(project.gds_filename))
             f.write('"\n')
 
+    def launch_layout_tool(self, downscale_factor):
+        tool = LayoutTool(self, downscale_factor or 1)
+        call = partial(callback, tool)
+        print(call)
+        tool.set_callback(call)
+        tool.run()
 
     """
     * generate an index.md with a section for each project

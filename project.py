@@ -166,6 +166,7 @@ class SharedProject(BaseProject):
         self.lef_filename = os.path.join(self.config['final']['directory'], self.config['final']['lef_filename'])
         self.title = self.config['project']['title']
         self.instance_name = self.module_name
+        self.interfaces = []
 
     def get_top_module(self):
         return self.module_name
