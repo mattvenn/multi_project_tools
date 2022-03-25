@@ -151,9 +151,9 @@ class LayoutTool():
 
         self.layout_info = {}
         for p in collection.projects:
-            # caravel_data = p.get_gds_size().tolist()
+            caravel_data = p.get_gds_size().tolist()
             # this should stay, as it is used for debugging. get_gds_size() is _slow_
-            caravel_data = [256, 256]
+            # caravel_data = [256, 256]
             caravel_data = (
                 int(caravel_data[0] // self.scalar),
                 int(caravel_data[1] // self.scalar),
