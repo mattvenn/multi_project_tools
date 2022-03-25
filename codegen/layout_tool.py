@@ -150,8 +150,12 @@ class LayoutTool():
         self.image_handle = np.ones((self.area_height, self.area_width, 3)) * self.background_color
 
         self.layout_info = {}
-        for p in collection.projects:
-            caravel_data = p.get_gds_size().tolist()
+        for p in collection.projects + collection.shared_projects:
+            size = p.get_gds_size()
+            if isinstance(size, tuple):
+                caravel_data = size
+            else:
+                caravel_data = p.get_gds_size().tolist()
             # this should stay, as it is used for debugging. get_gds_size() is _slow_
             # caravel_data = [256, 256]
             caravel_data = (
@@ -267,9 +271,9 @@ class LayoutTool():
             data = self.layout_info[imname]
             color = np.copy(data["design_color"])
             if not self.pointerbound:
-                color *= 0.5
+                color *= 0.6
             elif not imname.startswith(self.pointerbound):
-                color *= 0.5
+                color *= 0.6
             
             # draw outline with 100% opacity
             cv2.rectangle(
