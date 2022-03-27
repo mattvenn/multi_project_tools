@@ -139,6 +139,18 @@ class BaseProject(object):
         if self.args.test_all or self.args.test_git:
             self.test_git_match()
 
+    def count_cells(self):
+        # hack for now, add the summary.csv file to the final files
+        powered_verilog = os.path.abspath(os.path.join(self.directory, self.config["final"]["directory"], self.config["final"]["lvs_filename"]))
+        cmd = "grep sky130_ %s | awk '{ print $1 }'  | grep -v fill | grep -v decap  | wc -l" % powered_verilog
+        try:
+            result = subprocess.getoutput(cmd)
+        except subprocess.CalledProcessError as e:
+            logging.error(e)
+            exit(1)
+   
+        return int(result)
+
 class SharedProject(BaseProject):
 
     def __init__(self, args, repo, commit, pos, system_config):

@@ -94,6 +94,15 @@ class Collection(object):
         for project in self.projects + self.shared_projects:
             project.run_tests()
 
+    def count_cells(self):
+        total_cells = 0
+        for project in self.projects + self.shared_projects:
+            cells = project.count_cells()
+            logging.info("%40s %10d cells" % (project.title, cells))
+            total_cells += cells
+        logging.info("total standard cells = %s" % total_cells)
+        
+
     # TODO refactor so project konws how to copy gds and lef, then do the same as rtl, gl, test etc.
     def copy_all_gds(self):
         macros_dir = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macros', 'lef')
