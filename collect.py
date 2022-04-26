@@ -253,7 +253,7 @@ class Collection(object):
         git_sha = get_git_sha(".")
         fh = open("index.md", 'w')
         fh.write("""
-# Zero to ASIC Group submission MPW5
+# Zero to ASIC Group submission MPW6
 
 This ASIC was designed by members of the [Zero to ASIC course](https://zerotoasiccourse.com).
 
