@@ -60,7 +60,7 @@ docs:
 projects:
     function_generator:
         repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '9e73784d43a91d70cb1a7c9c5d42037f49ed9e67'
+        commit: '701095fd880ad3bb80d6cec1d214a04e5676a65d'
         pos:    '350 1200 N'
 
     cpr:
