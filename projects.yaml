@@ -67,3 +67,8 @@ projects:
         repo:   'https://github.com/zorkan/cpr'
         commit: '4e4c41917683f00b41689a5baa02fdd8e6fe70e1'
         pos:    '350 1700 N'
+
+    wrapped_instrumented_adder:
+        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
+        commit: 'na'
+        pos:    '500 500 N'
