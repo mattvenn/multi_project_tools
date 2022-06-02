@@ -1,0 +1,24 @@
+project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
+
+caravel:
+    root:           ../caravel_user_project
+    gl_dir:         ../caravel_user_project/verilog/gl
+    test_dir:       ../caravel_user_project/verilog/dv
+    rtl_dir:        ../caravel_user_project/verilog/rtl
+    includes_dir:   ../caravel_user_project/verilog/includes/
+    mgmt_root:      ../caravel_user_proejct/mgmt_core_wrapper/
+    config:         config.tcl
+
+env: # used for simulation
+    GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
+    GCC_PREFIX:     riscv64-unknown-elf
+    PDK_PATH:       ../pdk/sky130A
+    PDK_ROOT:       ../pdk
+    OPENLANE:       ../openlane
+    PDK:            sky130A
+
+lvs:
+    PDK_PATH:       ../pdk/sky130A 
+    PDK_ROOT:       ../pdk/
+    OPENLANE:       ../openlane
+
