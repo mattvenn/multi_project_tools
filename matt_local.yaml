@@ -15,6 +15,7 @@ env: # used for simulation
     PDK_PATH:       /home/matt/work/asic-workshop/shuttle6/pdk/sky130A
     PDK_ROOT:       /home/matt/work/asic-workshop/shuttle6/pdk/
     OPENLANE:       /home/matt/work/asic-workshop/shuttle6/openlane
+    PDK:            sky130A
 
 lvs:
     PDK_PATH:       /home/matt/work/asic-workshop/shuttle6/pdk/sky130A 
