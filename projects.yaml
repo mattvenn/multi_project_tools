@@ -68,7 +68,27 @@ projects:
         commit: '4e4c41917683f00b41689a5baa02fdd8e6fe70e1'
         pos:    '350 1700 N'
 
-    wrapped_instrumented_adder:
-        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
-        commit: 'na'
-        pos:    '500 500 N'
+    wrapped_instrumented_adder_behav:
+        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_behav'
+        commit: 'b87bbd586b304a8f0a88bfd3d3080a628f3e87f9'
+        pos:    '2300 500 N' # 250 x 250
+
+    wrapped_instrumented_adder_sklansky:
+        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_sklansky'
+        commit: '5cc8ff42e619fd4e21eb2ed6e4b4b1eb03859c54'
+        pos:    '2300 1000 N' # 250 x 250
+
+    wrapped_instrumented_adder_brent:
+        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_brent'
+        commit: '4bf990a93cbbf432444be0e32b3a302393fcbab9'
+        pos:    '2300 1500 N' # 250 x 250
+
+    wrapped_instrumented_adder_ripple:
+        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_ripple'
+        commit: 'c1ceb5843ae7489ffd3b9f7c2e96ec2ded377931'
+        pos:    '2300 2000 N' # 250 x 250
+
+    wrapped_instrumented_adder_kogge:
+        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_kogge'
+        commit: 'f1e4e25e4895765fc941ceaaac37e850bb1b362e'
+        pos:    '2300 2500 N' # 250 x 250

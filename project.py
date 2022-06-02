@@ -288,7 +288,12 @@ class Project(BaseProject):
             return
         conf = self.config["wrapper_proof"]
         cwd = os.path.join(self.directory, conf["directory"])
-        cmd = ["sby", "-f", conf["sby"]]
+        try:
+            sby_cmd = self.system_config['tools']['sby']
+        except KeyError:
+            sby_cmd = 'sby'
+
+        cmd = [sby_cmd, "-f", conf["sby"]]
         logging.info("attempting to run %s in %s" % (cmd, cwd))
         try:
             subprocess.run(cmd, cwd=cwd, check=True)
