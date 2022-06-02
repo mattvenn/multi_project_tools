@@ -316,6 +316,7 @@ class Project(BaseProject):
         test_env["GCC_PREFIX"]  = self.system_config['env']['GCC_PREFIX']
         test_env["PDK_PATH"]    = self.system_config['env']['PDK_PATH']
         test_env["PDK_ROOT"]    = self.system_config['env']['PDK_ROOT']
+        test_env["PDK"]         = self.system_config['env']['PDK']
         test_env["CARAVEL_ROOT"]    = os.path.join(self.system_config['caravel']['root'], 'caravel')
 
         test_env["DESIGNS"] =         self.system_config['caravel']['root']
