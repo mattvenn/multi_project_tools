@@ -63,10 +63,10 @@ projects:
         commit: '701095fd880ad3bb80d6cec1d214a04e5676a65d'
         pos:    '350 1200 N'
 
-#    cpr:
-#        repo:   'https://github.com/zorkan/cpr_reharden'
-#        commit: '0a5c271eb479199d45ec4363ad3ec2b6e372c055'
-#        pos:    '350 1700 N'
+    cpr:
+        repo:   'https://github.com/zorkan/cpr'
+        commit: 'd0afa2172ca45b279d84b8da508d2f608b6ca1b5'
+        pos:    '350 1700 N'
 
     wrapped_instrumented_adder_behav:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_behav'
