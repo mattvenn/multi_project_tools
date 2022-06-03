@@ -31,8 +31,9 @@ set ::env(DESIGN_NAME) user_project_wrapper
 #section end
 
 # User Configurations
-set ::env(GND_NETS) {vssd1}
-set ::env(VDD_NETS) {vccd1}
+# can't disable the unused power pins as then the precheck will fail
+#set ::env(GND_NETS) {vssd1}
+#set ::env(VDD_NETS) {vccd1}
 
 # save some time
 set ::env(RUN_KLAYOUT_XOR) 0

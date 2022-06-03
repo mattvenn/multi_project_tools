@@ -63,32 +63,37 @@ projects:
         commit: '701095fd880ad3bb80d6cec1d214a04e5676a65d'
         pos:    '350 1200 N'
 
-    cpr:
-        repo:   'https://github.com/zorkan/cpr'
-        commit: '4e4c41917683f00b41689a5baa02fdd8e6fe70e1'
-        pos:    '350 1700 N'
+#    cpr:
+#        repo:   'https://github.com/zorkan/cpr_reharden'
+#        commit: '0a5c271eb479199d45ec4363ad3ec2b6e372c055'
+#        pos:    '350 1700 N'
 
     wrapped_instrumented_adder_behav:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_behav'
-        commit: 'b87bbd586b304a8f0a88bfd3d3080a628f3e87f9'
+        commit: '1a8b88951d9e75e9840c5c0fa66554bd809e2692'
         pos:    '2300 500 N' # 250 x 250
 
     wrapped_instrumented_adder_sklansky:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_sklansky'
-        commit: '5cc8ff42e619fd4e21eb2ed6e4b4b1eb03859c54'
+        commit: '28df7ae8c4734bac47d0310c221177db9861ba48'
         pos:    '2300 1000 N' # 250 x 250
 
     wrapped_instrumented_adder_brent:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_brent'
-        commit: '4bf990a93cbbf432444be0e32b3a302393fcbab9'
+        commit: '6fe7ea3e46cf8bf25b7242047bc838ee3ca0108f'
         pos:    '2300 1500 N' # 250 x 250
 
     wrapped_instrumented_adder_ripple:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_ripple'
-        commit: 'c1ceb5843ae7489ffd3b9f7c2e96ec2ded377931'
+        commit: 'f5d11afec656bd1d83c6a136bae15d53e71ff234'
         pos:    '2300 2000 N' # 250 x 250
 
     wrapped_instrumented_adder_kogge:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_kogge'
-        commit: 'f1e4e25e4895765fc941ceaaac37e850bb1b362e'
+        commit: '2e72eb2a75aa896d0c12af2b92b8b0f2ba9c9a2c'
         pos:    '2300 2500 N' # 250 x 250
+
+    wrapped_calculator:
+        repo:   'https://github.com/eemreeh/wrapped_PrimitiveCalculator'
+        commit: 'cb64da0d1b9f5a622a02ee1793c288a04bf580ce'
+        pos:    '870 1200 N'
