@@ -88,15 +88,15 @@ module user_project_wrapper #(
     // split remaining 96 logic analizer wires into 3 chunks
     wire [31: 0] la1_data_in, la1_data_out, la1_oenb;
     assign la1_data_in = la_data_in[63:32];
-    assign la1_data_out = la_data_out[63:32];
+    assign la_data_out[63:32] = la1_data_out;
     assign la1_oenb = la_oenb[63:32];
 
     wire [31: 0] la2_data_in, la2_data_out, la2_oenb;
     assign la2_data_in = la_data_in[95:64];
-    assign la2_data_out = la_data_out[95:64];
+    assign la_data_out[95:64] = la2_data_out;
     assign la2_oenb = la_oenb[95:64];
 
     wire [31: 0] la3_data_in, la3_data_out, la3_oenb;
     assign la3_data_in = la_data_in[127:96];
-    assign la3_data_out = la_data_out[127:96];
+    assign la_data_out[127:96] = la3_data_out;
     assign la3_oenb = la_oenb[127:96];
