@@ -127,6 +127,9 @@ class Collection(object):
 
             # spef, sdc, sdc files
             for optional_file_type in ["spef", "sdc", "sdf"]:
+                dst_dir = os.path.join(self.config['caravel']['root'], optional_file_type)
+                if not os.path.exists(dst_dir):
+                    os.mkdir(dst_dir)
                 filename = project.get_optional_file(optional_file_type)
                 if filename is not None:
                     src = filename
