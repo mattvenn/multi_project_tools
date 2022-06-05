@@ -21,8 +21,13 @@ jobs:
       uses: py-actions/py-dependency-install@v2
       with:
         path: "requirements.txt"
+    
+    # pwd
+    - name: pwd
+      run: |
+        pwd
 
     # run the script
     - name: fetch all
-      run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram
+      run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
 

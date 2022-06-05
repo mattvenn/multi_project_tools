@@ -1,4 +1,4 @@
-project_directory: "/home/matt/work/asic-workshop/shuttle3-mpw-3/openlane/designs/"
+project_directory: "~/"
 
 caravel:
     root:           ../caravel_user_project
