@@ -14,13 +14,15 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.7.7' # install the python version needed
+        python-version: '3.7.7'
+        cache: 'pip'
+    - run: pip install -r requirements.txt
 
-    # python deps from reqirements file, use a marketplace action
-    - name: Install Python dependencies
-      uses: py-actions/py-dependency-install@v2
-      with:
-        path: "requirements.txt"
+#    # python deps from reqirements file, use a marketplace action
+#    - name: Install Python dependencies
+#      uses: py-actions/py-dependency-install@v2
+#      with:
+#        path: "requirements.txt"
     
     # pwd
     - name: pwd
