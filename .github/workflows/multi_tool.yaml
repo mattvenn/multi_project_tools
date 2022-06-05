@@ -1,0 +1,28 @@
+name: multi_tool
+# either manually started, or on a schedule
+on: [ push ]
+jobs:
+  multi_tool:
+    # ubuntu
+    runs-on: ubuntu-latest
+    steps:
+    # need the repo checked out
+    - name: checkout repo
+      uses: actions/checkout@v2
+
+    # need python
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7.7' # install the python version needed
+
+    # python deps from reqirements file, use a marketplace action
+    - name: Install Python dependencies
+      uses: py-actions/py-dependency-install@v2
+      with:
+        path: "requirements.txt"
+
+    # run the script
+    - name: fetch all
+      run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram
+
