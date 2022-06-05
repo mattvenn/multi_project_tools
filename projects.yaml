@@ -39,7 +39,7 @@ openram_support:
 
         openram:
             repo:   'https://github.com/mattvenn/openram_z2a'
-            commit: '66dc5d3751869964d14819976aee96f3a312689a'
+            commit: '1ef59a0d03fc21cdadabec0a3f07ff4e05598f70'
             pos:    '344 475.5 N'
 
 configuration:
