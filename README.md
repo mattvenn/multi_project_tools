@@ -1,4 +1,4 @@
-[![multi_tool](https://github.com/mattvenn/multi_project_tools/actions/workflows/multi_tool.yaml/badge.svg?branch=mpw6)](https://github.com/mattvenn/multi_project_tools/actions/workflows/multi_tool.yaml)
+[![multi_tool](https://github.com/mattvenn/multi_project_tools/actions/workflows/multi_tool.yaml/badge.svg)](https://github.com/mattvenn/multi_project_tools/actions/workflows/multi_tool.yaml)
 
 # Multi project tools
 
