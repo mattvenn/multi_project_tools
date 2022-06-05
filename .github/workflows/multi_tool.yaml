@@ -42,14 +42,14 @@ jobs:
 
     # run the script
     - name: fetch all
-      run: ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
+      run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
 
     # tests
     - name: test gds
-      run: ./multi_tool.py --test-gds
+      run: python ./multi_tool.py --test-gds
 
     - name: test ports
-      run: ./multi_tool.py --test-ports
+      run: python ./multi_tool.py --test-ports
 
     - name: test module
-      run: ./multi_tool.py --test-module
+      run: python ./multi_tool.py --test-module
