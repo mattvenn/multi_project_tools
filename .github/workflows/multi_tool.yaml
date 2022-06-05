@@ -53,3 +53,15 @@ jobs:
 
     - name: test module
       run: python ./multi_tool.py --test-module --local github_local.yaml
+
+    - name: prove wrapper
+      run: python ./multi_tool.py --prove-wrapper --local github_local.yaml
+
+#    - name: lvs
+#      run: python ./multi_tool.py --test-lvs --local github_local.yaml
+
+    - name: tristate-z
+      run: python ./multi_tool.py --test-tristate-z --local github_local.yaml
+
+    - name: docs
+      run: python ./multi_tool.py --generate-doc --local github_local.yaml
