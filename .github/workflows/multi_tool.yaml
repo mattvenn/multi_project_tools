@@ -46,10 +46,10 @@ jobs:
 
     # tests
     - name: test gds
-      run: python ./multi_tool.py --test-gds
+      run: python ./multi_tool.py --test-gds --local github_local.yaml
 
     - name: test ports
-      run: python ./multi_tool.py --test-ports
+      run: python ./multi_tool.py --test-ports --local github_local.yaml
 
     - name: test module
-      run: python ./multi_tool.py --test-module
+      run: python ./multi_tool.py --test-module --local github_local.yaml
