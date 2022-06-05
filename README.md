@@ -1,3 +1,5 @@
+[![multi_tool](https://github.com/mattvenn/multi_project_tools/actions/workflows/multi_tool.yaml/badge.svg?branch=mpw6)](https://github.com/mattvenn/multi_project_tools/actions/workflows/multi_tool.yaml)
+
 # Multi project tools
 
 A tool to help automate verification of sub projects and collect and harden them into the final submission.
