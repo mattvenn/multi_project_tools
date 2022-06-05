@@ -149,8 +149,9 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     verilog_snippets.append("")
 
     ### include openram stuff ###
+    codegen_dir = os.path.dirname(os.path.realpath(__file__))
     if openram:
-        with open("codegen/caravel_iface_openram.txt", "r") as f:
+        with open(os.path.join(codegen_dir, "caravel_iface_openram.txt"), "r") as f:
             for line in f.read().split("\n"):
                 verilog_snippets.append(line)
 
@@ -225,7 +226,8 @@ def generate_openlane_user_project_wrapper_instance(
 
 def generate_sby_file(projects, shared_projects):
     sby: List[str] = []
-    with open("codegen/tristate.sby", "r") as f:
+    codegen_dir = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(codegen_dir, "tristate.sby"), "r") as f:
         for line in f.read().split("\n"):
 
             if line == '#DESIGNSCRIPT':
