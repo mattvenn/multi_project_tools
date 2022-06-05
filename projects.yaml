@@ -69,30 +69,30 @@ projects:
         pos:    '350 1700 N'
 
     wrapped_instrumented_adder_behav:
-        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_behav'
+        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         commit: '61b00bc28680a3adb079943a26552247a49e27f7'
         pos:    '2300 500 N' # 250 x 250
 
-    wrapped_instrumented_adder_sklansky:
-        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_sklansky'
-        commit: '28df7ae8c4734bac47d0310c221177db9861ba48'
-        pos:    '2300 1000 N' # 250 x 250
-
-    wrapped_instrumented_adder_brent:
-        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_brent'
-        commit: '6fe7ea3e46cf8bf25b7242047bc838ee3ca0108f'
-        pos:    '2300 1500 N' # 250 x 250
-
-    wrapped_instrumented_adder_ripple:
-        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_ripple'
-        commit: 'f5d11afec656bd1d83c6a136bae15d53e71ff234'
-        pos:    '2300 2000 N' # 250 x 250
-
-    wrapped_instrumented_adder_kogge:
-        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_kogge'
-        commit: '2e72eb2a75aa896d0c12af2b92b8b0f2ba9c9a2c'
-        pos:    '2300 2500 N' # 250 x 250
-
+#    wrapped_instrumented_adder_sklansky:
+#        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_sklansky'
+#        commit: '28df7ae8c4734bac47d0310c221177db9861ba48'
+#        pos:    '2300 1000 N' # 250 x 250
+#
+#    wrapped_instrumented_adder_brent:
+#        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_brent'
+#        commit: '6fe7ea3e46cf8bf25b7242047bc838ee3ca0108f'
+#        pos:    '2300 1500 N' # 250 x 250
+#
+#    wrapped_instrumented_adder_ripple:
+#        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_ripple'
+#        commit: 'f5d11afec656bd1d83c6a136bae15d53e71ff234'
+#        pos:    '2300 2000 N' # 250 x 250
+#
+#    wrapped_instrumented_adder_kogge:
+#        repo:   'https://github.com/mattvenn/wrapped_instrumented_adder_kogge'
+#        commit: '2e72eb2a75aa896d0c12af2b92b8b0f2ba9c9a2c'
+#        pos:    '2300 2500 N' # 250 x 250
+#
     wrapped_calculator:
         repo:   'https://github.com/eemreeh/wrapped_PrimitiveCalculator'
         commit: 'cb64da0d1b9f5a622a02ee1793c288a04bf580ce'
