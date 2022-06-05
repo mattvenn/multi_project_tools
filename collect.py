@@ -296,6 +296,7 @@ This submission was configured and built by the [multi project tools](https://gi
 
     def prove_all_tristate(self):
         sby_file = generate_sby_file(self.projects, self.shared_projects)
+        logging.info("generated sby file")
         with open(os.path.join(self.config['caravel']['root'], "tribuf.sby"), 'w') as fh:
             fh.write(sby_file)
 
