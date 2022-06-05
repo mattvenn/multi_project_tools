@@ -1,4 +1,4 @@
-project_directory: "~/"
+project_directory: "/home/runner/work/"
 
 caravel:
     root:           ../caravel_user_project
