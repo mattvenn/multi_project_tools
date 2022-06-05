@@ -220,3 +220,41 @@ def generate_openlane_user_project_wrapper_instance(
     verilog_snippet.append("")
 
     return "\n".join(verilog_snippet)
+
+def generate_sby_file(projects, shared_projects):
+    sby: List[str] = []
+    with open("codegen/tristate.sby", "r") as f:
+        for line in f.read().split("\n"):
+
+            if line == '#DESIGNSCRIPT':
+                for project in projects:
+                    sby.append("# %s" % project)
+                    sby.append("read -noverific")
+                    sby.append("read -sv defines.v")
+                    sby.append("read -define FORMAL_COMPAT")
+                    sby.append("")
+
+                    for source in project.get_module_source_paths(absolute=False, caravel=True):
+                        sby.append("read -sv %s" % (source))
+
+                    sby.append("")
+                    sby.append("prep -top %s" % project.module_name)
+                    sby.append("flatten")
+                    sby.append("")
+                    sby.append("design -stash %s" % project.module_name)
+                    sby.append("# end")
+
+            elif line == '#SHAREDFILES':
+                for project in shared_projects:
+                    for source in project.get_module_source_paths(absolute=False, caravel=True):
+                        sby.append("read -sv %s" % (source))
+
+            elif line == '#DESIGNIMPORT':
+                for project in projects:
+                    sby.append("design -import %s" % project.module_name)
+
+            else:
+                sby.append(line)
+   
+            
+    return "\n".join(sby)

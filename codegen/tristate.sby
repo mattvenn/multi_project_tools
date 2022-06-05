@@ -1,0 +1,30 @@
+[options]
+mode prove
+depth 5
+
+[engines]
+smtbmc
+
+[script]
+#DESIGNSCRIPT
+
+#shared
+
+read -noverific
+read -sv defines.v
+read -define FORMAL_COMPAT
+
+#SHAREDFILES
+
+read -define FORMAL
+read -sv rtl/user_project_wrapper.v
+
+#DESIGNIMPORT
+
+prep -top user_project_wrapper
+
+flatten; tribuf -formal
+
+[files]
+verilog/rtl
+caravel/verilog/rtl/defines.v

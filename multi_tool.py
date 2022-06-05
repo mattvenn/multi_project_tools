@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--test-git', help="check gitsha on disk matches the config", action='store_const', const=True)
     parser.add_argument('--test-all', help="run all the checks for each project", action='store_const', const=True)
     parser.add_argument('--test-from', help="run all the checks for all projects with id equal or more than the given id", type=int)
+    parser.add_argument('--prove-tristate', help="build and run the tristate proof", action='store_const', const=True)
 
     parser.add_argument('--openram', help="use OpenRAM - instantiate the bridge, wrapper and do the wiring", action='store_const', const=True)
     parser.add_argument('--clone-shared-repos', help="clone shared repos defined in projects.yaml", action='store_const', const=True)
@@ -60,6 +61,9 @@ if __name__ == '__main__':
     if args.create_openlane_config:
         collection.create_openlane_config()
 
+    if args.prove_tristate:
+        collection.prove_all_tristate()
+
     # copy gds to correct place
     if args.copy_gds:
         collection.copy_all_gds()
@@ -81,3 +85,4 @@ if __name__ == '__main__':
 
     if args.count_cells:
         collection.count_cells()
+

@@ -2,7 +2,7 @@ from utils import *
 import subprocess
 import copy
 from project import Project, SharedProject
-from codegen.caravel_codegen import generate_openlane_files
+from codegen.caravel_codegen import generate_openlane_files, generate_sby_file
 from codegen.allocator import allocate_macros
 
 REQUIRED_KEYS_GROUP = ["interfaces", "openram_support", "configuration", "docs", "projects"]
@@ -290,3 +290,25 @@ This submission was configured and built by the [multi project tools](https://gi
             fh.write("![%s](%s)\n\n" % (conf["title"], pic_dst))
 
         logging.info("wrote index.md")
+
+    def prove_all_tristate(self):
+        sby_file = generate_sby_file(self.projects, self.shared_projects)
+        with open(os.path.join(self.config['caravel']['root'], "tribuf.sby"), 'w') as fh:
+            fh.write(sby_file)
+
+        try:
+            sby_cmd = self.config['tools']['sby']
+        except KeyError:
+            sby_cmd = 'sby'
+
+        cwd = self.config['caravel']['root']
+        cmd = [sby_cmd, "-f", "tribuf.sby"]
+        logging.info("attempting to run %s in %s" % (cmd, cwd))
+        try:
+            subprocess.run(cmd, cwd=cwd, check=True)
+        except subprocess.CalledProcessError as e:
+            logging.error(e)
+            exit(1)
+
+        logging.info("tribuf proof pass")
+

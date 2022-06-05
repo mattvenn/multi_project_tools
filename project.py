@@ -14,11 +14,13 @@ class BaseProject(object):
     def clone_repo(self):
         clone_repo(self.repo, self.commit, self.directory, self.args.force_delete)
 
-    def get_module_source_paths(self, absolute=True):
+    def get_module_source_paths(self, absolute=True, caravel=False):
         paths = []
         for path in self.config['source']:
             if absolute:
                 paths.append(os.path.abspath(os.path.join(self.directory, path)))
+            elif caravel:
+                paths.append(os.path.join('rtl', os.path.basename(self.directory), path))
             else:
                 paths.append(path)
         return paths    

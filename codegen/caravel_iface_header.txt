@@ -84,6 +84,11 @@ module user_project_wrapper #(
     // generate active wires
     wire [31: 0] active;
     assign active = la_data_in[31:0];
+    
+    // when proving tristates are all good, assume only one project is active at a time
+    `ifdef FORMAL
+        always @* assume($onehot0(active));
+    `endif
 
     // split remaining 96 logic analizer wires into 3 chunks
     wire [31: 0] la1_data_in, la1_data_out, la1_oenb;
