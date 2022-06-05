@@ -113,7 +113,8 @@ def generate_openlane_user_project_include(projects, shared_projects, outfile):
         f.write("\n".join(include_snippets))
 
 def generate_caravel_includes(projects, shared_projects, outfile, openram):
-    with open("codegen/includes.rtl.caravel_user_project", "r") as f:
+    codegen_dir = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(codegen_dir, "includes.rtl.caravel_user_project"), "r") as f:
         filedata = f.read()
 
     project_includes = ""
@@ -141,7 +142,8 @@ def generate_openlane_user_project_wrapper(projects, interface_definitions, outf
     verilog_snippets: List[str] = []
 
     ### generate header ###
-    with open("codegen/caravel_iface_header.txt", "r") as f:
+    codegen_dir = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(codegen_dir, "caravel_iface_header.txt"), "r") as f:
         for line in f.read().split("\n"):
             verilog_snippets.append(line)
     verilog_snippets.append("")

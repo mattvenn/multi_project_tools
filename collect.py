@@ -214,7 +214,7 @@ class Collection(object):
         )
 
         # copy the local config.tcl file 
-        src = 'config.tcl'
+        src = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.tcl')
         dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.tcl')
         logging.info(f"copying {src} to {dst}")
         shutil.copyfile(src, dst)
