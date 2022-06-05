@@ -70,7 +70,7 @@ projects:
 
     wrapped_instrumented_adder_behav:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
-        commit: '61b00bc28680a3adb079943a26552247a49e27f7'
+        commit: 'e74291a92ae1ded50b8c265f65df0d1bad6e5abe'
         pos:    '2300 500 N' # 250 x 250
 
 #    wrapped_instrumented_adder_sklansky:
