@@ -29,6 +29,10 @@ jobs:
       run: |
         pwd # /home/runner/work/multi_project_tools/multi_project_tools
 
+    - name: check git module
+      run: |
+        python -c 'import git; print(git.__version__)'
+
     # install oss fpga tools
     - name: install oss-cad-suite
       uses: YosysHQ/setup-oss-cad-suite@v1
@@ -38,14 +42,14 @@ jobs:
 
     # run the script
     - name: fetch all
-      run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
+      run: ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
 
     # tests
-    - name: test module
-      run: ./multi_tool.py --test-module
-
     - name: test gds
       run: ./multi_tool.py --test-gds
 
     - name: test ports
       run: ./multi_tool.py --test-ports
+
+    - name: test module
+      run: ./multi_tool.py --test-module
