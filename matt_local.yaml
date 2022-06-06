@@ -23,4 +23,4 @@ lvs:
     OPENLANE:       /home/matt/work/asic-workshop/shuttle6/openlane    # only used to find the count_lvs.py script
 
 tools:
-    sby:            /home/matt/tabby/bin/sby 
+    sby:            /home/matt/oss-cad-suite/bin/sby 
