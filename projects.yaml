@@ -63,10 +63,10 @@ projects:
         commit: '701095fd880ad3bb80d6cec1d214a04e5676a65d'
         pos:    '350 1200 N'
 
-#    cpr:
-#        repo:   'https://github.com/zorkan/cpr'
-#        commit: '4176b0490dd34bced3b6e04ba30d70f1729cf376'
-#        pos:    '350 1700 N'
+    cpr:
+        repo:   'https://github.com/zorkan/cpr'
+        commit: 'd0108b8b896cb1a952a98252f8ad5a516eb7cfcc'
+        pos:    '350 1700 N'
 
 
     wrapped_instrumented_adder_behav:
@@ -77,7 +77,7 @@ projects:
     wrapped_instrumented_adder_sklansky:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_sklansky'
-        commit: '123bcda5267ef0d0a0c1f032ec2b0d42282c9bd8'
+        commit: '8e728a3da3ea22061ebd7f26293fc69ba25b7451'
         pos:    '2300 1000 N' # 250 x 250
 
     wrapped_instrumented_adder_brent:
