@@ -98,10 +98,10 @@ projects:
         commit: 'kogge'
         pos:    '2300 2500 N' # 250 x 250
 
-#    wrapped_wavelet_transform:
-#        repo:   'https://github.com/opensource-fr/wrapped_wavelet_transform'
-#        commit: 'ffb0595cf4dc4674b80dba8946c5c7f3119271b5'
-#        pos:    '350 2100 N'
+    wrapped_wavelet_transform:
+        repo:   'https://github.com/opensource-fr/wrapped_wavelet_transform'
+        commit: '28d8e5434ac8d74fbeb144382ba30574eb9f3f20'
+        pos:    '350 2100 N'
 
     wrapped_calculator:
         repo:   'https://github.com/eemreeh/wrapped_PrimitiveCalculator'
