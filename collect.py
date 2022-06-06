@@ -41,7 +41,6 @@ class Collection(object):
                 # the project's directory is made by joining project dir to last part of the repo url 
                 parsed = urlparse(repo)
                 directory = parsed.path.rpartition('/')[-1]
-             
             directory = os.path.join(self.config['project_directory'], directory)
             commit = project_info["commit"]
             pos = project_info["pos"]
@@ -66,6 +65,12 @@ class Collection(object):
         self.shared_projects = []
         if self.args.openram:
             for project_info in self.config['openram_support']['projects'].values():
+                try:
+                    directory = project_info["dir"]
+                except KeyError:
+                    # the project's directory is made by joining project dir to last part of the repo url 
+                    parsed = urlparse(repo)
+                    directory = parsed.path.rpartition('/')[-1]
                 repo = project_info["repo"]
                 commit = project_info["commit"]
                 pos = project_info["pos"]
