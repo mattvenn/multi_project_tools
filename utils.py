@@ -59,7 +59,7 @@ def clone_repo(repo_url, commit, repo_dir, force_delete):
             logging.warning("deleting %s" % repo_dir)
             shutil.rmtree(repo_dir)
         else:
-            logging.warning("directory already exists - skipping. Use --force-delete to remove")
+            logging.warning("directory %s already exists - skipping. Use --force-delete to remove" % repo_dir)
             return
 
     logging.info("cloning %s" % repo_url)
