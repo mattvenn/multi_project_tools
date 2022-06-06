@@ -4,6 +4,7 @@ import copy
 from project import Project, SharedProject
 from codegen.caravel_codegen import generate_openlane_files, generate_sby_file
 from codegen.allocator import allocate_macros
+from urllib.parse import urlparse
 
 REQUIRED_KEYS_GROUP = ["interfaces", "openram_support", "configuration", "docs", "projects"]
 REQUIRED_KEYS_LOCAL = ["project_directory", "caravel", "env"]
@@ -34,11 +35,19 @@ class Collection(object):
         # build the list of projects
         for project_info in self.config['projects'].values():
             repo = project_info["repo"]
+            try:
+                directory = project_info["dir"]
+            except KeyError:
+                # the project's directory is made by joining project dir to last part of the repo url 
+                parsed = urlparse(repo)
+                directory = parsed.path.rpartition('/')[-1]
+             
+            directory = os.path.join(self.config['project_directory'], directory)
             commit = project_info["commit"]
             pos = project_info["pos"]
             
             required_interfaces = list(self.config['interfaces']['required'].keys())
-            project = Project(args, repo, commit, pos, required_interfaces, self.config)
+            project = Project(args, repo, directory, commit, pos, required_interfaces, self.config)
 
             # if --project is given, skip others
             if self.args.project is not None:
@@ -60,7 +69,7 @@ class Collection(object):
                 repo = project_info["repo"]
                 commit = project_info["commit"]
                 pos = project_info["pos"]
-                project = SharedProject(args, repo, commit, pos, self.config)
+                project = SharedProject(args, repo, directory, commit, pos, self.config)
                 self.shared_projects.append(project)
                 logging.info(project)
             

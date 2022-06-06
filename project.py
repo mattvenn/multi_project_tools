@@ -3,7 +3,6 @@ import gdspy
 import shutil
 from utils import *
 from codegen.caravel_codegen import generate_openlane_files
-from urllib.parse import urlparse
 import os, json
 
 REQUIRED_KEYS_SINGLE = ["project", "caravel_test", "module_test", "wrapper_proof", "openlane", "final"]
@@ -104,7 +103,7 @@ class BaseProject(object):
 
         self.gitsha = get_git_sha(self.directory)
         if self.gitsha != self.commit:
-            logging.error("gitsha on disk doesn't match config")
+            logging.error("gitsha on disk %s doesn't match config %s for %s" % (self.gitsha, self.commit, self))
             exit(1) 
         else:
             logging.info("git pass")
@@ -155,16 +154,14 @@ class BaseProject(object):
 
 class SharedProject(BaseProject):
 
-    def __init__(self, args, repo, commit, pos, system_config):
+    def __init__(self, args, repo, directory, commit, pos, system_config):
         self.args = args
         self.system_config = system_config
         self.repo = repo # the repo on github
         self.commit = commit # not strictly a commit, could be a branch
         self.pos = pos
+        self.directory = directory
 
-        parsed = urlparse(repo)
-        project_dir = self.system_config['project_directory']
-        self.directory = os.path.join(project_dir, parsed.path.rpartition('/')[-1])
 
         if args.clone_shared_repos:
             self.clone_repo()
@@ -208,18 +205,14 @@ class SharedProject(BaseProject):
 
 class Project(BaseProject):
 
-    def __init__(self, args, repo, commit, pos, required_interfaces, system_config):
+    def __init__(self, args, repo, directory, commit, pos, required_interfaces, system_config):
         self.args = args
         self.system_config = system_config
         self.repo = repo # the repo on github
         self.commit = commit # not strictly a commit, could be a branch
         self.pos = pos
+        self.directory = directory
 
-        project_dir = self.system_config['project_directory']
-
-        # the project's directory is made by joining project dir to last part of the repo url 
-        parsed = urlparse(repo)
-        self.directory = os.path.join(project_dir, parsed.path.rpartition('/')[-1])
 
         if args.clone_repos:
             self.clone_repo()
@@ -328,7 +321,7 @@ class Project(BaseProject):
 
         test_env["DESIGNS"] =         self.system_config['caravel']['root']
         test_env["TARGET_PATH"] =     self.system_config['caravel']['root']
-        test_env["MCW_ROOT"] =        self.system_config['caravel']['mgmt_root']
+        test_env["MCW_ROOT"] =        os.path.join(self.system_config['caravel']['root'], self.system_config['caravel']['mgmt_root'])
         test_env["CORE_VERILOG_PATH"] = os.path.join(self.system_config['caravel']['mgmt_root'], 'verilog')
 
 
