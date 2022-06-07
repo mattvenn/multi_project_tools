@@ -84,14 +84,14 @@ set ::env(GLB_RT_ADJUSTMENT) 0.70
 # per layer adjustment
 # 0 -> 1: 1 means don't use the layer                                                        
 # l2 is met1                                                                                 
-set ::env(GLB_RT_L2_ADJUSTMENT) 0.9
-set ::env(GLB_RT_L3_ADJUSTMENT) 0.7
+set ::env(GLB_RT_L2_ADJUSTMENT) 0.6
+set ::env(GLB_RT_L3_ADJUSTMENT) 0.5
 
 # use 8 cores
 set ::env(ROUTING_CORES) 8
 
 # bail early on problems
-set ::env(DRT_OPT_ITERS) 30
+set ::env(DRT_OPT_ITERS) 40
 
 # set ::env(GLB_RT_MAXLAYER) 5
 set ::env(RT_MAX_LAYER) {met4}
