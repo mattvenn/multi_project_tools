@@ -84,19 +84,19 @@ projects:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_brent'
         commit: '0874228702abd86963615161a63b1eafce4bd95b'
-        pos:    '2100 1500 N' # 250 x 250
+        pos:    '2100 1600 N' # 250 x 250
 
     wrapped_instrumented_adder_ripple:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_ripple'
         commit: '5c1bd6838e21b7be080d99ec564f89196b5177fb'
-        pos:    '2100 2100 N' # 250 x 250
+        pos:    '2100 2200 N' # 250 x 250
 
     wrapped_instrumented_adder_kogge:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_kogge'
         commit: 'ab5f6a2cc1da5fbdb6d4a22bdfcb502147cbe2a8'
-        pos:    '2100 2700 N' # 250 x 250
+        pos:    '2100 2800 N' # 250 x 250
 
     wrapped_wavelet_transform:
         repo:   'https://github.com/opensource-fr/wrapped_wavelet_transform'
