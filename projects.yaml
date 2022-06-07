@@ -71,32 +71,32 @@ projects:
 
     wrapped_instrumented_adder_behav:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
-        commit: '7a58fce17f3c8caf14c36c9c0af873d1b9f7f72b'
-        pos:    '2300 500 N' # 250 x 250
+        commit: '3f4ecc54789723634520b3f780c8d0e9cc7ca25f'
+        pos:    '2200 500 N' # 250 x 250
 
     wrapped_instrumented_adder_sklansky:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_sklansky'
-        commit: '8e728a3da3ea22061ebd7f26293fc69ba25b7451'
-        pos:    '2300 1000 N' # 250 x 250
+        commit: 'e03234240886bf383a795639fa367449af0d8159'
+        pos:    '2200 1100 N' # 250 x 250
 
     wrapped_instrumented_adder_brent:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_brent'
-        commit: '73957a4400efe88f3b3c4ebdc0ee9da04cdb06fa'
-        pos:    '2300 1500 N' # 250 x 250
+        commit: '0874228702abd86963615161a63b1eafce4bd95b'
+        pos:    '2200 1600 N' # 250 x 250
 
     wrapped_instrumented_adder_ripple:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_ripple'
-        commit: '680e190e0513b21290ed25e8ae176ef02e1f472e'
-        pos:    '2300 2000 N' # 250 x 250
+        commit: '5c1bd6838e21b7be080d99ec564f89196b5177fb'
+        pos:    '2200 2100 N' # 250 x 250
 
     wrapped_instrumented_adder_kogge:
         repo:   'https://github.com/mattvenn/wrapped_instrumented_adder'
         dir:    'wrapped_instrumented_adder_kogge'
-        commit: 'd1ffb55a18bbdc5a0d6df0e95b55fedb116627a0'
-        pos:    '2300 2500 N' # 250 x 250
+        commit: 'ab5f6a2cc1da5fbdb6d4a22bdfcb502147cbe2a8'
+        pos:    '2200 2600 N' # 250 x 250
 
     wrapped_wavelet_transform:
         repo:   'https://github.com/opensource-fr/wrapped_wavelet_transform'
