@@ -4,3 +4,4 @@ cocotb==1.5.2
 cocotb-bus==0.1.1
 tabulate
 gitpython
+rich
