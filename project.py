@@ -466,7 +466,8 @@ class Project(BaseProject):
             test_env["CUSTOM_CELLS_FILE"] = os.path.abspath(os.path.join(self.directory, self.config["custom_cells_file"]))
 
         cmd = ["make", "clean", "test"]
-        cwd = "buffertest"
+        tool_dir = os.path.dirname(os.path.realpath(__file__))
+        cwd = os.path.join(tool_dir, "buffertest")
 
         logging.info("attempting to run %s in %s" % (cmd, cwd))
 
