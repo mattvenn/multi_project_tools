@@ -16,9 +16,3 @@ env: # used for simulation
     PDK_ROOT:       ../pdk
     OPENLANE:       ../openlane
     PDK:            sky130A
-
-lvs:
-    PDK_PATH:       ../pdk/sky130A 
-    PDK_ROOT:       ../pdk/
-    OPENLANE:       ../openlane
-
