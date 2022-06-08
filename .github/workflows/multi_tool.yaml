@@ -18,20 +18,10 @@ jobs:
         cache: 'pip'
     - run: pip install -r requirements.txt
 
-#    # python deps from reqirements file, use a marketplace action
-#    - name: Install Python dependencies
-#      uses: py-actions/py-dependency-install@v2
-#      with:
-#        path: "requirements.txt"
-    
     # pwd
     - name: pwd
       run: |
         pwd # /home/runner/work/multi_project_tools/multi_project_tools
-
-    - name: check git module
-      run: |
-        python -c 'import git; print(git.__version__)'
 
     # install oss fpga tools
     - name: install oss-cad-suite
