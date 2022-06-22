@@ -481,6 +481,9 @@ class Project(BaseProject):
         logging.info("tristate z test pass")
 
     def validate_ports(self):
+        if 'waive_ports_test' in self.config['project']:
+            logging.info("skipping ports test due to %s" % self.config['project']['waive_ports_test'])
+            return
         # assume first source is top, bad idea
         sources = ""
         for source_file in self.config['source']:
