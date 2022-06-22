@@ -22,15 +22,17 @@ jobs:
     - name: pwd
       run: |
         pwd # /home/runner/work/multi_project_tools/multi_project_tools
+        cocotb-config --libpython
+        cocotb-config --python-bin
 
     # install oss fpga tools
     - name: install oss-cad-suite
       uses: YosysHQ/setup-oss-cad-suite@v1
-      with:
-          osscadsuite-version: '2022-06-16'
     - run: | 
         yosys --version
         iverilog -V
+        cocotb-config --libpython
+        cocotb-config --python-bin
 
     # run the script
     - name: fetch all
