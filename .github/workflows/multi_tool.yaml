@@ -17,6 +17,8 @@ jobs:
     # install oss fpga tools
     - name: install oss-cad-suite
       uses: YosysHQ/setup-oss-cad-suite@v1
+      with:
+          python-override: true
     - run: | 
         yosys --version
         iverilog -V
@@ -38,12 +40,13 @@ jobs:
         cocotb-config --libpython
         cocotb-config --python-bin
 
-
     # build pdk
-    - name: pdk & openlane & precheck
+    - name: pdk & caravel
       run: |
+        cd $HOME
+        git clone https://github.com/efabless/caravel_user_project.git -b mpw-6c
+        cd caravel_user_project
         make setup
-        make precheck
 
     # run the script
     - name: fetch all
