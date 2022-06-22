@@ -3,6 +3,10 @@ name: multi_tool
 on: [ push ]
 jobs:
   multi_tool:
+    env:
+        OPENLANE_ROOT:  /home/runner/openlane
+        PDK_ROOT:       /home/runner/pdk
+        PDK:            sky130A
     # ubuntu
     runs-on: ubuntu-latest
     steps:
@@ -34,6 +38,12 @@ jobs:
         cocotb-config --libpython
         cocotb-config --python-bin
 
+    # build pdk
+    - name: pdk & openlane & precheck
+      run: |
+        make setup
+        make precheck
+
     # run the script
     - name: fetch all
       run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
@@ -56,8 +66,8 @@ jobs:
 #      run: python ./multi_tool.py --test-lvs --local github_local.yaml
 
 # needs pdk
-#    - name: tristate-z
-#      run: python ./multi_tool.py --test-tristate-z --local github_local.yaml
+    - name: tristate-z
+      run: python ./multi_tool.py --test-tristate-z --local github_local.yaml
 
     - name: docs
       run: python ./multi_tool.py --generate-doc --local github_local.yaml
