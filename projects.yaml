@@ -115,5 +115,5 @@ projects:
 
     wrapped_scan_test:
         repo:   'https://github.com/mattvenn/wrapped_scan_test'
-        commit: 'cbe8cd2ee7273c0ecf96e46c108498f557a9d475'
+        commit: '87671b75078403fe20702dad60a2ca285b113cc3'
         pos:    '360 2700 N'
