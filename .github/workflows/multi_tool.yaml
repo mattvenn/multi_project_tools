@@ -26,6 +26,8 @@ jobs:
     # install oss fpga tools
     - name: install oss-cad-suite
       uses: YosysHQ/setup-oss-cad-suite@v1
+      with:
+          osscadsuite-version: '2022-06-16'
     - run: | 
         yosys --version
         iverilog -V
