@@ -96,6 +96,9 @@ class BaseProject(object):
     def test_tristate_z(self):
         pass
 
+    def test_tristate_driver(self):
+        pass
+
     def test_git_match(self):
         if 'waive_git' in self.config['project']:
             logging.info("skipping git test due to %s" % self.config['project']['waive_git'])
@@ -136,6 +139,9 @@ class BaseProject(object):
 
         if self.args.test_all or self.args.test_tristate_z:
             self.test_tristate_z()
+
+        if self.args.test_all or self.args.test_tristate_driver:
+            self.test_tristate_driver()
 
         if self.args.test_all or self.args.test_git:
             self.test_git_match()
@@ -479,6 +485,20 @@ class Project(BaseProject):
             exit(1)
 
         logging.info("tristate z test pass")
+
+    def test_tristate_driver(self):
+        conf = self.config["final"]
+        powered_verilog = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["lvs_filename"]))
+        cmd = "yosys -qp 'read_liberty -lib merged.lib; read_verilog -sv " + powered_verilog + "; select -set tristate_wires t:sky130_fd_sc_hd__ebufn_* %co:[Z] x:* %i; select -assert-none @tristate_wires %co:sky130_fd_sc_hd__buf* x:* %d'"
+        try:
+            result = subprocess.getoutput(cmd)
+            if result != "":
+                logging.error(result)
+                exit(1)
+
+        except subprocess.CalledProcessError as e:
+            logging.error(e)
+            exit(1)
 
     def validate_ports(self):
         if 'waive_ports_test' in self.config['project']:
