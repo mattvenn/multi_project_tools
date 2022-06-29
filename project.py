@@ -489,8 +489,7 @@ class Project(BaseProject):
     def test_tristate_driver(self):
         conf = self.config["final"]
         powered_verilog = os.path.abspath(os.path.join(self.directory, conf["directory"], conf["lvs_filename"]))
-#        powered_verilog = "wrapped_picorv32.v"
-        cmd = "yosys -qp 'read_liberty -lib merged.lib; read_verilog -sv " + powered_verilog + "; select -set tristate_wires t:sky130_fd_sc_hd__ebufn_* %co:[Z] w:* %i; select -assert-none @tristate_wires %co:sky130_fd_sc_hd__buf* w:* %d'"
+        cmd = "yosys -qp 'read_liberty -lib merged.lib; read_verilog -sv " + powered_verilog + "; select -set tristate_wires t:sky130_fd_sc_hd__ebufn_* %co:[Z] x:* %i; select -assert-none @tristate_wires %co:sky130_fd_sc_hd__buf* x:* %d'"
         try:
             result = subprocess.getoutput(cmd)
             if result != "":
