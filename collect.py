@@ -218,7 +218,8 @@ class Collection(object):
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         user_project_includes_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_includes.v")
         caravel_includes_path =      os.path.join(self.config['caravel']['includes_dir'], "includes.rtl.caravel_user_project")
-        openlane_config_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "obstruction.tcl")
+        obstruction_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "obstruction.tcl")
+        macro_power_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "macro_power.tcl")
         generate_openlane_files(
             self.projects, 
             self.shared_projects,
@@ -226,7 +227,8 @@ class Collection(object):
             user_project_wrapper_path, 
             user_project_includes_path,
             caravel_includes_path,
-            openlane_config_path,
+            obstruction_path,
+            macro_power_path,
             self.args.openram,
             self.args.gate_level,
             self.config
@@ -272,9 +274,9 @@ class Collection(object):
         git_sha = get_git_sha(".")
         fh = open("index.md", 'w')
         fh.write("""
-[![multi_tool](https://github.com/mattvenn/zero_to_asic_mpw6/actions/workflows/multi_tool.yaml/badge.svg)](https://github.com/mattvenn/zero_to_asic_mpw6/actions/workflows/multi_tool.yaml)
+[![multi_tool](https://github.com/mattvenn/zero_to_asic_mpw7/actions/workflows/multi_tool.yaml/badge.svg)](https://github.com/mattvenn/zero_to_asic_mpw7/actions/workflows/multi_tool.yaml)
 
-# Zero to ASIC Group submission MPW6
+# Zero to ASIC Group submission MPW7
 
 This ASIC was designed by members of the [Zero to ASIC course](https://zerotoasiccourse.com).
 

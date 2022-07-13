@@ -101,7 +101,7 @@ def generate_macro_power(config, projects, shared_projects, macro_power_path):
         num_projects = len(projects + shared_projects)
         for num, project in enumerate(projects + shared_projects):
             f.write("	")
-            f.write(project.module_name)
+            f.write(project.instance_name)
             f.write(" vccd1 vssd1 vccd1 vssd1")
             if num != num_projects -1:
                 f.write(", \\\n")
