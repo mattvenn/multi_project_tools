@@ -16,14 +16,14 @@
 # Base Configurations. Don't Touch
 # section begin
 
-set ::env(PDK) "sky130A"
+set ::env(PDK) $::env(PDK)
 set ::env(STD_CELL_LIBRARY) "sky130_fd_sc_hd"
 
 # YOU ARE NOT ALLOWED TO CHANGE ANY VARIABLES DEFINED IN THE FIXED WRAPPER CFGS 
-source $::env(CARAVEL_ROOT)/openlane/user_project_wrapper/fixed_wrapper_cfgs.tcl
+source $::env(DESIGN_DIR)/fixed_dont_change/fixed_wrapper_cfgs.tcl
 
 # YOU CAN CHANGE ANY VARIABLES DEFINED IN THE DEFAULT WRAPPER CFGS BY OVERRIDING THEM IN THIS CONFIG.TCL
-source $::env(CARAVEL_ROOT)/openlane/user_project_wrapper/default_wrapper_cfgs.tcl
+source $::env(DESIGN_DIR)/fixed_dont_change/default_wrapper_cfgs.tcl
 
 set script_dir [file dirname [file normalize [info script]]]
 
@@ -50,15 +50,14 @@ set ::env(VERILOG_FILES) "\
 	$script_dir/../../verilog/rtl/user_project_wrapper.v"
 
 ## Clock configurations
-set ::env(CLOCK_PORT) "user_clock2"
-set ::env(CLOCK_NET) "mprj.clk"
+set ::env(CLOCK_PORT) "wb_clk_i"
+set ::env(CLOCK_NET) "wb_clk_i"
 
 set ::env(CLOCK_PERIOD) "10"
 
 ## Internal Macros
-### Macro PDN Connections
-set ::env(FP_PDN_MACRO_HOOKS) "\
-	mprj vccd1 vssd1"
+### Macro PDN Connections done with included file
+source $script_dir/macro_power.tcl
 
 ### Macro Placement
 set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
@@ -69,11 +68,11 @@ set ::env(VERILOG_FILES_BLACKBOX) "\
 	$script_dir/../../verilog/rtl/user_project_includes.v"
 
 ### user projects gds and lef files
-source user_project_wrapper/extra_lef_gds.tcl
+source $script_dir/extra_lef_gds.tcl
 
 
 # these get generated - if a project specifies obstruction in the info.yaml
-source user_project_wrapper/obstruction.tcl
+source $script_dir/obstruction.tcl
 
 set ::env(GLB_RT_ALLOW_CONGESTION) "1"
 
