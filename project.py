@@ -73,6 +73,12 @@ class BaseProject(object):
         filename = os.path.abspath(os.path.join(self.directory, conf["directory"], filetype, "%s.%s" % (self.module_name, filetype)))
         if os.path.exists(filename):
             return filename
+
+        # also check without the intermediate file as path layout changed again in openlane mpw7a
+        filename = os.path.abspath(os.path.join(self.directory, conf["directory"], "%s.%s" % (self.module_name, filetype)))
+        if os.path.exists(filename):
+            return filename
+
         return None
             
     def test_module(self):
@@ -397,6 +403,7 @@ class Project(BaseProject):
 
         # config files
         pdk_path        = self.system_config['env']['PDK_PATH']
+        pdk_version     = self.system_config['env']['PDK']
         openlane_root   = self.system_config['env']['OPENLANE']
         logging.info("using PDK %s and OpenLANE %s" % (pdk_path, openlane_root))
 
@@ -405,7 +412,7 @@ class Project(BaseProject):
         test_env["MAGIC_EXT_USE_GDS"]  = "1"
         test_env["PDKPATH"]            = pdk_path
 
-        netgen_setup_file = os.path.join(pdk_path, 'libs.tech', 'netgen', 'sky130A_setup.tcl')
+        netgen_setup_file = os.path.join(pdk_path, 'libs.tech', 'netgen', pdk_version + '_setup.tcl')
         cwd = lvs_test_dir
 
         # create tcl script for magic
@@ -429,7 +436,7 @@ class Project(BaseProject):
         with open(os.path.join(lvs_test_dir, extract_tcl), 'w') as tcl:
             tcl.write(tcl_contents)
 
-        magic_rcfile = os.path.join(pdk_path, 'libs.tech', 'magic', 'sky130A.magicrc')
+        magic_rcfile = os.path.join(pdk_path, 'libs.tech', 'magic', pdk_version + '.magicrc')
         cmd = ['magic', '-rcfile', magic_rcfile, '-noc', '-dnull', extract_tcl]
         logging.info(' '.join(cmd))
 

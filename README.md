@@ -75,7 +75,7 @@ Wishbone, LA1, GPIO, IRQ, Clock2, RAMBus, CaravelBus are all optional. You can t
 
 * caravel_user_project with OpenLANE & PDK installed as given in instructions.
 * projects.yaml file with correct paths
-* netgen local install: https://github.com/RTimothyEdwards/netgen (version 1.5.205)- TODO use the one in the OpenLANE docker
+* netgen local install: https://github.com/RTimothyEdwards/netgen (version 1.5.219)- TODO use the one in the OpenLANE docker
 
 See the requirements.txt file for Python reqs.
 
