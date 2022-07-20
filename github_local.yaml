@@ -12,7 +12,7 @@ caravel:
 env: # used for simulation
     GCC_PATH:       /home/runner/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
     GCC_PREFIX:     riscv64-unknown-elf
-    PDK_PATH:       /home/runner/pdk/sky130A
+    PDK_PATH:       /home/runner/pdk/sky130B
     PDK_ROOT:       /home/runner/pdk
     OPENLANE:       /home/runner/openlane
-    PDK:            sky130A
+    PDK:            sky130B

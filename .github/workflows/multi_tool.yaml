@@ -6,7 +6,7 @@ jobs:
     env:
         OPENLANE_ROOT:  /home/runner/openlane
         PDK_ROOT:       /home/runner/pdk
-        PDK:            sky130A
+        PDK:            sky130B
     # ubuntu
     runs-on: ubuntu-latest
     steps:
@@ -44,7 +44,7 @@ jobs:
     - name: pdk & caravel
       run: |
         cd $HOME
-        git clone https://github.com/efabless/caravel_user_project.git -b mpw-6c
+        git clone https://github.com/efabless/caravel_user_project.git -b mpw-7a
         cd caravel_user_project
         make setup
 

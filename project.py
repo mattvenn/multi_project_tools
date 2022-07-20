@@ -73,11 +73,13 @@ class BaseProject(object):
         filename = os.path.abspath(os.path.join(self.directory, conf["directory"], filetype, "%s.%s" % (self.module_name, filetype)))
         if os.path.exists(filename):
             return filename
+        logging.info("optional file not found %s" % filename)
 
         # also check without the intermediate file as path layout changed again in openlane mpw7a
         filename = os.path.abspath(os.path.join(self.directory, conf["directory"], "%s.%s" % (self.module_name, filetype)))
         if os.path.exists(filename):
             return filename
+        logging.info("optional file not found %s" % filename)
 
         return None
             
