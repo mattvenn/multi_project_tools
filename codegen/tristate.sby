@@ -1,4 +1,5 @@
 [options]
+multiclock on
 mode prove
 depth 5
 
