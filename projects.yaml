@@ -72,3 +72,13 @@ projects:
         repo:   'https://github.com/tucanae47/wrapped_etpu'
         commit: '748d3cc0bcba8abb06acd40ab13ed89ff307ede6'
         pos:    '320 2025 N'
+
+    slife:
+        repo:   'https://github.com/wokwi/wrapped_silife'
+        commit: 'aec0f0f7ad458675d961a8289d16064bf15964f6'
+        pos:    '1700 2000 N'
+
+    snn_network:
+        repo:   'https://github.com/pengzhouzp/wrapped_snn_network'
+        commit: 'main'
+        pos:    '1900 1200 N'
