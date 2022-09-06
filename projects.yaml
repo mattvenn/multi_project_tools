@@ -70,15 +70,20 @@ projects:
 
     etpu:
         repo:   'https://github.com/tucanae47/wrapped_etpu'
-        commit: '748d3cc0bcba8abb06acd40ab13ed89ff307ede6'
+        commit: 'd25b41070e74c47a00c1f264af068523c52c584a'
         pos:    '320 2025 N'
 
     slife:
         repo:   'https://github.com/wokwi/wrapped_silife'
-        commit: 'aec0f0f7ad458675d961a8289d16064bf15964f6'
+        commit: 'f57c850126fe25a2254370df4d253d871b028bff'
         pos:    '1700 2000 N'
 
     snn_network:
         repo:   'https://github.com/pengzhouzp/wrapped_snn_network'
-        commit: 'main'
+        commit: 'd0f3a80e664bf6327274c5fef0ace2af40db311b'
         pos:    '1900 1200 N'
+
+    mbsFSK:
+        repo:   'https://github.com/jdrosent/wrapped_mbsFSK'
+        commit: 'ac3713d3220f225a6de8481bd3b72e245614e064'
+        pos:    '2000 480 N'
