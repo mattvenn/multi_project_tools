@@ -58,32 +58,17 @@ docs:
     macro_border:   25 # px
 
 projects:
-    function_generator:
-        repo:   'https://github.com/mattvenn/wrapped_function_generator'
-        commit: '701095fd880ad3bb80d6cec1d214a04e5676a65d'
-        pos:    '350 1200 N'
+#    function_generator:
+#        repo:   'https://github.com/mattvenn/wrapped_function_generator'
+#        commit: '701095fd880ad3bb80d6cec1d214a04e5676a65d'
+#        pos:    '350 1200 N'
+    rgbmixer:
+        repo: https://github.com/mattvenn/wrapped_rgb_mixer
+        commit: 'mpw8'
+        pos: '350 350 N'
 
-    ibnalhaytham:
-        repo:   'https://github.com/sfmth/wrapped_ibnalhaytham'
-        commit: '0627452464db56b813a3aae8899e8339a358fac9'
-        pos:    '900 1200 N'
+    frequency_counter:
+        repo: https://github.com/mattvenn/wrapped_frequency_counter
+        commit: 'mpw8'
+        pos: '850 350 N'
 
-    etpu:
-        repo:   'https://github.com/tucanae47/wrapped_etpu'
-        commit: 'd25b41070e74c47a00c1f264af068523c52c584a'
-        pos:    '320 2025 N'
-
-    slife:
-        repo:   'https://github.com/wokwi/wrapped_silife'
-        commit: 'f57c850126fe25a2254370df4d253d871b028bff'
-        pos:    '1700 2000 N'
-
-    snn_network:
-        repo:   'https://github.com/pengzhouzp/wrapped_snn_network'
-        commit: 'd0f3a80e664bf6327274c5fef0ace2af40db311b'
-        pos:    '1900 1200 N'
-
-    mbsFSK:
-        repo:   'https://github.com/jdrosent/wrapped_mbsFSK'
-        commit: 'ac3713d3220f225a6de8481bd3b72e245614e064'
-        pos:    '2000 480 N'
