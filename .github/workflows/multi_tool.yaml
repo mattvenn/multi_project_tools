@@ -29,7 +29,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.7.7'
+        python-version: '3.10'
         cache: 'pip'
     - run: pip install -r requirements.txt
 
@@ -44,13 +44,14 @@ jobs:
     - name: pdk & caravel
       run: |
         cd $HOME
-        git clone https://github.com/efabless/caravel_user_project.git -b mpw-7a
+        git clone https://github.com/efabless/caravel_user_project.git -b mpw-8c
         cd caravel_user_project
         make setup
 
     # run the script
     - name: fetch all
-      run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
+      #run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
+      run: python ./multi_tool.py --clone-repos --clone-shared-repos --local github_local.yaml
 
     # tests
     - name: test gds
