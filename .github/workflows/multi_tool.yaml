@@ -18,7 +18,7 @@ jobs:
     - name: install oss-cad-suite
       uses: YosysHQ/setup-oss-cad-suite@v1
       with:
-          python-override: true
+        osscadsuite-version: '2022-09-03' # pin the version, latest one fails to work with caravel : https://github.com/mattvenn/wrapped_rgb_mixer/actions/runs/3696349424/jobs/6259927750#step:20:35
     - run: | 
         yosys --version
         iverilog -V

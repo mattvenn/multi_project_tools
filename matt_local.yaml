@@ -1,20 +1,20 @@
-project_directory: "/home/matt/work/asic-workshop/shuttle7/openlane/designs/"
+project_directory: "/home/matt/work/asic-workshop/shuttle8/openlane/designs/"
 
 caravel:
-    root:           /home/matt/work/asic-workshop/shuttle7/zero_to_asic_mpw7
-    gl_dir:         /home/matt/work/asic-workshop/shuttle7/zero_to_asic_mpw7/verilog/gl
-    test_dir:       /home/matt/work/asic-workshop/shuttle7/zero_to_asic_mpw7/verilog/dv
-    rtl_dir:        /home/matt/work/asic-workshop/shuttle7/zero_to_asic_mpw7/verilog/rtl/
-    includes_dir:   /home/matt/work/asic-workshop/shuttle7/zero_to_asic_mpw7/verilog/includes/
-    mgmt_root:       /home/matt/work/asic-workshop/shuttle7/zero_to_asic_mpw7/mgmt_core_wrapper/
+    root:           /home/matt/work/asic-workshop/shuttle8/zero_to_asic_mpw8
+    gl_dir:         /home/matt/work/asic-workshop/shuttle8/zero_to_asic_mpw8/verilog/gl
+    test_dir:       /home/matt/work/asic-workshop/shuttle8/zero_to_asic_mpw8/verilog/dv
+    rtl_dir:        /home/matt/work/asic-workshop/shuttle8/zero_to_asic_mpw8/verilog/rtl/
+    includes_dir:   /home/matt/work/asic-workshop/shuttle8/zero_to_asic_mpw8/verilog/includes/
+    mgmt_root:       /home/matt/work/asic-workshop/shuttle8/zero_to_asic_mpw8/mgmt_core_wrapper/
     config:         config.tcl
 
 env: # used for simulation
     GCC_PATH:       /opt/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
     GCC_PREFIX:     riscv64-unknown-elf
-    PDK_PATH:       /home/matt/work/asic-workshop/shuttle7/pdk/sky130B
-    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle7/pdk/
-    OPENLANE:       /home/matt/work/asic-workshop/shuttle7/openlane
+    PDK_PATH:       /home/matt/work/asic-workshop/shuttle8/pdk/sky130B
+    PDK_ROOT:       /home/matt/work/asic-workshop/shuttle8/pdk/
+    OPENLANE:       /home/matt/work/asic-workshop/shuttle8/openlane
     PDK:            sky130B
 
 tools:
