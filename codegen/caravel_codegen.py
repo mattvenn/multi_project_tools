@@ -11,8 +11,8 @@ def generate_openlane_files(
     target_user_project_wrapper_path: Optional[str],
     target_user_project_includes_path: Optional[str],
     target_caravel_includes_path: Optional[str],
-    target_caravel_obstructions_path: Optional[str],
-    target_macro_power_path: Optional[str],
+#    target_caravel_obstructions_path: Optional[str],
+#    target_macro_power_path: Optional[str],
     openram,
     gl,
     config # this is getting silly now. These generators should be objects and get the config by default.
@@ -55,57 +55,6 @@ def generate_openlane_files(
         shutil.move(caravel_includes_filename, target_caravel_includes_path)
     else:
         logging.info(f"leaving {caravel_includes_filename} here")
-
-    ### obstructions ###
-    ### for openlane
-    
-    logging.info(f"generating obstructions")
-    caravel_obstructions_path = "obstruction.tcl"
-    generate_caravel_obstructions(config, projects, shared_projects, caravel_obstructions_path)
-    if target_caravel_obstructions_path:
-        logging.info(f"{caravel_obstructions_path} to {target_caravel_obstructions_path}")
-        shutil.move(caravel_obstructions_path, target_caravel_obstructions_path)
-    else:
-        logging.info(f"leaving {caravel_obstructions_path} here")
-
-    ### power connections ###
-    ### for openlane
-
-    macro_power_path = "macro_power.tcl"
-    generate_macro_power(config, projects, shared_projects, macro_power_path)
-    if target_macro_power_path:
-        logging.info(f"{macro_power_path} to {target_macro_power_path}")
-        shutil.move(macro_power_path, target_macro_power_path)
-    else:
-        logging.info(f"leaving {macro_power_path} here")
-
-
-# this adds an obstruction covering the whole macro if that layer is present in a list in info.yaml
-def generate_caravel_obstructions(config, projects, shared_projects, caravel_obstructions_path):
-    with open(caravel_obstructions_path, "w") as f:
-        f.write('set ::env(GLB_RT_OBS)  "li1  0    0   2920    3520')
-        for project in projects + shared_projects:
-            if 'obstruction' in project.config:
-                for layer in config['configuration']['gds']['layers']:
-                    if layer in project.config['obstruction']:
-                        x1, y1, orient = project.get_macro_pos()
-                        x2, y2 = project.get_gds_size()
-                        x2 += x1
-                        y2 += y1
-                        f.write(f",\n       {layer} {x1} {y1} {x2} {y2}")
-        f.write('"\n') 
-
-def generate_macro_power(config, projects, shared_projects, macro_power_path):
-    with open(macro_power_path, 'w') as f:
-        f.write('set ::env(FP_PDN_MACRO_HOOKS) "\\\n')
-        num_projects = len(projects + shared_projects)
-        for num, project in enumerate(projects + shared_projects):
-            f.write("	")
-            f.write(project.instance_name)
-            f.write(" vccd1 vssd1 vccd1 vssd1")
-            if num != num_projects -1:
-                f.write(", \\\n")
-        f.write('"\n')
 
 def generate_openlane_user_project_include(projects, shared_projects, outfile):
     include_snippets: List[str] = []
@@ -287,3 +236,33 @@ def generate_sby_file(projects, shared_projects):
    
             
     return "\n".join(sby)
+
+"""
+now that config is .json file, and there is no support for sourcing separate files,
+the single config has to contain all of the previously separate configs:
+
+* macro power
+* extra lef
+* extra def
+* obstruction
+
+the template is in openlane_config.json, and was copied out of the mpw-8c tagged caravel_user_project repo
+"""
+
+import json
+
+class json_config():
+
+    def __init__(self, projects):
+        with open("openlane_config.json") as fh:
+            self.openlane_config = json.load(fh)
+        self.projects = projects
+
+    def write_config(self, destination):
+        for project in self.projects:
+            self.openlane_config['FP_PDN_MACRO_HOOKS'] = [f'{project.instance_name} vccd1 vssd1 vccd1 vssd1' for project in self.projects]
+            self.openlane_config['EXTRA_GDS_FILES']    = [f'dir::../../gds/{os.path.basename(project.gds_filename)}' for project in self.projects]
+            self.openlane_config['EXTRA_LEFS']         = [f'dir::../../lef/{os.path.basename(project.lef_filename)}' for project in self.projects]
+
+        with open(destination, 'w') as fh:
+            fh.write(json.dumps(self.openlane_config, indent=4))

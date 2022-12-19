@@ -2,7 +2,7 @@ from utils import *
 import subprocess
 import copy
 from project import Project, SharedProject
-from codegen.caravel_codegen import generate_openlane_files, generate_sby_file
+from codegen.caravel_codegen import generate_openlane_files, generate_sby_file, json_config
 from codegen.allocator import allocate_macros
 from urllib.parse import urlparse
 
@@ -212,14 +212,14 @@ class Collection(object):
 
     def create_openlane_config(self):
         self.generate_macro_cfg()
-        self.generate_extra_lef_gds_tcl()
+#        self.generate_extra_lef_gds_tcl()
 
         ### generate user wrapper verilog and include files ###
         user_project_wrapper_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_wrapper.v")
         user_project_includes_path = os.path.join(self.config['caravel']['rtl_dir'], "user_project_includes.v")
         caravel_includes_path =      os.path.join(self.config['caravel']['includes_dir'], "includes.rtl.caravel_user_project")
-        obstruction_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "obstruction.tcl")
-        macro_power_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "macro_power.tcl")
+#        obstruction_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "obstruction.tcl")
+#        macro_power_path = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', "macro_power.tcl")
         generate_openlane_files(
             self.projects, 
             self.shared_projects,
@@ -227,18 +227,18 @@ class Collection(object):
             user_project_wrapper_path, 
             user_project_includes_path,
             caravel_includes_path,
-            obstruction_path,
-            macro_power_path,
+#            obstruction_path,
+#            macro_power_path,
             self.args.openram,
             self.args.gate_level,
             self.config
         )
 
-        # copy the local config.tcl file 
-        src = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.tcl')
-        dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.tcl')
-        logging.info(f"copying {src} to {dst}")
-        shutil.copyfile(src, dst)
+        # create the json config file
+        dst = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'config.json')
+
+        config = json_config(self.projects)
+        config.write_config(dst)
 
     def generate_macro_cfg(self):
         macro_inst_file = os.path.join(self.config['caravel']['root'], 'openlane', 'user_project_wrapper', 'macro.cfg')
