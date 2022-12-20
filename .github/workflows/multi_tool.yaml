@@ -52,7 +52,7 @@ jobs:
     # run the script
     - name: fetch all
       #run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
-      run: python ./multi_tool.py --clone-repos --clone-shared-repos --local github_local.yaml
+      run: python ./multi_tool.py --clone-repos --clone-shared-repos --local github_local.yaml --create-openlane-config
 
     # tests
     - name: test gds
