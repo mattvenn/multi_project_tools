@@ -254,7 +254,8 @@ import json
 class json_config():
 
     def __init__(self, projects):
-        with open("openlane_config.json") as fh:
+        config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'openlane_config.json')
+        with open(config_file) as fh:
             self.openlane_config = json.load(fh)
         self.projects = projects
 
