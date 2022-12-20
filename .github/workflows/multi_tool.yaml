@@ -26,20 +26,9 @@ jobs:
         cocotb-config --libpython
         cocotb-config --python-bin
 
-    # need python
-    - name: setup python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        cache: 'pip'
-    - run: pip install -r requirements.txt
-
-    # pwd
-    - name: pwd
+    - name: install python libs
       run: |
-        pwd # /home/runner/work/multi_project_tools/multi_project_tools
-        cocotb-config --libpython
-        cocotb-config --python-bin
+        pip install -r /home/runner/multi_project_tools/requirements.txt
 
     # build pdk
     - name: pdk & caravel
