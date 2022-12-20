@@ -1,13 +1,12 @@
 project_directory: "/home/runner/work/"
 
 caravel:
-    root:           ../caravel_user_project
-    gl_dir:         ../caravel_user_project/verilog/gl
-    test_dir:       ../caravel_user_project/verilog/dv
-    rtl_dir:        ../caravel_user_project/verilog/rtl
-    includes_dir:   ../caravel_user_project/verilog/includes/
-    mgmt_root:      ../caravel_user_proejct/mgmt_core_wrapper/
-    config:         config.tcl
+    root:           /home/runner/caravel_user_project
+    gl_dir:         /home/runner/caravel_user_project/verilog/gl
+    test_dir:       /home/runner/caravel_user_project/verilog/dv
+    rtl_dir:        /home/runner/caravel_user_project/verilog/rtl
+    includes_dir:   /home/runner/caravel_user_project/verilog/includes/
+    mgmt_root:      /home/runner/caravel_user_proejct/mgmt_core_wrapper/
 
 env: # used for simulation
     GCC_PATH:       /home/runner/riscv64-unknown-elf-gcc-8.3.0-2020.04.1-x86_64-linux-ubuntu14/bin/
