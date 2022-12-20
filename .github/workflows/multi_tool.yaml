@@ -52,9 +52,6 @@ jobs:
     - name: test
       run: |
         pwd
-        ls
-        ls ../
-        find / -name caravel_user_project
         echo $HOME
         ls $HOME/caravel_user_project
         cd $HOME
