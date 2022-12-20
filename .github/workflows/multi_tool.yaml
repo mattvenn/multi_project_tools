@@ -14,6 +14,14 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v3
 
+    # build pdk
+    - name: pdk & caravel
+      run: |
+        cd $HOME
+        git clone https://github.com/efabless/caravel_user_project.git -b mpw-8c
+        cd caravel_user_project
+        make setup
+
     # install oss fpga tools
     - name: install oss-cad-suite
       uses: YosysHQ/setup-oss-cad-suite@v1
@@ -29,14 +37,6 @@ jobs:
     - name: install python libs
       run: |
         pip install -r requirements.txt
-
-    # build pdk
-    - name: pdk & caravel
-      run: |
-        cd $HOME
-        git clone https://github.com/efabless/caravel_user_project.git -b mpw-8c
-        cd caravel_user_project
-        make setup
 
     - name: test
       run: |
