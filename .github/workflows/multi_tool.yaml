@@ -49,6 +49,9 @@ jobs:
         cd caravel_user_project
         make setup
 
+    - name: test
+      run: find ../
+
     # run the script
     - name: fetch all
       #run: python ./multi_tool.py --clone-repos --clone-shared-repos --openram --local github_local.yaml
