@@ -261,7 +261,8 @@ class json_config():
 
     def write_config(self, destination):
         for project in self.projects:
-            self.openlane_config['FP_PDN_MACRO_HOOKS'] = [f'{project.instance_name} vccd1 vssd1 vccd1 vssd1' for project in self.projects]
+            #self.openlane_config['FP_PDN_MACRO_HOOKS'] = [f'{project.instance_name} vccd1 vssd1 vccd1 vssd1' for project in self.projects]
+            self.openlane_config['FP_PDN_MACRO_HOOKS'] = ", ".join([f'{project.instance_name} vccd1 vssd1 vccd1 vssd1' for project in self.projects])
             self.openlane_config['EXTRA_GDS_FILES']    = [f'dir::../../gds/{os.path.basename(project.gds_filename)}' for project in self.projects]
             self.openlane_config['EXTRA_LEFS']         = [f'dir::../../lef/{os.path.basename(project.lef_filename)}' for project in self.projects]
 
