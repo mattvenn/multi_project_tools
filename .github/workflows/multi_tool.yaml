@@ -28,7 +28,7 @@ jobs:
 
     - name: install python libs
       run: |
-        pip install -r /home/runner/multi_project_tools/requirements.txt
+        pip install -r requirements.txt
 
     # build pdk
     - name: pdk & caravel
