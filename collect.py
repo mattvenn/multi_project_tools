@@ -274,9 +274,9 @@ class Collection(object):
         git_sha = get_git_sha(".")
         fh = open("index.md", 'w')
         fh.write("""
-[![multi_tool](https://github.com/mattvenn/zero_to_asic_mpw7/actions/workflows/multi_tool.yaml/badge.svg)](https://github.com/mattvenn/zero_to_asic_mpw7/actions/workflows/multi_tool.yaml)
+[![multi_tool](https://github.com/mattvenn/zero_to_asic_mpw8/actions/workflows/multi_tool.yaml/badge.svg)](https://github.com/mattvenn/zero_to_asic_mpw8/actions/workflows/multi_tool.yaml)
 
-# Zero to ASIC Group submission MPW7
+# Zero to ASIC Group submission MPW8
 
 This ASIC was designed by members of the [Zero to ASIC course](https://zerotoasiccourse.com).
 
