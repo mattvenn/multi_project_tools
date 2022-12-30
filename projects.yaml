@@ -72,3 +72,17 @@ projects:
         commit: 'mpw8'
         pos: '850 350 N'
 
+    single_channel:
+        repo:   'https://github.com/almostsquare/wrapped_channel'
+        commit: 'main'
+        pos:    '350 1000 N'
+
+    simon_game:
+        repo:   'https://github.com/wokwi/wrapped_simon_game'
+        commit: 'mpw8'
+        pos:    '850 850 N'
+
+#wrapped_counter:
+        #repo:   'https://github.com/ellen-wood/wrapped_counter'
+        #commit: 'main'
+        #pos:    '350 500 N'
